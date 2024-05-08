@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "NSV Performance Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "3012cf7a-36a0-4624-b29a-6af4f2f3c8f2"
+  }
+}

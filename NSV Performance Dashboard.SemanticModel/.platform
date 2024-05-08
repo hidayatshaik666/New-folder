@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "NSV Performance Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "65a1f704-7e2e-404f-8336-b79adc958978"
+  }
+}

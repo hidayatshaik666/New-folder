@@ -1,0 +1,79 @@
+table Currency_Conversion_Table
+	lineageTag: b61c8fc0-9181-424f-9afc-560c11134486
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 85c681d7-96aa-4484-8fb7-8ffab317e7dc
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: da318a87-4461-4870-ba5a-19e2ea5b9fb3
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		lineageTag: 99e42a7a-8119-4054-94f2-01f804da7498
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Conversion_Factor
+		dataType: double
+		lineageTag: fe1bfb36-b803-4385-b164-c0639d737a80
+		summarizeBy: sum
+		sourceColumn: Conversion_Factor
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Convert_To
+		dataType: string
+		lineageTag: eda91185-72db-4e00-bfe3-7eb017591cf4
+		summarizeBy: none
+		sourceColumn: Convert_To
+
+		annotation SummarizationSetBy = Automatic
+
+	column Convert_To_Sort_Order = ```
+			
+			SWITCH(
+			    Currency_Conversion_Table[Currency], 
+			    "EUR", 1,
+			    "NOK", 2,
+			    "SEK", 3,
+			    "DKK", 4
+			)
+			```
+		dataType: int64
+		formatString: 0
+		lineageTag: 3859c8ee-95bc-4c77-a907-7c020a50445e
+		summarizeBy: sum
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Currency_Conversion_Table-1ac76f71-678c-42bb-b2cd-ca3e4e03e732 = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("G:\My Drive\Mars-Dcom-Multisales Wire frame creation\My Work\Currency_Conversion_Chart.xlsx"), null, true),
+				    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Year", Int64.Type}, {"Region", type text}, {"Currency", type text}, {"Conversion_Factor", type number}, {"Convert_To", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

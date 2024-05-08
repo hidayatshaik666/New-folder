@@ -1,0 +1,64 @@
+table 'Data Export Table'
+	lineageTag: 559e771c-b4e5-4dbe-90c2-1d8d754f88f7
+
+	column 'Data Table'
+		dataType: string
+		lineageTag: 8f9bfad9-659f-4ac3-8e3c-b5b857d2c5a6
+		summarizeBy: none
+		isDataTypeInferred
+		sourceColumn: [Value1]
+		sortByColumn: 'Data Table Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Data Table Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Table Fields'
+		dataType: string
+		isHidden
+		lineageTag: d32dd1ff-35fd-41c8-9e4c-3dfcd4f89797
+		summarizeBy: none
+		isDataTypeInferred
+		sourceColumn: [Value2]
+		sortByColumn: 'Data Table Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Table Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 88ec8334-14a5-4201-9355-177f4d936a0b
+		summarizeBy: sum
+		isDataTypeInferred
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Data Export Table-04cb4686-f504-4ed0-a6d2-de49f26241b3' = calculated
+		mode: import
+		source =
+				{
+				    ("Region", NAMEOF('DIMENSION_Retailer_Attributes'[Region]), 0),
+				    ("Country", NAMEOF('DIMENSION_Retailer_Attributes'[Country]), 1),
+				    ("Channel", NAMEOF('DIMENSION_Retailer_Attributes'[Channel]), 2),
+				    ("Retailer", NAMEOF('DIMENSION_Retailer_Attributes'[Retailer]), 3),
+				    ("Year", NAMEOF(DateTable[Year]), 4),
+				    ("Period", NAMEOF('DateTable'[Period]), 5),
+				    ("Division", NAMEOF('DIMENSION_Retailer_Attributes'[Division]), 6),
+				    ("Segment", NAMEOF('DIMENSION_Retailer_Attributes'[Segment]), 7),
+				    ("Category", NAMEOF('DIMENSION_Retailer_Attributes'[Category]), 8),
+				    ("Brand", NAMEOF('DIMENSION_Retailer_Attributes'[Brand]), 9),
+				    ("Product", NAMEOF('FACT_Retailer_Data'[Zrep_Descriptipn]), 10),
+				    ("ZREP", NAMEOF('FACT_Retailer_Data'[ZREP]), 11)
+				}
+
+	annotation PBI_Id = 2f25c06adcad4da7b0c1aaf72d9a61a6
+

@@ -1,0 +1,35 @@
+table Currency_Slicer
+	lineageTag: 66e360e8-26a2-4dd8-b928-bca55005da29
+
+	column Currency
+		dataType: string
+		lineageTag: 1e5c0ea7-7432-47aa-a2f7-874054578423
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Currency_Conversion_Table[Currency]
+		sortByColumn: Convert_To_Sort_Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Convert_To_Sort_Order
+		dataType: int64
+		formatString: 0
+		lineageTag: 3ec91787-459a-414d-949b-259e810c8219
+		summarizeBy: none
+		isNameInferred
+		isDataTypeInferred
+		sourceColumn: Currency_Conversion_Table[Convert_To_Sort_Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Currency_Slicer-413532ea-8774-4a8f-ad6d-09fb10104b95 = calculated
+		mode: import
+		source =
+				
+				SUMMARIZECOLUMNS(
+				    Currency_Conversion_Table[Currency], Currency_Conversion_Table[Convert_To_Sort_Order]
+				)
+
+	annotation PBI_Id = 6eab35025dc0407eb16b3fd59a07f3d5
+

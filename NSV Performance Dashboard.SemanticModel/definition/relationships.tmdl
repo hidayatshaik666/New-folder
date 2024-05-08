@@ -1,0 +1,22 @@
+relationship c521dc6e-d002-4033-bb59-1134704bb933
+	fromColumn: Currency_Conversion_Table.Currency
+	toColumn: Currency_Slicer.Currency
+
+relationship 3d0bc008-b65f-477c-9bac-c9e22a4b146a
+	fromColumn: FACT_Retailer_Data.'Composite Key'
+	toColumn: DIMENSION_Retailer_Attributes.'Composite Key'
+
+relationship 6f8541b3-c8d3-49df-b1a6-453e04273536
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DateTable.Date
+	toColumn: LocalDateTable_8b4c139f-b96b-4faf-b3d1-70e79a170c6f.Date
+
+relationship a58ee6fd-189d-495a-b5ce-df05d48bb22c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: DateTable.'Start of Week'
+	toColumn: LocalDateTable_9531ecde-9ea3-4dc5-a78f-5b423b55220f.Date
+
+relationship f0d93bc7-6b01-488a-b3f7-c6b019d01d36
+	fromColumn: FACT_Retailer_Data.Period_Start_Date
+	toColumn: DateTable.Date
+

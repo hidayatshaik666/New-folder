@@ -1,0 +1,37 @@
+table Time_Intelligence_Metrics
+	lineageTag: fbcaf6ea-0f96-4bdb-9dbf-1b48e2177b24
+
+	column Metrics
+		dataType: string
+		lineageTag: 722fe220-26a2-41f3-b16b-1025e77638e9
+		summarizeBy: none
+		sourceColumn: Metrics
+		sortByColumn: 'Sort Order'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sort Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: d01ecc5c-a1b6-43e8-975f-71e1c6906e33
+		summarizeBy: sum
+		sourceColumn: Sort Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Time_Intelligence_Metrics = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCk7NSU0uSU1RCEgtysxPUdJRMlSK1YlWigxxAbKNwGyfxOISBUNjqJJioLixUmwsAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Metrics = _t, #"Sort Order" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Metrics", type text}, {"Sort Order", Int64.Type}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Type","Last 13 Periods","MAT",Replacer.ReplaceText,{"Metrics"})
+				in
+				    #"Replaced Value"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

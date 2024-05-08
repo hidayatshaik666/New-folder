@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Measure Table","Currency_Conversion_Table","FACT_Retailer_Data","DIMENSION_Retailer_Attributes","DateTable","Time_Intelligence_Metrics"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.128.952.0 (24.04)
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table DateTableTemplate_0b1e7421-c776-4381-8be9-5d11def41f5f
+ref table 'Measure Table'
+ref table 'Data Export Table'
+ref table Currency_Conversion_Table
+ref table Currency_Slicer
+ref table 'Metric Selection'
+ref table FACT_Retailer_Data
+ref table DIMENSION_Retailer_Attributes
+ref table DateTable
+ref table LocalDateTable_8b4c139f-b96b-4faf-b3d1-70e79a170c6f
+ref table LocalDateTable_9531ecde-9ea3-4dc5-a78f-5b423b55220f
+ref table Time_Intelligence_Metrics
+

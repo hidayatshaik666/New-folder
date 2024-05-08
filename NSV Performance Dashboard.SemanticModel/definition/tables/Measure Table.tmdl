@@ -1,0 +1,1197 @@
+table 'Measure Table'
+	lineageTag: e6f8926b-d228-4fad-b3f9-a7f21bd94fd2
+
+	measure 'Total NSV' =
+			
+			SUM(
+			    'FACT_Retailer_Data'[NSV]
+			)
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 31daab77-c6f0-4b0e-aeca-3ea84809bd79
+
+	measure Pareto_Line_RSV = ```
+			
+			VAR totalRevenue =
+			    CALCULATE (
+			        SUM ( 'Fact Table'[Sales_RSV] ),
+			        ALLSELECTED ( 'Fact Table' )
+			    )
+			VAR currentRevenue =
+			    SUM ( 'Fact Table'[Sales_RSV] )
+			VAR summarizedTable =
+			    SUMMARIZE (
+			        ALLSELECTED ( 'Fact Table'),'Fact Table'[Sales_RSV],
+			        "Revenue", SUM ( 'Fact Table'[Sales_RSV] )
+			    )
+			VAR cumulativeSum =
+			    SUMX ( FILTER ( summarizedTable, [Revenue] >= currentRevenue ), [Revenue] )
+			RETURN
+			    cumulativeSum / totalRevenue
+			
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3a9447cc-f467-4147-a615-567b4d79bf21
+
+	measure Pareto_Line_NSV = ```
+			
+			VAR totalNSV =
+			    CALCULATE (
+			        SUM ( 'FACT_Retailer_Data'[NSV] ),
+			        ALLSELECTED ( 'FACT_Retailer_Data' )
+			    )
+			VAR currentNSV =
+			    SUM ( 'FACT_Retailer_Data'[NSV] )
+			
+			VAR SummarizedTable =
+			SUMMARIZE(
+			    ALLSELECTED('FACT_Retailer_Data'),
+			    'FACT_Retailer_Data'[Zrep_Descriptipn],
+			    "Nsv",SUM('FACT_Retailer_Data'[NSV])
+			)
+			VAR Cummulative_Sum =
+			SUMX(
+			    FILTER(
+			        SummarizedTable, [Nsv] >= currentNSV
+			    ),
+			    [Nsv]
+			)
+			Return 
+			Cummulative_Sum /totalNSV
+			```
+		formatString: #,0.00%;-#,0.00%;#,0.00%
+		lineageTag: 81f5b63a-8258-4911-922d-d8fabe496d60
+
+	measure LY_NSV =
+			
+			
+			VAR last_date =
+			    CALCULATE(EDATE(LASTDATE ( 'FACT_Retailer_Data'[Period_Start_Date] ),-12)) + 1
+			
+			VAR first_date =
+			    CALCULATE(EDATE(FIRSTDATE(  'FACT_Retailer_Data'[Period_Start_Date] ),-12)) + 1
+			
+			RETURN
+			CALCULATE([Total NSV],DATESBETWEEN ( DateTable[Date], first_date, last_date ))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 25113e5d-1e70-4f4c-8c8a-898652975055
+
+	measure NSV_Change_in =
+			
+			IF (
+			    ISBLANK ( [LY_NSV] ),
+			    BLANK (),
+			    [Total NSV] - [LY_NSV]
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: f4e685d8-9242-4dba-b72d-fe37a8138883
+
+	measure %_NSV_%_Value_Change_IN =
+			
+			IF (
+			    OR (
+			        ISBLANK ( [LY_NSV] ),
+			        ISBLANK ( [Total NSV] )
+			    ),
+			    BLANK (),
+			    DIVIDE (
+			        ( [Total NSV] - [LY_NSV] ),
+			        [LY_NSV]
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 58d95df3-4493-4cb6-a015-35180609c521
+
+	measure 'NSV Contribution' = ```
+			
+			VAR totalNSV =
+			    CALCULATE (
+			        SUM ( 'FACT_Retailer_Data'[NSV] ),
+			        ALLSELECTED ( 'FACT_Retailer_Data' )
+			    )
+			VAR currentNSV =
+			    SUM ( 'FACT_Retailer_Data'[NSV] )
+			Return 
+			currentNSV/totalNSV
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3701b681-8edd-48a9-ac3a-84ee5e166388
+
+	measure 'Previous Year NSV' = ```
+			
+			Var year_Sel = SELECTEDVALUE('DateTable'[Year])
+			Var LY_NSV =
+			CALCULATE (
+			    [Total NSV],
+			    SAMEPERIODLASTYEAR('DateTable'[Date])
+			)
+			Return 
+			IF(year_Sel <> 2023 ,
+			"No Data",
+			[LY_NSV]
+			)
+			```
+		lineageTag: bc4697e9-d7d2-45f8-972a-638a714b6ff2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Diffs_Icon_NSV_Rolling =
+			
+			IF (
+			    OR (
+			        ISBLANK ( [LY_NSV] ),
+			        ISBLANK ( [Total NSV] )
+			    ),
+			    "--",
+			    ROUND ( [%_NSV_%_Value_Change_IN], 3 ) * 100 & "%  "
+			        & IF ( [%_NSV_%_Value_Change_IN] > 0,UNICHAR(9650), UNICHAR(128315)
+			        ))
+		lineageTag: 5afd00c0-a22c-4d9d-bb9a-ccebbdb065bb
+
+	measure 'Arrow Up' =
+			
+			UNICHAR(9650)
+		lineageTag: faac6916-64b8-4204-9372-d56fab566717
+
+	measure 'Arrow Down' =
+			
+			UNICHAR(128315)
+		lineageTag: 372463db-234f-4798-beb5-65ce8ee88d15
+
+	measure 'Arrow CF' =
+			
+			IF(
+			    [%_NSV_%_Value_Change_IN]>0,2,1)
+		formatString: 0
+		lineageTag: c051709c-2e30-43cf-9c62-303a361b286c
+
+	measure 'Arrow Icon' =
+			
+			IF(
+			    [%_NSV_%_Value_Change_IN] > 0 ,UNICHAR(9650),UNICHAR(128315))
+		lineageTag: 874eab37-bf2e-4263-94b3-b93313ff0d8a
+
+	measure LY_NSV1 =
+			
+			
+			VAR last_date =
+			    CALCULATE(EDATE(LASTDATE ( DateTable[Date] ),-12)) + 1
+			
+			VAR first_date =
+			    CALCULATE(EDATE(FIRSTDATE(  'DateTable'[Date] ),-12)) + 1
+			
+			RETURN
+			CALCULATE([Total NSV],DATESBETWEEN ( DateTable[Date], first_date, last_date ))
+		lineageTag: 4b70d048-a3ff-4e2e-a300-639928861586
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '%_NSV Growth' = ```
+			
+			IF (
+			    OR (
+			        ISBLANK ( [Var LY_NSV] ),
+			        ISBLANK ( [Total NSV] )
+			    ),
+			    BLANK (),
+			    DIVIDE (
+			        ( [Total NSV] - [Var LY_NSV] ),
+			        [Var LY_NSV]  
+			          )
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: b2c5fb24-f972-4b57-901c-2017136f3a1c
+
+	measure 'Var LY_NSV' =
+			
+			CALCULATE (
+			    [Total NSV],
+			    SAMEPERIODLASTYEAR('DateTable'[Date])
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: de4e59c7-3a0b-43f3-b636-198efd514034
+
+	measure Region_Selection_Measure = ```
+			
+			VAR conver_to_sel =
+			    SELECTEDVALUE ( 'Currency_Conversion_Table'[Currency])
+			VAR year_sel =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			RETURN
+			    CALCULATE (
+			        SELECTEDVALUE ( 'Currency_Conversion_Table'[Conversion_Factor]),
+			        'Currency_Conversion_Table'[Currency] = conver_to_sel,
+			        'Currency_Conversion_Table'[Year] = year_sel
+			    )
+			
+			```
+		displayFolder: Currency Selection
+		lineageTag: 41b629e9-8283-4928-b0dc-cb81fe55926e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure €_Currency_selection_NSV =
+			
+			SUMX ( 'FACT_Retailer_Data','FACT_Retailer_Data'[NSV]*(1/[Region_Selection_Measure]))
+		displayFolder: Currency Selection
+		lineageTag: 964c456e-f2f4-4e02-a787-80871d46bd35
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure €_Currency_selection_LY_NSV =
+			
+			CALCULATE(
+			    [€_Currency_selection_NSV],
+			    SAMEPERIODLASTYEAR(DateTable[Date]
+			    ))
+		displayFolder: Currency Selection
+		lineageTag: a0e4b4f0-f83c-4ee7-9115-9f20d44a3455
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure €_Currency_selection_NSV_Change =
+			
+			IF(
+			    ISBLANK(
+			        [€_Currency_selection_LY_NSV]),
+			        BLANK(),
+			        [€_Currency_selection_NSV] - [€_Currency_selection_LY_NSV]
+			)
+		displayFolder: Currency Selection
+		lineageTag: 4c94f21b-0612-486b-a7c0-49cc3e644346
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure €_Currency_selection_%NSV = ```
+			
+			IF (
+			    OR (
+			        ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			        ISBLANK ( [€_Currency_selection_NSV] )
+			    ),
+			    BLANK (),
+			    DIVIDE (
+			        ( [€_Currency_selection_NSV] - [€_Currency_selection_LY_NSV] ),
+			        [€_Currency_selection_LY_NSV]  
+			          )
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Currency Selection
+		lineageTag: 4a1a9f0a-efd7-4b2f-a0ef-d63e1ef8429b
+
+	measure 'Currency_Arrow Icon' =
+			
+			IF(
+			    [€_Currency_selection_%NSV] > 0 ,UNICHAR(9650),UNICHAR(9660))
+		displayFolder: Currency Selection
+		lineageTag: 8d11f9a5-3cb7-4ed5-804e-f3b362ab51dd
+
+	measure 'Currency_Arrow CF' =
+			
+			IF(
+			    [€_Currency_selection_%NSV]>0,2,1)
+		formatString: 0
+		displayFolder: Currency Selection
+		lineageTag: 76e3fd6b-e59a-4f4e-90f5-a9dcb80e62bc
+
+	measure 'Show Filter Header' =
+			
+			IF(
+			    ISFILTERED(
+			        'DIMENSION_Retailer_Attributes'[Retailer]
+			    ),
+			    "Retailer: " & REPT(UNICHAR(10),COUNTROWS(VALUES('DIMENSION_Retailer_Attributes'[Retailer])))
+			)&
+			IF(
+			    ISFILTERED(
+			        'DIMENSION_Retailer_Attributes'[Category]
+			    ),
+			    "Category: " & REPT(UNICHAR(10),COUNTROWS(VALUES('DIMENSION_Retailer_Attributes'[Category])))
+			)
+		displayFolder: Applied Filters
+		lineageTag: f8acb69a-b432-4024-8561-835fd941428d
+
+	measure 'Show Filters selected' = ```
+			
+			IF(
+			    ISFILTERED(
+			        'DIMENSION_Retailer_Attributes'[Country]
+			    ),
+			    var items = VALUES('DIMENSION_Retailer_Attributes'[Country])
+			    Var itemscombained = CONCATENATEX(items,'DIMENSION_Retailer_Attributes'[Country],UNICHAR(10))
+			    Return 
+			    itemscombained & UNICHAR(10)
+			)&
+			IF(
+			    ISFILTERED(
+			        'DIMENSION_Retailer_Attributes'[Category]
+			    ),
+			    var items = VALUES('DIMENSION_Retailer_Attributes'[Category])
+			    Var itemscombained = CONCATENATEX(items,'DIMENSION_Retailer_Attributes'[Category],UNICHAR(10))
+			    Return 
+			    itemscombained & UNICHAR(10)
+			)&
+			IF(
+			    ISFILTERED(
+			        'DIMENSION_Retailer_Attributes'[Retailer]
+			    ),
+			    var items = VALUES('DIMENSION_Retailer_Attributes'[Retailer])
+			    Var itemscombained = CONCATENATEX(items,'DIMENSION_Retailer_Attributes'[Retailer],UNICHAR(10))
+			    Return 
+			    itemscombained & UNICHAR(10)
+			)
+			
+			```
+		displayFolder: Applied Filters
+		lineageTag: 85003e2c-5121-4b63-8a5d-6451bbb77093
+
+	measure €_Currency_NSV_Contribution = ```
+			
+			VAR totalNSV =
+			    CALCULATE (
+			        [€_Currency_selection_NSV],
+			        ALLSELECTED ( 'FACT_Retailer_Data' )
+			    )
+			VAR currentNSV =
+			    [€_Currency_selection_NSV]
+			Return 
+			currentNSV/totalNSV
+			```
+		displayFolder: Currency Selection
+		lineageTag: e5f3183e-f2d2-4a34-a9c6-6b7387a167c4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure NSV_Time_Intelligence_Metrics = ```
+			
+			VAR sel =
+			    SELECTEDVALUE ( 'Time_Intelligence_Metrics'[Metrics] )
+			VAR sel_Year =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date]) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR NSV =
+			    IF (
+			        sel_Year = current_year,
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_NSV]
+			                ),
+			            "YTD", IF ( ISBLANK ( [NSV_YTD] ), BLANK (), [NSV_YTD] ),
+			            "MAT", IF( ISBLANK( [Last_52_W_NSV1]),BLANK(),[Last_52_W_NSV1])
+			        ),
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_NSV] ),
+			                   BLANK(),
+			                   [€_Currency_selection_NSV]
+			                ),
+			            "YTD",BLANK(),
+			            "MAT" ,
+			            IF(ISBLANK([Last_52_W_NSV1]),
+			            BLANK(),
+			            [Last_52_W_NSV1]
+			            )
+			        )
+			    )
+			        
+			RETURN
+			NSV  
+			
+			```
+		formatString: #,###
+		displayFolder: Time Intelligence
+		lineageTag: 75c28e34-d032-432f-b5ef-5bc06ad779cc
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure Last_12_W_NSV = ```
+			
+			VAR last_date =
+			    CALCULATE (
+			        LASTDATE ( DateTable[Start of Week] ) + 6,
+			        ALL ( 'DateTable'[Period])
+			    )
+			VAR first_date = last_date - 84
+			RETURN
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ),
+			            ALL ( 'DateTable'[Period] )
+			        )
+			    )
+			
+			```
+		lineageTag: 56a0eea8-a81b-4939-b0d5-597f9545748d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure NSV_YTD = ```
+			
+			VAR first_date =
+			    CALCULATE (
+			        FIRSTDATE ( 'DateTable'[Date] ),
+			        ALL ( 'DateTable'[Period] )
+			    )
+			VAR last_date =
+			    CALCULATE (
+			        LASTDATE ( 'DateTable'[Date]),
+			        ALL ( 'DateTable'[Period] )
+			    )
+			RETURN
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ),
+			            ALL ( 'DateTable'[Period] )
+			        )
+			    )
+			
+			```
+		lineageTag: ff98b28d-dfc3-41fd-ae80-2541ec3c2ed0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure No_Data_For_Executive_Matrics = ```
+			
+			VAR timeint =
+			    SELECTEDVALUE ( Time_Intelligence_Metrics[Metrics] )
+			VAR sel_year =
+			    SELECTEDVALUE ( DateTable[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date] ) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR result =
+			    SWITCH (
+			        TRUE (),
+			        timeint = "selected period", "",
+			        timeint = "MAT", "",
+			        AND ( timeint = "YTD", sel_year = current_year ), "",
+			        AND ( timeint = "YTD", sel_year <> current_year ), "YTD, show values only for the current year. Please select ""Selected Period"" in Time Intelligence to view previous year data"
+			        
+			    )
+			RETURN
+			    result
+			```
+		displayFolder: Time Intelligence
+		lineageTag: 0b55f069-3b2a-445b-ac12-250efdc34af0
+
+	measure LY_NSV_Time_Intelligence_Metrics = ```
+			
+			VAR sel =
+			    SELECTEDVALUE ( 'Time_Intelligence_Metrics'[Metrics] )
+			VAR sel_Year =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date]) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR NSV =
+			    IF (
+			        sel_Year = current_year,
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_LY_NSV]
+			                ),
+			            "YTD", IF ( ISBLANK ( [LY_NSV_YTD]), BLANK (), [LY_NSV_YTD]) ,
+			            "MAT", IF( ISBLANK([LY_52_W_NSV1]),BLANK(),[LY_52_W_NSV1])
+			        ),
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_LY_NSV]
+			                ),
+			            "YTD",BLANK(),
+			            "MAT",IF( ISBLANK([LY_52_W_NSV1]),BLANK(),[LY_52_W_NSV1])
+			        )
+			    )
+			RETURN
+			NSV   
+			```
+		formatString: #,0
+		displayFolder: Time Intelligence
+		lineageTag: 5c8c52ec-5bbf-48c3-b1ef-712ef1a0db37
+
+	measure NSV_Change_TimeIntelligence =
+			
+			IF(
+			    ISBLANK(
+			        [LY_NSV_Time_Intelligence_Metrics]),
+			        BLANK(),
+			        [NSV_Time_Intelligence_Metrics] - [LY_NSV_Time_Intelligence_Metrics]
+			)
+		formatString: #,0
+		displayFolder: Time Intelligence
+		lineageTag: 06c5a51e-0495-459d-902c-5d557bcb083f
+
+	measure %NSV_TimeIntelligence = ```
+			
+			IF (
+			    OR (
+			        ISBLANK ( [LY_NSV_Time_Intelligence_Metrics] ),
+			        ISBLANK ( [NSV_Time_Intelligence_Metrics] )
+			    ),
+			    BLANK (),
+			    DIVIDE (
+			        ( [NSV_Time_Intelligence_Metrics] - [LY_NSV_Time_Intelligence_Metrics] ),
+			        [LY_NSV_Time_Intelligence_Metrics]  
+			          )
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Time Intelligence
+		lineageTag: 023ba1f7-7fcc-4fa3-8b65-14a3548c5533
+
+	measure LY_NSV_YTD = ```
+			
+			VAR first_date =
+			    CALCULATE (
+			        FIRSTDATE ( 'DateTable'[Date] ),
+			        ALL ( 'DateTable'[Period] )
+			    )
+			VAR last_date =
+			    CALCULATE (
+			        LASTDATE ( 'DateTable'[Date]),
+			        ALL ( 'DateTable'[Period] )
+			    )
+			RETURN
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_LY_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ),
+			            ALL ( 'DateTable'[Period] )
+			        )
+			    )
+			
+			```
+		lineageTag: 1ee9ca1d-6e6c-42c1-8c49-36b4a86e9caf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure No_Data_For_LY =
+			
+			VAR timeint =
+			    SELECTEDVALUE ( Time_Intelligence_Metrics[Metrics] )
+			VAR sel_year =
+			    SELECTEDVALUE ( DateTable[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date] ) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR result =
+			    SWITCH (
+			        TRUE (),
+			        timeint = "YTD", "Visual not applicable for Time Intelligence YTD and MAT",
+			        timeint = "MAT", "Visual not applicable for Time Intelligence YTD and MAT",
+			        AND ( timeint <>"YTD", sel_year = current_year ), "",
+			        AND ( timeint <> "YTD", sel_year <> current_year ), IF(ISBLANK([LY_NSV_Time_Intelligence_Metrics]),"Data not available","" )
+			    )
+			RETURN
+			    result
+		displayFolder: Time Intelligence
+		lineageTag: 6cd94664-f4ef-4af1-bbc4-b17e847b4d79
+
+	measure Time_Intelligence_Arrow_Icon =
+			
+			IF(
+			    [%NSV_TimeIntelligence] > 0 ,UNICHAR(9650),UNICHAR(9660))
+		displayFolder: Time Intelligence
+		lineageTag: 22e1802e-9f1d-4dfd-9eb4-178684db44b5
+
+	measure 'Time_Intelligence_Arrow CF' =
+			
+			IF(
+			    [%NSV_TimeIntelligence]>0,2,1)
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: 5a175d9f-bfcc-4b30-ad44-4dde36b09870
+
+	measure No_Data_For_TY =
+			
+			VAR timeint =
+			    SELECTEDVALUE ( Time_Intelligence_Metrics[Metrics] )
+			VAR sel_year =
+			    SELECTEDVALUE ( DateTable[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date] ) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR result =
+			    SWITCH (
+			        TRUE (),
+			         timeint = "YTD", "Visual not applicable for Time Intelligence YTD and MAT",
+			         timeint = "MAT", "Visual not applicable for Time Intelligence YTD and MAT",
+			        AND ( timeint <> "YTD", sel_year = current_year ), "",
+			        AND ( timeint <> "YTD", sel_year <> current_year ),IF(ISBLANK([NSV_Time_Intelligence_Metrics]),"Data not available","" )
+			    )
+			RETURN
+			    result
+		displayFolder: Time Intelligence
+		lineageTag: 2c41c37d-0a7a-43a8-83ee-9d6cdb8417c4
+
+	measure Time_Intelligence_Arrow_Icon1 =
+			
+			IF(
+			    ISBLANK(
+			        [Time_Intelligence_Arrow_Icon]),
+			        [Time_Intelligence_Arrow_Icon],""
+			)
+		lineageTag: 2aba21d5-7e21-49df-ab86-8b9e92855896
+
+	measure No_Data_For_Selected_Criteria =
+			
+			VAR timeint =
+			    SELECTEDVALUE ( Time_Intelligence_Metrics[Metrics] )
+			VAR sel_year =
+			    SELECTEDVALUE ( DateTable[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date] ) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR result =
+			    SWITCH (
+			        TRUE (),
+			        timeint = "YTD", "",
+			        AND ( timeint <> "YTD", sel_year = current_year ), "",
+			        AND ( timeint <> "YTD", sel_year <> current_year ),IF(ISBLANK([NSV_Time_Intelligence_Metrics]),"No Data for Selected Criteria","" )
+			    )
+			RETURN
+			    result
+		displayFolder: Time Intelligence
+		lineageTag: 28392ee4-30c6-4e31-8fd2-b50c408b6300
+
+	measure Data_Available_Till =
+			
+			"Data Available Till" & VALUES(DateTable[Year Period])
+		displayFolder: Applied Filters
+		lineageTag: 64b1fe79-e730-4c1f-ac3d-f249a95e1c72
+
+	measure Transparent_Measure =
+			
+			"rgba(0, 0, 0, 0)"
+		lineageTag: 64824b04-6c34-41bd-901a-0dd98004bc53
+
+	measure 'Date Filter' = ```
+			
+			IF(
+			    ISFILTERED(
+			        'DateTable'[Year]
+			    ),
+			    var items = VALUES('DateTable'[Year])
+			    Var itemscombained = CONCATENATEX(items,'DateTable'[Year],UNICHAR(10))
+			    Return 
+			    itemscombained & UNICHAR(10)
+			)
+			```
+		displayFolder: Applied Filters
+		lineageTag: 98625a1d-8392-471f-9ad8-425df1158f9e
+
+	measure 'Time Intelligence Filter' = ```
+			
+			IF(
+			    ISFILTERED(
+			        'Time_Intelligence_Metrics'[Metrics]
+			    ),
+			    var items = VALUES('Time_Intelligence_Metrics'[Metrics])
+			    Var itemscombained = CONCATENATEX(items,'Time_Intelligence_Metrics'[Metrics],UNICHAR(10))
+			    Return 
+			    itemscombained & UNICHAR(10)
+			)
+			
+			```
+		displayFolder: Applied Filters
+		lineageTag: 137f5a74-5f69-49ec-81bf-e14affd7a7b5
+
+	measure 'Period Filter' = ```
+			
+			CONCATENATEX (
+			    VALUES ( 'DateTable'[Period] ),
+			    [Period],
+			    ",",
+			    'DateTable'[Period]
+			)
+			
+			```
+		displayFolder: Applied Filters
+		lineageTag: eab370cf-159a-425f-a4f3-a06d27a940f9
+
+	measure Last_52_W_NSV =
+			
+			
+			Var last_date = CALCULATE(LASTDATE('FACT_Retailer_Data'[Period_Start_Date]) +28)
+			
+			VAR first_date = last_date - 364
+			
+			RETURN
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ), ALL('DateTable'[Period])
+			            )
+			    )
+		lineageTag: d3e92691-8b0c-43c2-a99c-d60f08299649
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure LY_52_W_NSV = ```
+			
+			
+			VAR last_date =
+			    CALCULATE(EDATE(LASTDATE ( 'FACT_Retailer_Data'[Period_Start_Date] ),-12), ALL('DateTable'[Period])) + 1
+			    
+			VAR first_date =
+			      last_date - 364
+			
+			VAR __PREV_YEAR =
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [Last_52_W_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ) , ALL('DateTable'[Period])
+			            )
+			        )
+			RETURN 
+			__PREV_YEAR
+			
+			    /*IF( OR(ISBLANK(__PREV_YEAR),ISBLANK([Last_52_W_NSV])), BLANK(),
+			        CALCULATE(DIVIDE ( [Last_52_W_NSV] - __PREV_YEAR, __PREV_YEAR ), ALL('Date_Table'[Period]))
+			        )*/
+			```
+		lineageTag: c0524dbc-8a52-4da7-831e-3d91d0b57f45
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Measure =
+			
+			CALCULATE(
+			    [Last_52_W_NSV1],
+			    SAMEPERIODLASTYEAR(DateTable[Date]
+			    )
+			)
+		lineageTag: 8131c92f-6495-43d0-b69d-495ec2757925
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure %_NSV_YTD_Growth =
+			
+			VAR first_date =
+			    CALCULATE (
+			        EDATE ( FIRSTDATE ( 'FACT_Retailer_Data'[Period_Start_Date] ), -12 ),
+			        ALL ( 'DateTable'[Period] )
+			    ) + 1
+			VAR last_date =
+			    CALCULATE (
+			        EDATE ( LASTDATE ( 'FACT_Retailer_Data'[Period_Start_Date]), -12 ),
+			        ALL ( 'DateTable'[Period] )
+			    ) + 1
+			VAR __PREV_YEAR =
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ),
+			            ALL ( 'DateTable'[Period] )
+			        )
+			    )
+			RETURN
+			__PREV_YEAR
+			/*
+			    IF (
+			        OR ( ISBLANK ( __PREV_YEAR ), ISBLANK ( [€_Currency_selection_NSV_Summary] ) ),
+			        BLANK (),
+			        CALCULATE (
+			            DIVIDE ( [€_Currency_selection_NSV_Summary] - __PREV_YEAR, __PREV_YEAR ),
+			            ALL ( 'Date_Table'[Period] )
+			        )
+			    )*/
+		lineageTag: a40cdc41-af49-437a-a745-4892cd148aa7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure %_NSV_YoY_Growth =
+			
+			IF (
+			    ISFILTERED ( 'DateTable'[Date] ),
+			    ERROR ( "Time intelligence quick measures can only be grouped or filtered by the Power BI-provided date hierarchy or primary date column." ),
+			    VAR __PREV_YEAR =
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            DATEADD ( 'DateTable'[Date], -1, YEAR )
+			        )
+			    RETURN
+			    __PREV_YEAR
+			    /*
+			        IF (
+			            OR ( ISBLANK ( __PREV_YEAR ), ISBLANK ( [€_Currency_selection_NSV_Summary] ) ),
+			            BLANK (),
+			            DIVIDE ( [€_Currency_selection_NSV_Summary] - __PREV_YEAR, __PREV_YEAR )
+			        )
+			)*/)
+		lineageTag: bbc9197a-9b59-4fb8-8512-7d0b5224cd16
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Last_52_W_NSV1 =
+			
+			
+			Var last_date = CALCULATE(LASTDATE('FACT_Retailer_Data'[Period_Start_Date]) )
+			
+			VAR first_date = last_date - 336
+			
+			RETURN
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date )
+			            )
+			    )
+		lineageTag: 37eb8422-f87e-4806-96ea-8b9a46afe25d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure LY_52_W_NSV1 = ```
+			
+			
+			VAR last_date =
+			    CALCULATE(EDATE(LASTDATE ( 'FACT_Retailer_Data'[Period_Start_Date] ),-12)) + 1
+			    
+			VAR first_date =
+			      last_date - 364
+			
+			VAR __PREV_YEAR =
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [Last_52_W_NSV1],
+			            DATESBETWEEN ( 'DateTable'[Date], first_date, last_date ) )
+			            )
+			RETURN 
+			__PREV_YEAR
+			
+			    /*IF( OR(ISBLANK(__PREV_YEAR),ISBLANK([Last_52_W_NSV])), BLANK(),
+			        CALCULATE(DIVIDE ( [Last_52_W_NSV] - __PREV_YEAR, __PREV_YEAR ), ALL('Date_Table'[Period]))
+			        )*/
+			```
+		lineageTag: 67f22d32-cb04-49cc-9eb3-1a55ba5f23be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Retailer_LY_NSV_Time_Intelligence_Metrics = ```
+			
+			VAR sel =
+			    SELECTEDVALUE ( 'Time_Intelligence_Metrics'[Metrics] )
+			VAR sel_Year =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date]) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR NSV =
+			    IF (
+			        sel_Year = current_year,
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_LY_NSV]
+			                ),
+			            "YTD", BLANK() ,
+			            "MAT", BLANK()
+			        ),
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_LY_NSV]
+			                ),
+			            "YTD",BLANK(),
+			            "MAT",BLANK()
+			        )
+			    )
+			RETURN
+			NSV  
+			```
+		displayFolder: Time Intelligence
+		lineageTag: fb917059-f9ee-4d14-a1cb-0cdab0418516
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Last_52_Period_NSV = ```
+			
+			VAR last_date = CALCULATE(LASTDATE('FACT_Retailer_Data'[Period_Start_Date]) + 28, ALL('DateTable'[Period]))
+			
+			VAR first_date = last_date - 364
+			
+			RETURN
+			    IF (
+			        ISBLANK ( first_date ) || ISBLANK ( last_date ),
+			        BLANK (),
+			        CALCULATE (
+			            [€_Currency_selection_NSV],
+			            FILTER(
+			                ALL('DateTable'),
+			                'DateTable'[Year] * 100 + VALUE(RIGHT('DateTable'[Period], LEN('DateTable'[Period])-1)) >= YEAR(first_date) * 100 + VALUE(RIGHT(FORMAT(first_date, "P"), LEN('DateTable'[Period])-1))
+			                && 'DateTable'[Year] * 100 + VALUE(RIGHT('DateTable'[Period], LEN('DateTable'[Period])-1)) <= YEAR(last_date) * 100 + VALUE(RIGHT(FORMAT(last_date, "P"), LEN('DateTable'[Period])-1))
+			            )
+			        )
+			    )
+			
+			```
+		lineageTag: 92ed5dba-26cd-4e73-867d-38a0d998f861
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Retailer_TY_NSV_Time_Intelligence_Metrics = ```
+			
+			VAR sel =
+			    SELECTEDVALUE ( 'Time_Intelligence_Metrics'[Metrics] )
+			VAR sel_Year =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date]) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR NSV =
+			    IF (
+			        sel_Year = current_year,
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_NSV]
+			                ),
+			            "YTD", BLANK(),
+			            "MAT", BLANK()
+			        ),
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_NSV] ),
+			                   BLANK(),
+			                   [€_Currency_selection_NSV]
+			                ),
+			            "YTD",BLANK(),
+			            "MAT" , BLANK()
+			        )
+			    )
+			        
+			RETURN
+			NSV  
+			
+			```
+		displayFolder: Time Intelligence
+		lineageTag: e05810a8-5e83-4950-b102-88765d3dacf9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure No_Data_For_Retailer_View =
+			
+			VAR timeint =
+			    SELECTEDVALUE ( Time_Intelligence_Metrics[Metrics] )
+			VAR sel_year =
+			    SELECTEDVALUE ( DateTable[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date] ) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR result =
+			    SWITCH (
+			        TRUE (),
+			        timeint = "YTD", "",
+			        --timeint = "MAT", "",
+			        AND ( timeint <> "YTD", sel_year = current_year ), "",
+			        AND ( timeint <> "YTD", sel_year <> current_year ),IF(ISBLANK([NSV_Time_Intelligence_Metrics]),"Data not available","" )
+			    )
+			RETURN
+			    result
+		displayFolder: Time Intelligence
+		lineageTag: 7b523838-708c-4a6a-9b10-c3d8f5518e14
+
+	measure 'Measure 2' =
+			
+			IF(
+			    [NSV_Time_Intelligence_Metrics] >= 100000,FORMAT())
+		lineageTag: aeb865ee-d911-48f1-8934-05b16678f61e
+
+	measure TY_NSV_Time_Intelligence_Metrics = ```
+			
+			VAR sel =
+			    SELECTEDVALUE ( 'Time_Intelligence_Metrics'[Metrics] )
+			VAR sel_Year =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date]) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR NSV =
+			    IF (
+			        sel_Year = current_year,
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_NSV]
+			                ),
+			            "YTD", 
+			            IF(
+			                ISBLANK([NSV_YTD]),BLANK(),[NSV_YTD]
+			            ),
+			            "MAT", BLANK()
+			        ),
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_NSV] ),
+			                   BLANK(),
+			                   [€_Currency_selection_NSV]
+			                ),
+			            "YTD",BLANK(),
+			            "MAT" , BLANK()
+			        )
+			    )
+			        
+			RETURN
+			NSV  
+			
+			```
+		displayFolder: Time Intelligence
+		lineageTag: 875eed8c-6ef6-4aa7-9b65-f9ee5fcc9df4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Execu_LY_NSV_Time_Intelligence_Metrics = ```
+			
+			VAR sel =
+			    SELECTEDVALUE ( 'Time_Intelligence_Metrics'[Metrics] )
+			VAR sel_Year =
+			    SELECTEDVALUE ( 'DateTable'[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date]) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR NSV =
+			    IF (
+			        sel_Year = current_year,
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_LY_NSV]
+			                ),
+			            "YTD",IF(ISBLANK([LY_NSV_YTD]),BLANK(),[LY_NSV_YTD]),
+			            "MAT", BLANK()
+			        ),
+			        SWITCH (
+			            sel,
+			            "Selected Period",
+			                IF (
+			                    ISBLANK ( [€_Currency_selection_LY_NSV] ),
+			                    BLANK (),
+			                    [€_Currency_selection_LY_NSV]
+			                ),
+			            "YTD",BLANK(),
+			            "MAT",BLANK()
+			        )
+			    )
+			RETURN
+			NSV  
+			```
+		displayFolder: Time Intelligence
+		lineageTag: 2eb54fd8-2ca2-490e-9b0d-81190ee0d8a6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure No_Data_For_Executive_NSV_Metric = ```
+			
+			VAR timeint =
+			    SELECTEDVALUE ( Time_Intelligence_Metrics[Metrics] )
+			VAR sel_year =
+			    SELECTEDVALUE ( DateTable[Year] )
+			VAR current_year =
+			    CALCULATE (
+			        YEAR ( MAX ( 'DateTable'[Date] ) ),
+			        ALL ( 'DateTable'[Year] )
+			    )
+			VAR result =
+			    SWITCH (
+			        TRUE (),
+			        timeint = "selected period", "",
+			        timeint = "MAT", "Visual not applicable for Time Intelligence MAT",
+			        AND ( timeint = "YTD", sel_year = current_year ), "",
+			        AND ( timeint = "YTD", sel_year <> current_year ), "YTD, show values only for the current year. Please select ""Selected Period"" in Time Intelligence to view previous year data"
+			        
+			    )
+			RETURN
+			    result
+			```
+		displayFolder: Time Intelligence
+		lineageTag: 35afbf62-4ad6-4fe3-826b-6820c576b1ce
+
+	partition 'Measure Table-948f16ee-89e5-4d1d-b0da-34c85695e725' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

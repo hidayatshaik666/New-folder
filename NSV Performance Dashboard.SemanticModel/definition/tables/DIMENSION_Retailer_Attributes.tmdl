@@ -1,0 +1,87 @@
+table DIMENSION_Retailer_Attributes
+	lineageTag: a0cad761-7409-43bc-97bf-bb405d0f3882
+
+	column Region
+		dataType: string
+		lineageTag: 3f21905f-024b-4305-ad46-2ed2a1d30969
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 67e3ce3a-f6b0-4fed-81cf-762f5217322d
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Retailer
+		dataType: string
+		lineageTag: a4ade32e-5173-496e-a198-36269a6fdfac
+		summarizeBy: none
+		sourceColumn: Retailer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		lineageTag: b6b3b8f1-1b6f-4ac2-a31b-832bf42d95d4
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: fbee11ce-a6ab-4742-ab85-696f4b82c119
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: 5325aff1-ea29-45c2-ba82-e19a64a5ccc4
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 86c372c3-02a6-4431-a611-a3460ddcab83
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		lineageTag: 210a7584-68f6-4dde-880f-da9335c240c8
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Composite Key'
+		dataType: string
+		lineageTag: 2f6b9b8f-6d81-4dbd-a047-a995acd1fb27
+		summarizeBy: none
+		sourceColumn: Composite Key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIMENSION_Retailer_Attributes = m
+		mode: import
+		source =
+				let
+				    Source = FACT_Retailer_Data,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Year", "Period", "Period_Start_Date", "NSV_Local", "Local_Currency", "NSV", "ZREP", "Zrep_Descriptipn"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Columns", {"Composite Key"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_ResultType = Table
+

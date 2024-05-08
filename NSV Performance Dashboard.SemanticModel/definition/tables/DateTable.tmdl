@@ -1,0 +1,151 @@
+table DateTable
+	lineageTag: 9c235489-d1d5-49e2-b751-c6d2b44b3c99
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 23703c58-8573-4e9e-b70d-67fc1c7299c7
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 6f8541b3-c8d3-49df-b1a6-453e04273536
+			defaultHierarchy: LocalDateTable_8b4c139f-b96b-4faf-b3d1-70e79a170c6f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		lineageTag: f5b3e0c9-469d-4f8e-9b1b-587a0fb73f96
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a5d3f7f-8580-42ad-b0ab-61fabe99cf23
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: d32bea1d-f206-40a2-9a17-aed83a0e84ba
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: 5816035a-f011-43c9-a8ed-aa19e52e1347
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: eee11b41-5839-46f2-aa4f-371412220df2
+		summarizeBy: none
+		sourceColumn: Day Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start of Week'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 181c9909-526f-4351-a025-84c421af95e0
+		summarizeBy: none
+		sourceColumn: Start of Week
+
+		variation Variation
+			isDefault
+			relationship: a58ee6fd-189d-495a-b5ce-df05d48bb22c
+			defaultHierarchy: LocalDateTable_9531ecde-9ea3-4dc5-a78f-5b423b55220f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Total Weeks'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8bd2710c-9522-4a91-955f-caf35da8be4f
+		summarizeBy: sum
+		sourceColumn: Total Weeks
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period =
+			
+			SWITCH(
+			    TRUE(),
+			    'DateTable'[Total Weeks] in {1,2,3,4},"P01",
+			   'DateTable'[Total Weeks] in {5,6,7,8},"P02",
+			   'DateTable'[Total Weeks] in {9,10,11,12,13},"P03",
+			    'DateTable'[Total Weeks] in {14,15,16,17},"P04",
+			    'DateTable'[Total Weeks] in {18,19,20,21},"P05",
+			    'DateTable'[Total Weeks] in {22,23,24,25},"P06",
+			    'DateTable'[Total Weeks] in {26,27,28,29},"P07",
+			    'DateTable'[Total Weeks] in {30,31,32,33},"P08",
+			    'DateTable'[Total Weeks] in {34,35,36,37},"P09",
+			    'DateTable'[Total Weeks] in {38,39,40,41},"P10",
+			    'DateTable'[Total Weeks] in {42,43,44,45},"P11",
+			    'DateTable'[Total Weeks] in {46,47,48,49},"P12",
+			    'DateTable'[Total Weeks] in {50,51,52,53},"P13"
+			)
+		dataType: string
+		lineageTag: 914be535-42f6-4b84-8f0a-0cf152249758
+		summarizeBy: none
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Period' =
+			
+			DateTable[Period] & " " & DateTable[Year]
+		dataType: string
+		lineageTag: 49f151df-ccf9-4826-8743-53922dd16c53
+		summarizeBy: none
+		isDataTypeInferred
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DateTable = m
+		mode: import
+		source =
+				let
+				    Source = FACT_Retailer_Data,
+				    MinDate = List.Min(Source[Period_Start_Date]),
+				    MaxDate = List.Max(Source[Period_Start_Date]),
+				    DateList = List.Dates(MinDate, Number.From(Duration.From(MaxDate - MinDate)) + 1, #duration(1, 0, 0, 0)),
+				    DateTable = Table.FromList(DateList, Splitter.SplitByNothing()),
+				    RenameColumns = Table.RenameColumns(DateTable, {{"Column1", "Period_Start_Date"}}),
+				    ChangeType = Table.TransformColumnTypes(RenameColumns, {{"Period_Start_Date", type date}}),
+				    #"Filtered Rows" = Table.SelectRows(ChangeType, each true),
+				    #"Renamed Columns" = Table.RenameColumns(#"Filtered Rows",{{"Period_Start_Date", "Date"}}),
+				    #"Inserted Year" = Table.AddColumn(#"Renamed Columns", "Year", each Date.Year([Date]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([Date]), Int64.Type),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Month", "Month Name", each Date.MonthName([Date]), type text),
+				    #"Inserted Day" = Table.AddColumn(#"Inserted Month Name", "Day", each Date.Day([Date]), Int64.Type),
+				    #"Inserted Day Name" = Table.AddColumn(#"Inserted Day", "Day Name", each Date.DayOfWeekName([Date]), type text),
+				    #"Inserted Start of Week" = Table.AddColumn(#"Inserted Day Name", "Start of Week", each Date.StartOfWeek([Date],Day.Monday)),
+				    #"Inserted Week of Year" = Table.AddColumn(#"Inserted Start of Week", "Week of Year", each Date.WeekOfYear([Date],Day.Monday)),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Inserted Week of Year",{{"Week of Year", "Total Weeks"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns1",{{"Start of Week", type date}, {"Total Weeks", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

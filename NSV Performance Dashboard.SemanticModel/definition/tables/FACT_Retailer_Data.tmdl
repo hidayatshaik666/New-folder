@@ -1,0 +1,165 @@
+table FACT_Retailer_Data
+	lineageTag: c52d6012-72b9-4d17-9456-0b06c40e0fa2
+
+	column Region
+		dataType: string
+		lineageTag: 6d1d956d-c7d7-41d7-87aa-80aad1272851
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 4d2aff02-c64b-4f3b-9cf6-3dc9fc719933
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Retailer
+		dataType: string
+		lineageTag: e907a37c-2c01-4ba2-acdf-9cace265b17c
+		summarizeBy: none
+		sourceColumn: Retailer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		lineageTag: f34deb1d-39e6-4c3b-9615-e5106dbebce0
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: fdf572c0-a336-4295-a5ad-20d37276253a
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period
+		dataType: string
+		lineageTag: f2bd350c-ca65-44c1-83db-e2838d3d743c
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period_Start_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 739880cf-8e6c-4adb-86e7-9148f57ce0e7
+		summarizeBy: none
+		sourceColumn: Period_Start_Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Division
+		dataType: string
+		lineageTag: 5b9846a6-3b20-44b0-ac5a-ff76a785a5ad
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: e71fc75d-42d4-4d16-a550-ac6f567cce76
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 931f8da9-ce0b-429c-9d3d-6eba0b363d36
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		lineageTag: 702d6d26-eafb-4f97-a61e-55a70284dd0d
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZREP
+		dataType: int64
+		formatString: 0
+		lineageTag: 64314a44-c1c1-4fcb-afd0-d81d3b9df374
+		summarizeBy: sum
+		sourceColumn: ZREP
+
+		annotation SummarizationSetBy = Automatic
+
+	column Zrep_Descriptipn
+		dataType: string
+		lineageTag: 52c6cef4-5a70-4d76-8539-393081a822d7
+		summarizeBy: none
+		sourceColumn: Zrep_Descriptipn
+
+		annotation SummarizationSetBy = Automatic
+
+	column NSV_Local
+		dataType: double
+		lineageTag: a2e749ac-e6b8-45f5-a222-1b328ae79905
+		summarizeBy: sum
+		sourceColumn: NSV_Local
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Local_Currency
+		dataType: string
+		lineageTag: 670e20b0-6472-4d4d-a605-7781b30892e8
+		summarizeBy: none
+		sourceColumn: Local_Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column NSV
+		dataType: double
+		formatString: " #,##0.0"
+		lineageTag: ad046f65-2506-40e6-a2b4-1b048507642e
+		summarizeBy: sum
+		sourceColumn: NSV
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	column 'Composite Key'
+		dataType: string
+		lineageTag: 7bf2c44b-6262-419f-8238-d54e0a11a2f6
+		summarizeBy: none
+		sourceColumn: Composite Key
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FACT_Retailer_Data = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("G:\My Drive\Mars-Dcom-Multisales Wire frame creation\My Work\Data\Dashboard_Data_2023.15.12.csv"),[Delimiter=",", Columns=16, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Region", type text}, {"Country", type text}, {"Retailer", type text}, {"Channel", type text}, {"Year", Int64.Type}, {"Period", type text}, {"Period_Start_Date", type date}, {"Division", type text}, {"Segment", type text}, {"Category", type text}, {"Brand", type text}, {"ZREP", Int64.Type}, {"Zrep_Descriptipn", type text}, {"NSV_Local", type number}, {"Local_Currency", type text}, {"NSV", type number}}),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Changed Type", "Composite Key", each Text.Combine({[Region], [Country], [Retailer], [Channel], [Division], [Segment], [Category], [Brand]}, "-"), type text),
+				    #"Changed Type with Locale" = Table.TransformColumnTypes(#"Inserted Merged Column", {{"NSV", type number}}, "en-US")
+				in
+				    #"Changed Type with Locale"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

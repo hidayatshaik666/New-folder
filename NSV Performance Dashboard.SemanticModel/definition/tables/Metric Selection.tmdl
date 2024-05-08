@@ -1,0 +1,57 @@
+table 'Metric Selection'
+	lineageTag: 48977e3b-54ed-40b1-94e0-c6e95339fa9c
+
+	column Parameter
+		dataType: string
+		lineageTag: 664c777b-292f-494f-8765-6860c47650a1
+		summarizeBy: none
+		isDataTypeInferred
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Fields'
+		dataType: string
+		isHidden
+		lineageTag: 13ad9a98-9404-4271-88b5-886130ea9fff
+		summarizeBy: none
+		isDataTypeInferred
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4294a831-555b-49aa-80b4-0193289e17ef
+		summarizeBy: sum
+		isDataTypeInferred
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Metric Selection-c4a0a101-6880-44a0-bab6-72903ed9cb52' = calculated
+		mode: import
+		source =
+				{
+				    ("Country", NAMEOF('DIMENSION_Retailer_Attributes'[Country]), 0),
+				    ("Retailer", NAMEOF('DIMENSION_Retailer_Attributes'[Retailer]), 1),
+				    ("Channel", NAMEOF('DIMENSION_Retailer_Attributes'[Channel]), 2),
+				    ("Division", NAMEOF('DIMENSION_Retailer_Attributes'[Division]), 3),
+				    ("Category", NAMEOF('DIMENSION_Retailer_Attributes'[Category]), 4)
+				}
+
+	annotation PBI_Id = 79cf42f9938a490491d76c4b48769c08
+
