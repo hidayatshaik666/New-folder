@@ -1,0 +1,40 @@
+table 'Dim Division'
+	lineageTag: 750afa6a-20e1-4e5e-b716-10811de949e2
+
+	column 'Division ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 14318da4-73b2-40cc-9350-253206158778
+		summarizeBy: none
+		sourceColumn: Division ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: fa696c73-d8c2-41ec-9406-5c12dca41090
+		summarizeBy: none
+		sourceColumn: Division
+		sortByColumn: 'Division ID'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim Division' = m
+		mode: import
+		queryGroup: 'Dimension Tables'
+		source =
+				let
+				    Source = #"Sustainability Scorecard data",
+				    #"Imported Excel Workbook" = Excel.Workbook(Source),
+				    Division_Sheet = #"Imported Excel Workbook"{[Item="Division",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Division_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Division ID", Int64.Type}, {"Division", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

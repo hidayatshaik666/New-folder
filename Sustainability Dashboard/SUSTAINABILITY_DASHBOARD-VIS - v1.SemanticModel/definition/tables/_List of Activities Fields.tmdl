@@ -1,0 +1,46 @@
+table '_List of Activities Fields'
+	lineageTag: 291f1d74-50df-42eb-8a68-5f9a6b809177
+	sourceLineageTag: b9248716-be7d-4afc-b740-50f7b7241cb7
+
+	column 'List of Activities Fields'
+		dataType: string
+		lineageTag: 142f4f10-098d-47f2-a94f-f178492afe59
+		sourceLineageTag: 0bc6a141-f636-418a-ac46-506f274e4ae2
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: List of Activities Fields
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = User
+
+	column 'Parameter Fields'
+		dataType: string
+		lineageTag: bcaba5bc-71ba-41d8-8d22-d8bcd1115c39
+		sourceLineageTag: 69865bb0-7553-4868-ba5c-b3ea5c53f85a
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Parameter Fields
+		sortByColumn: 'Parameter Order'
+
+		annotation SummarizationSetBy = User
+
+	column 'Parameter Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 83d8e88c-7009-4ab2-9838-cb994db4904c
+		sourceLineageTag: 471d8024-d51d-4270-a151-df8ec740f876
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Parameter Order
+
+		annotation SummarizationSetBy = User
+
+	partition '_List of Activities Fields' = entity
+		mode: directQuery
+		source
+			entityName: _List of Activities Fields
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

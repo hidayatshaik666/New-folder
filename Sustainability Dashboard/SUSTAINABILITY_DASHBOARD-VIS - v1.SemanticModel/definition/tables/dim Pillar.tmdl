@@ -1,0 +1,32 @@
+table 'dim Pillar'
+	lineageTag: fbd46e35-85d1-4813-aaba-f7e73b6433f1
+	sourceLineageTag: e446538b-1265-4f0e-ae0f-df6eaa8c2f1b
+
+	column 'Pillar ID'
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		lineageTag: f2188edd-ad15-45f2-85ad-10cb8f553c02
+		sourceLineageTag: e5666e85-3190-4b76-9c0b-7aa7527bbd3f
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Pillar ID
+
+		annotation SummarizationSetBy = User
+
+	column Pillar
+		dataType: string
+		lineageTag: 11aa2b5f-5a3c-4f97-86a7-d0e853b53bf4
+		sourceLineageTag: 76a9bc37-7f64-40db-89b7-ec649f96663d
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Pillar
+
+		annotation SummarizationSetBy = User
+
+	partition 'dim Pillar' = entity
+		mode: directQuery
+		source
+			entityName: dim Pillar
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

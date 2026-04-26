@@ -1,0 +1,56 @@
+table 'Dynamic Dim Topic'
+	lineageTag: ac86ac60-d018-41a6-898c-c5d6ea66ea40
+
+	column Topic
+		dataType: string
+		lineageTag: 569372c2-72f8-46c6-9f2f-f0de58a23fe4
+		summarizeBy: none
+		sourceColumn: Topic
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Topic ID'
+		dataType: double
+		lineageTag: 066bba14-8ff9-467a-b561-bbe8d5cdddfc
+		summarizeBy: none
+		sourceColumn: Topic ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Dynamic Dim Topic' = m
+		mode: import
+		queryGroup: 'New KPI''s'
+		source = ```
+				let
+				    // 1. Reference your existing static Dim Topic table
+				    MasterList = #"Dim Topic",
+				    
+				    // 2. Get the unique list of Topics from your combined PN & RC data
+				    AllData = #"Staging Query", 
+				    UniqueTopics = Table.Distinct(Table.SelectColumns(AllData, {"Topic"})),
+				    
+				    // 3. Find Topics that are in the Data but MISSING from the MasterList
+				    // JoinKind.LeftAnti keeps only rows from UniqueTopics NOT found in MasterList
+				    NewTopicsOnly = Table.NestedJoin(UniqueTopics, {"Topic"}, MasterList, {"Topic"}, "Check", JoinKind.LeftAnti),
+				    
+				    // 4. Remove the join column and clean up
+				    MissingTopics = Table.RemoveColumns(NewTopicsOnly, {"Check"}),
+				    #"Filtered Rows" = Table.SelectRows(MissingTopics, each ([Topic] <> null)),
+				    
+				    // 5. Assign new IDs starting from the current Max ID + 1
+				    MaxID = List.Max(MasterList[Topic ID]),
+				    AddIDs = Table.AddIndexColumn(#"Filtered Rows", "Topic ID", MaxID + 1, 1),
+				    
+				    // 6. Combine the MasterList with the new topics
+				    // We re-order to match columns exactly before combining
+				    FinalList = Table.Combine({MasterList, Table.SelectColumns(AddIDs, {"Topic", "Topic ID"})})
+				in
+				    FinalList
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

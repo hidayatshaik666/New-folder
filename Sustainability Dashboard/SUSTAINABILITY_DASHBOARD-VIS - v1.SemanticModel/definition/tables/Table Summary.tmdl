@@ -1,0 +1,574 @@
+table 'Table Summary'
+	lineageTag: 7191429d-fec7-47d1-9cf5-9cd97e14cf1d
+	sourceLineageTag: f58968d4-059a-4853-ab83-5c14ddf01609
+
+	column 'Input Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 909adfe7-a2fd-4160-9e96-86162d3b0972
+		sourceLineageTag: 9d083c12-2306-4090-9eb8-b6556903731a
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Input Year
+
+		annotation SummarizationSetBy = User
+
+	column 'Input Period'
+		dataType: string
+		lineageTag: a539091e-8971-425b-93cf-e2b8b7ae516e
+		sourceLineageTag: 8802dc7f-908f-4cdf-b2da-940322546695
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Input Period
+
+		annotation SummarizationSetBy = User
+
+	column 'Auto-generated number'
+		dataType: string
+		lineageTag: b8e81669-35a6-43ed-b600-e60c06ac34d9
+		sourceLineageTag: e478da03-b8d0-4f24-ab0a-b6179fcaac13
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Auto-generated number
+
+		annotation SummarizationSetBy = User
+
+	column #
+		dataType: string
+		lineageTag: 224f0b18-b76a-4091-beb3-c5fb4bd7b35f
+		sourceLineageTag: 1f354485-9fbc-4533-9a91-ff07b29fc13f
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: #
+
+		annotation SummarizationSetBy = User
+
+	column Subsegment
+		dataType: string
+		lineageTag: 413217e8-f17d-4c26-a5b4-2f94dca98fc4
+		sourceLineageTag: dacdb83f-a2af-43ba-aad9-47bac25a08ab
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Subsegment
+
+		annotation SummarizationSetBy = User
+
+	column 'Unit / Region'
+		dataType: string
+		lineageTag: 69ccc471-f7f6-4c3e-b259-2eb67f17cac9
+		sourceLineageTag: 7a97f89d-fde5-4318-9a0d-2d7077b5339e
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Unit / Region
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Name'
+		dataType: string
+		lineageTag: 47498a87-edba-412a-916c-88d50690e35b
+		sourceLineageTag: 37c840fc-7a3f-4e61-8e75-0435366bf9d9
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Name
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Description'
+		dataType: string
+		lineageTag: 42bd7edc-b44a-43bf-920e-311c9bbcdfc4
+		sourceLineageTag: 1dd3f925-a56a-4007-9829-d672c8e48c0c
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Description
+
+		annotation SummarizationSetBy = User
+
+	column Pillar
+		dataType: string
+		lineageTag: 3c491149-bb26-4834-8f34-d85396ac13ef
+		sourceLineageTag: 220db5b8-f7f7-45cf-bcc0-f7876de6da3e
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Pillar
+
+		annotation SummarizationSetBy = User
+
+	column 'Type of activity'
+		dataType: string
+		lineageTag: b31a5bf3-9b21-4745-bc6f-339d3e772daf
+		sourceLineageTag: a471a247-ac8b-4350-ae43-edd900904558
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Type of activity
+
+		annotation SummarizationSetBy = User
+
+	column 'Reduction or Removal?'
+		dataType: string
+		lineageTag: bd402b93-f80c-4ae7-a2a3-53459aab7792
+		sourceLineageTag: 3dc6c311-4afc-4513-b211-2882d518dc45
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Reduction or Removal?
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity owner'
+		dataType: string
+		lineageTag: 0949ae3c-842e-4526-9436-e80c052267f9
+		sourceLineageTag: 75ac10cc-d7b2-4069-a511-cccc665a3174
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity owner
+
+		annotation SummarizationSetBy = User
+
+	column 'Targeted commodities'
+		dataType: string
+		lineageTag: ac7a7766-10c9-47c2-bbc5-f64a687dde43
+		sourceLineageTag: 7fe7b585-f669-4fe1-90e2-27b2a6a714de
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Targeted commodities
+
+		annotation SummarizationSetBy = User
+
+	column 'Start year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ca2c4df-785d-49a4-a88e-4fd08b0be1d2
+		sourceLineageTag: 3203919d-21e6-4a2e-8d4f-6cebac8dab97
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Start year
+
+		annotation SummarizationSetBy = User
+
+	column 'End Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5af5fc28-a2a7-4cf1-af88-42d7fdc4a4b2
+		sourceLineageTag: 63cc73bd-ed32-404d-80ff-e24583ecaf68
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: End Year
+
+		annotation SummarizationSetBy = User
+
+	column 'Existing in CAP'
+		dataType: string
+		lineageTag: d355c7f1-bc17-4787-9761-4925cce41ced
+		sourceLineageTag: a737a0db-df28-42f7-bab2-c826735a350b
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Existing in CAP
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Status'
+		dataType: string
+		lineageTag: 24d24651-c152-4b8c-91e3-48dae2e4303d
+		sourceLineageTag: d80f7d5f-abdd-476d-8634-327031f673fa
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Status
+
+		annotation SummarizationSetBy = User
+
+	column 'IVCP ?'
+		dataType: int64
+		formatString: 0
+		lineageTag: 43d6b617-130c-47d3-9b23-b13da3d186d3
+		sourceLineageTag: f39920bb-0155-4901-b0be-6dd5cfe7b8ab
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: IVCP ?
+
+		annotation SummarizationSetBy = User
+
+	column 'Conversions & Assumptions'
+		dataType: string
+		lineageTag: d661cbb3-333e-4771-be43-accf5bf0dd1c
+		sourceLineageTag: 9bd31221-d582-4736-8893-bb9d088898d8
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Conversions & Assumptions
+
+		annotation SummarizationSetBy = User
+
+	column 'Level of Confidence'
+		dataType: string
+		lineageTag: 653978be-86eb-48d5-b1b2-0564e7bbc20c
+		sourceLineageTag: cae45d58-c4b4-4ae4-a85f-ea6e777dc976
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Level of Confidence
+
+		annotation SummarizationSetBy = User
+
+	column 'Risk Factors'
+		dataType: string
+		lineageTag: 6b266d59-661d-49af-b97a-faed44c253c1
+		sourceLineageTag: 477f195a-557d-4b7d-91bd-a39bb49f98c5
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Risk Factors
+
+		annotation SummarizationSetBy = User
+
+	column Opportunities
+		dataType: string
+		lineageTag: d8b403de-b988-4a8f-8247-a97b1c78dbde
+		sourceLineageTag: ed6c0e6b-c940-4c2a-8f30-19dc9f0d2101
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Opportunities
+
+		annotation SummarizationSetBy = User
+
+	column 'Is Growth Rate applicable?'
+		dataType: string
+		lineageTag: 05a7a605-38d4-43a9-a86d-d448452141b1
+		sourceLineageTag: 0945a137-6aef-420b-a778-4fe082807f5a
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Is Growth Rate applicable?
+
+		annotation SummarizationSetBy = User
+
+	column discount1
+		dataType: double
+		lineageTag: 623a1184-54bc-41a5-bd47-80d4954854a3
+		sourceLineageTag: a79bcc22-4744-4801-9f2e-f8492dc1dd53
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: discount1
+
+		annotation SummarizationSetBy = User
+
+	column discount2
+		dataType: double
+		lineageTag: d0e81f0d-ba8c-4095-a025-9b3263f5c547
+		sourceLineageTag: 3bd2e89e-fd3b-490d-96d0-077d812cffc0
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: discount2
+
+		annotation SummarizationSetBy = User
+
+	column discount3
+		dataType: double
+		lineageTag: 7e22fa04-a116-4b89-95bb-46b7b67a172f
+		sourceLineageTag: c8c5e20f-1d44-42b9-986f-39b06652327d
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: discount3
+
+		annotation SummarizationSetBy = User
+
+	column Name
+		dataType: string
+		lineageTag: ca4b4ebf-3279-4252-98dd-00364db3b2da
+		sourceLineageTag: 95bb57a8-0ae4-4ba0-9deb-53201affd759
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = User
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f546662-e95a-475c-a932-327bb79e2674
+		sourceLineageTag: 0e473474-369c-4907-9a5e-0b7802b4c49d
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG - no growth'
+		dataType: double
+		formatString: #,0
+		lineageTag: fdd84353-5ff1-49a0-b1a7-052f80bb5199
+		sourceLineageTag: 6b3caf61-fa81-4ba9-aba4-097d40a850bf
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: GHG - no growth
+
+		annotation SummarizationSetBy = User
+
+	column 'TABLE - cost/ton with GA no dis1'
+		dataType: double
+		lineageTag: 04240ab2-6a2a-4dbc-b28b-0b3dad9e1399
+		sourceLineageTag: 68ea7ccc-c907-45d6-8927-4ca73ca15928
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: TABLE - cost/ton with GA no dis1
+
+		annotation SummarizationSetBy = User
+
+	column Country
+		dataType: string
+		lineageTag: 65943947-13f7-4eb7-b3a7-b6af7e0ad125
+		sourceLineageTag: 66b6eb01-7b74-4ccb-8fc7-16e809594035
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG - with growth'
+		dataType: double
+		formatString: #,0
+		lineageTag: 573c6281-6aef-4a9d-8722-c4cbb283cd6f
+		sourceLineageTag: 1eac6018-560f-40c5-84d6-1b7a309221f6
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: GHG - with growth
+
+		annotation SummarizationSetBy = User
+
+	column 'COST - no amort'
+		dataType: double
+		formatString: #,0
+		lineageTag: b18c8aee-be0b-49ca-8cba-c988ecd166fd
+		sourceLineageTag: 3980349c-6c96-410a-9b07-60e48d3adf1f
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: COST - no amort
+
+		annotation SummarizationSetBy = User
+
+	column 'COST - with amort'
+		dataType: double
+		formatString: #,0
+		lineageTag: 8bb4f052-1818-4763-b5e5-1619990513fc
+		sourceLineageTag: 8e57f6d4-6b77-4b99-88f5-fc562755612f
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: COST - with amort
+
+		annotation SummarizationSetBy = User
+
+	column 'quick key'
+		dataType: string
+		lineageTag: 8583542b-3075-4e89-a4e5-7070fa7b4f51
+		sourceLineageTag: 5cb39786-3b54-41e5-a8dd-efee78122c41
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: quick key
+
+		annotation SummarizationSetBy = User
+
+	column 'Investment needed'
+		dataType: string
+		lineageTag: 3eea7e81-2232-4799-9b1a-b5a4adef2ade
+		sourceLineageTag: 41e22f45-d39b-4da3-ae86-61d113915e76
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Investment needed
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG Scope'
+		dataType: int64
+		formatString: 0
+		lineageTag: d43bb2e9-1246-469c-b83d-afece5dc17de
+		sourceLineageTag: c5138472-606e-4373-aa10-a1dbab4957e9
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: GHG Scope
+
+		annotation SummarizationSetBy = User
+
+	column 'AEP '
+		dataType: string
+		lineageTag: 145fdc02-4362-4c42-badc-655846ca0da0
+		sourceLineageTag: 38f7864d-d40b-4b99-a97d-527b7e3037e6
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: "AEP "
+
+		annotation SummarizationSetBy = User
+
+	column 'AEP status'
+		dataType: string
+		lineageTag: 0b1a372a-9459-47cf-a750-d08579bf8e9a
+		sourceLineageTag: 93bc83df-fa8a-49cd-9558-65cc2e33f662
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: AEP status
+
+		annotation SummarizationSetBy = User
+
+	column 'OE name'
+		dataType: string
+		lineageTag: 212e082e-a8ea-4e1a-a372-46033a2efc33
+		sourceLineageTag: 2c4bfa09-e7fc-49cd-8ea2-91e1d0c73604
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: OE name
+
+		annotation SummarizationSetBy = User
+
+	column 'Check for GHG and Spend'
+		dataType: double
+		lineageTag: edd12d67-c891-4b91-8d9e-766dc97d7e29
+		sourceLineageTag: 19cc28c0-fc75-46d5-93c8-0850ef05a5b0
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Check for GHG and Spend
+
+		annotation SummarizationSetBy = User
+
+	column 'Check for GHG ONLY'
+		dataType: double
+		lineageTag: ba2d4462-3f0c-4a9d-803e-492f9fee1bfa
+		sourceLineageTag: b12c772b-feec-485f-93be-14a3e5689b47
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Check for GHG ONLY
+
+		annotation SummarizationSetBy = User
+
+	column 'Agg GHG cpt growth no dis1'
+		dataType: double
+		lineageTag: 111cd677-90f2-49e2-ab38-21a5d4982a05
+		sourceLineageTag: ed1fd4d1-6169-408c-9bc6-219cd1cbf38b
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Agg GHG cpt growth no dis1
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2024'
+		dataType: string
+		lineageTag: 6c4a3722-d2fc-4b60-b6a3-de7a9380454f
+		sourceLineageTag: fcb5a25f-bf85-4858-b8f9-9c87b190c3de
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2024
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2025'
+		dataType: string
+		lineageTag: b29c5c55-4fb4-4fff-baef-929280312f90
+		sourceLineageTag: 1fa09467-aea8-4a5c-a0e1-1ba9dbeb051c
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2025
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2026'
+		dataType: string
+		lineageTag: 3e40d75b-e5b2-44fb-8d7c-5fe09c867ebc
+		sourceLineageTag: bdd2f625-4353-4f47-b3d1-2ab5f0c89187
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2026
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2027'
+		dataType: string
+		lineageTag: e220b688-dbe0-4949-aaa3-641be932b917
+		sourceLineageTag: 00bf4f23-5f69-4b5f-bf9d-cb51a63148aa
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2027
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2028'
+		dataType: string
+		lineageTag: 84549247-d987-4175-b2d5-63613d68062a
+		sourceLineageTag: e0ae0eea-ccad-4c48-b0f4-bf19430edfbf
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2028
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2029'
+		dataType: string
+		lineageTag: c36c45c9-b236-46f6-8965-c0de1a1ee616
+		sourceLineageTag: da6eb5c4-9f19-4e36-8f3c-e86565c3b6e0
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2029
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG 2030'
+		dataType: string
+		lineageTag: b7d9a13d-ed95-4c65-8a25-84b197f9284e
+		sourceLineageTag: ede4cfdf-ca8a-4057-b314-80c0050173cc
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG 2030
+
+		annotation SummarizationSetBy = User
+
+	column 'Mars site'
+		dataType: string
+		lineageTag: 2e9db9e5-f171-449f-8cb9-7a242b86e05f
+		sourceLineageTag: beda29bc-a49a-46b8-b87e-d213447a36ab
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Mars site
+
+		annotation SummarizationSetBy = User
+
+	column CAPEX
+		dataType: double
+		formatString: #,0
+		lineageTag: e8eb9da2-63ca-4a90-92b9-64bbafb57c05
+		sourceLineageTag: f58f388a-78e7-4086-8f1c-f164439c9a89
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: CAPEX
+
+		annotation SummarizationSetBy = User
+
+	column COGS
+		dataType: double
+		formatString: #,0
+		lineageTag: d493d076-cbb2-4ff8-9937-30b9f5db1b7b
+		sourceLineageTag: 9023f980-8b91-4a3b-9442-e91a62a0c6fe
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: COGS
+
+		annotation SummarizationSetBy = User
+
+	column Expenses
+		dataType: double
+		formatString: #,0
+		lineageTag: 9cc9e223-5aa8-4bfa-a809-5313a5f9786a
+		sourceLineageTag: 139167eb-c8f3-49aa-8f9c-c783c49bf730
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Expenses
+
+		annotation SummarizationSetBy = User
+
+	column SWB
+		dataType: double
+		formatString: #,0
+		lineageTag: 7853fa5f-0a67-411a-b730-dc340ad83e95
+		sourceLineageTag: 2168d653-1aa0-4c5d-a68e-50f8931795b8
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: SWB
+
+		annotation SummarizationSetBy = User
+
+	partition 'Table Summary' = entity
+		mode: directQuery
+		source
+			entityName: Table Summary
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

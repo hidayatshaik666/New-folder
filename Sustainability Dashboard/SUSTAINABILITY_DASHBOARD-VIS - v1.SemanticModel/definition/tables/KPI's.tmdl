@@ -1,0 +1,48 @@
+table 'KPI''s'
+	lineageTag: 264e6cb4-16f8-4747-b149-5a04ee2249d3
+
+	column 'KPI''s'
+		lineageTag: f2a78030-a45c-4a97-b3b7-28ca393a3191
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'KPI''s Order'
+
+		relatedColumnDetails
+			groupByColumn: 'KPI''s Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KPI''s Fields'
+		isHidden
+		lineageTag: 0fbf5645-996e-4e77-aa06-722e5c938458
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'KPI''s Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KPI''s Order'
+		isHidden
+		formatString: 0
+		lineageTag: bfe2b45d-22bc-45d6-a611-05658c79a4a1
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'KPI''s' = calculated
+		mode: import
+		source =
+				{
+				    ("Actuals", NAMEOF('Measures_table'[Actual for Year]), 0),
+				    ("Estimates", NAMEOF('Measures_table'[YEE for Year]), 1)
+				}
+
+	annotation PBI_Id = fac933aa52984382ac43921d2aea75f1
+

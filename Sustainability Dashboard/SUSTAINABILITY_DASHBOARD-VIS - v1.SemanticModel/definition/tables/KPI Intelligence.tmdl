@@ -1,0 +1,59 @@
+table 'KPI Intelligence'
+	lineageTag: 23f17a78-9cdd-4d9a-9560-473115b20acb
+
+	calculationGroup
+
+		calculationItem 'Prior Year' = ```
+				CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Dim Mars Date Table'[bk_date]))
+				
+				```
+
+		calculationItem 'Current Quarter' = CALCULATE(SELECTEDMEASURE())
+
+		calculationItem 'Last Quarter' =
+				CALCULATE(SELECTEDMEASURE(),
+				                DATEADD ( 'Dim Mars Date Table'[bk_date], -1, QUARTER)
+				)
+
+		calculationItem 'Total Row' =
+				CALCULATE(
+				    SELECTEDMEASURE(),ALLSELECTED('Dim Mars Date Table'[year_number_int]), ALLSELECTED('Dim Report Type'[Report Type]), ALLSELECTED('Dim Topic'[Topic]))
+
+		calculationItem 'Variance to PY %' = ```
+				
+				
+				VAR _CY = SELECTEDMEASURE()
+				VAR _PY = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Dim Mars Date Table'[bk_date]))
+				
+				RETURN 
+				_CY - _PY/_PY
+				```
+
+		calculationItem 'Variance to CY Target %' = ```
+				
+				
+				VAR _CY = CALCULATE(SELECTEDMEASURE(), FILTER('Dim Report Type', 'Dim Report Type'[Report Type] = "YEE"))
+				VAR _CY_Target = CALCULATE(SELECTEDMEASURE(), 'Dim Report Type'[Report Type] = "Targets")
+				
+				RETURN 
+				DIVIDE(_CY - _CY_Target, _CY_Target)
+				```
+
+	column 'Time Period Calculations'
+		dataType: string
+		lineageTag: 0229f04e-1785-4a2a-bbc3-400ea5d98ab5
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: d9d12787-cd49-48bc-9c39-4341c79cad7c
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

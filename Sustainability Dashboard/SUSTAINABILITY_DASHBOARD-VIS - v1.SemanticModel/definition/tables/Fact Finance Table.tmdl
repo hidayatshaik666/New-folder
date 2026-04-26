@@ -1,0 +1,148 @@
+table 'Fact Finance Table'
+	lineageTag: 5e5b988c-a75a-4490-bdda-b49007b3f8d7
+
+	column Division
+		dataType: string
+		lineageTag: d11762de-5cec-4a27-b167-d3999a6c2b77
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column KPI
+		dataType: string
+		lineageTag: a4d112e3-b76a-48d5-940b-3c2ac4a2fc70
+		summarizeBy: none
+		sourceColumn: KPI
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End of Quarter'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 43c095eb-06ff-4cd9-920d-28cf6454e17a
+		summarizeBy: none
+		sourceColumn: End of Quarter
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Attribute
+		dataType: string
+		lineageTag: 8cd51659-63b8-4e54-af01-a6083075b29b
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 7cd814aa-f35b-488b-aae4-570205df60bd
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Label
+		dataType: string
+		lineageTag: 0f4cc0f1-4dbb-4488-a12a-72a02c068085
+		summarizeBy: none
+		sourceColumn: Label
+		sortByColumn: 'Label Index'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Timestamp
+		dataType: string
+		lineageTag: cb7effb8-0507-4e15-9567-48373fa906ac
+		summarizeBy: none
+		sourceColumn: Timestamp
+		sortByColumn: 'End of Quarter'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Label Index'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9dd905b8-372d-4d2b-95de-a61d6d04cd1c
+		summarizeBy: sum
+		sourceColumn: Label Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Fact Finance Table' = m
+		mode: import
+		queryGroup: 'Fact Tables'
+		source = ```
+				let
+				    Source =  Table.SelectRows(SharePoint.Files("https://team.effem.com/sites/PetcareSustainability/", [ApiVersion = 15]), each ([Name] = "ScorecardFinancials.xlsx"))[Content]{0},
+				    #"Connect to Excel" = Excel.Workbook(Source),
+				    #"Select Data" = Table.SelectColumns(#"Connect to Excel",{"Data"}),
+				    #"Expanded Data" = Table.ExpandTableColumn(#"Select Data", "Data", {"Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7", "Column8", "Column9"}, {"Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7", "Column8", "Column9"}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Expanded Data", [PromoteAllScalars=true]),
+				    #"Filtered Rows" = Table.SelectRows(#"Promoted Headers", each ([Year] <> "Year")),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{ {"Year", Int64.Type}, {"Quarter", Int64.Type}, {"Division", type text}, {"KPI", type text}, {"Prior Year Actual", type number}, {"Current Year Replan", type number}, {"Current Year Prior Quarter YEE", type number}, {"YEE Current quarter", type number}, {"Following Year Forecast", type number}}),
+				    #"Add End of Quarter" = Table.AddColumn(
+				        #"Changed Type",
+				        "End of Quarter",
+				        each 
+				            let
+				                // Validate inputs
+				                yr = try [Year] otherwise null,
+				                qtr = try [Quarter] otherwise null,
+				                // Only proceed if valid
+				                endDate = if (Value.Is(yr, type number) and Value.Is(qtr, type number) and qtr >= 1 and qtr <= 4) then
+				                    Date.EndOfQuarter(
+				                        // Create a date in the given quarter (first day of that quarter)
+				                        #date(yr, (qtr - 1) * 3 + 1, 1)
+				                    )
+				                else
+				                    null
+				            in
+				                endDate,
+				        type date
+				    ),
+				    #"Add Timestamp" = Table.AddColumn(#"Add End of Quarter", "Timestamp", each Number.ToText([Year]) & " - Q" & Number.ToText([Quarter]), type text),
+				    #"Unpivoted Data" = Table.UnpivotOtherColumns(#"Add Timestamp", {"Year", "Quarter", "Division", "KPI", "End of Quarter", "Timestamp"}, "Attribute", "Value"),
+				    #"Select Columns" = Table.SelectColumns(#"Unpivoted Data",{"Timestamp", "Division", "KPI", "End of Quarter", "Attribute", "Value"}),
+				    #"Replace TP" = Table.ReplaceValue(#"Select Columns","TP","Thriving People",Replacer.ReplaceText,{"KPI"}),
+				    #"Replace C&S" = Table.ReplaceValue(#"Replace TP","C&S","Climate & Sourcing",Replacer.ReplaceText,{"KPI"}),
+				    #"Add Label" = 
+				        Table.AddColumn(
+				            #"Replace C&S",
+				            "Label",
+				            each
+				                Text.Replace(
+				                    Text.Replace(
+				                        Text.Replace(
+				                            Text.Replace(
+				                                Text.Replace([Attribute], "Prior Year", Text.From(Date.Year([End of Quarter]) - 1)),
+				                                "Following Year", Text.From(Date.Year([End of Quarter]) + 1)
+				                            ), 
+				                            "Current Year",Text.From(Date.Year([End of Quarter]))
+				                        ),
+				                        "Current quarter", "Q"&Text.From(Date.QuarterOfYear([End of Quarter]))
+				                    ),
+				                    "Prior Quarter", "Q"& Text.From(Date.QuarterOfYear([End of Quarter])-1)
+				                )
+				        ),
+				    #"Add Index for Label ordering" = Table.AddColumn(#"Add Label", "Label Index", each if [Attribute] = "Prior Year Actual" then 1 else if [Attribute] = "Current Year Replan" then 2 else if [Attribute] = "Current Year Prior Quarter YEE" then 3 else if [Attribute] = "YEE Current quarter" then 4 else if [Attribute] = "Following Year Forecast" then 5 else null, type number),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Add Index for Label ordering",{{"Label Index", Int64.Type}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type1",{"Label Index", "Label", "Division", "KPI", "End of Quarter", "Attribute", "Value"})
+				in
+				    #"Reordered Columns"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

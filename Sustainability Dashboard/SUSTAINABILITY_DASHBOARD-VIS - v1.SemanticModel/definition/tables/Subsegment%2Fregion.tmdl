@@ -1,0 +1,55 @@
+table Subsegment/region
+	lineageTag: 737b395f-760c-48d2-87cd-2414e19c9bc5
+	sourceLineageTag: 21ffc4e3-d877-4769-947b-d13158a50f2d
+
+	column Parameter
+		dataType: string
+		lineageTag: ab433da0-f84a-4c57-8565-20dd920d2d02
+		sourceLineageTag: 2e5604b2-b727-4f95-8278-32891e65d402
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Parameter
+		sortByColumn: 'Parameter Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Fields'
+
+		annotation SummarizationSetBy = User
+
+	column 'Parameter Fields'
+		dataType: string
+		lineageTag: 3d2c2ead-ec62-42a3-aeb6-3e74ab03f997
+		sourceLineageTag: 9f1a2b7b-6b46-4af0-9922-ff273fb8ea9e
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Parameter Fields
+		sortByColumn: 'Parameter Order'
+
+		annotation SummarizationSetBy = User
+
+	column 'Parameter Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: bae88f9c-ee24-43d1-8844-04d8e1137286
+		sourceLineageTag: 7d6a2089-426a-4b6b-896f-b94ece9799da
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Parameter Order
+
+		annotation SummarizationSetBy = User
+
+	hierarchy 'Parameter Hierarchy'
+		lineageTag: 56f584ca-cfec-467a-9971-9b99787beeeb
+		sourceLineageTag: b337715f-417a-4855-ba92-748895e46ad8
+
+		level Parameter
+			lineageTag: 90b71861-899f-41d4-8c0f-6d6a92ff94e3
+			sourceLineageTag: d3e68573-174b-4a49-a275-677bbf0556bf
+			column: Parameter
+
+	partition Subsegment/region = entity
+		mode: directQuery
+		source
+			entityName: Subsegment/region
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

@@ -1,0 +1,33 @@
+table 'Scenario Order'
+	lineageTag: e6130c12-0223-47d1-bbdc-868b72030a86
+	sourceLineageTag: 56a8c99f-7355-420e-b01a-0964d76aad2d
+
+	column Scenario
+		dataType: string
+		isNullable: false
+		lineageTag: 88edd654-6c9e-45a7-82c4-493fcd369d2b
+		sourceLineageTag: 7091be8a-9544-4975-84bc-71dce4e3ddfb
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Scenario
+		sortByColumn: 'Scenario Order'
+
+		annotation SummarizationSetBy = User
+
+	column 'Scenario Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5eee8949-f770-492a-a2a1-bd8b19be036e
+		sourceLineageTag: 900970aa-12d9-44bd-b960-18a30827a665
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Scenario Order
+
+		annotation SummarizationSetBy = User
+
+	partition 'Scenario Order' = entity
+		mode: directQuery
+		source
+			entityName: Scenario Order
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

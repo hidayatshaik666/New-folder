@@ -1,0 +1,32 @@
+table 'dim Type of Activity'
+	lineageTag: 7be37a15-f561-44ab-b13f-660ae101a581
+	sourceLineageTag: dcd2de1d-791e-4783-bce1-753899ac5d9b
+
+	column 'Type of Activity ID'
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		lineageTag: 3a1b32a9-5fd8-46aa-8791-ca0457b322c6
+		sourceLineageTag: 980fac01-9809-4c6c-b471-34a2ee3b650f
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Type of Activity ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Type of activity'
+		dataType: string
+		lineageTag: 0b92ea55-3e6f-4356-8d35-965de22aeed4
+		sourceLineageTag: b9f1fc73-2594-4e9b-8a77-845ddcd17d6c
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Type of activity
+
+		annotation SummarizationSetBy = User
+
+	partition 'dim Type of Activity' = entity
+		mode: directQuery
+		source
+			entityName: dim Type of Activity
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

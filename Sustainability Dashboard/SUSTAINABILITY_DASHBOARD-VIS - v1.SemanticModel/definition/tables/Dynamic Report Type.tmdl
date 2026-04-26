@@ -1,0 +1,64 @@
+table 'Dynamic Report Type'
+	lineageTag: 781137ae-8430-4f3d-b089-35b7e4a09ef6
+
+	column 'Report Type'
+		dataType: string
+		lineageTag: 2317c202-a619-4619-83bb-3ac9bae95902
+		summarizeBy: none
+		sourceColumn: Report Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report Type ID'
+		dataType: double
+		lineageTag: f00d2ddc-925f-4c71-a55f-c5e0adcfa829
+		summarizeBy: none
+		sourceColumn: Report Type ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Dynamic Report Type' = m
+		mode: import
+		queryGroup: 'New KPI''s'
+		source = ```
+				let
+				    // 1. Reference existing table
+				    MasterList = #"Dim Report Type",
+				    
+				    // 2. Get unique attributes from staging
+				    AllData = #"Staging Query", 
+				    UniqueReport = Table.Distinct(Table.SelectColumns(AllData, {"Attribute"})),
+				    
+				    // 3. Try to Fuzzy Match first 
+				    // We use a Threshold of 0.8 (adjust to 0.7 if it's too strict, 0.9 if too loose)
+				    FuzzyMatch = Table.FuzzyNestedJoin(
+				        UniqueReport, {"Attribute"}, 
+				        MasterList, {"Report Type"}, 
+				        "Check", 
+				        JoinKind.LeftOuter, 
+				        [IgnoreCase=true, IgnoreSpace=true, Threshold=0.8]
+				    ),
+				    
+				    // 4. Keep only the rows where no match was found (Table.IsEmpty)
+				    MissingReport = Table.SelectRows(FuzzyMatch, each Table.IsEmpty([Check])),
+				    
+				    // 5. Clean up columns to prepare for ID assignment
+				    // We take the "Attribute" column and rename it to "Report Type" so it matches the MasterList
+				    CleanMissing = Table.RenameColumns(Table.RemoveColumns(MissingReport, {"Check"}), {{"Attribute", "Report Type"}}),
+				    
+				    // 6. Assign new IDs starting from Max ID + 1
+				    MaxID = List.Max(MasterList[Report Type ID]),
+				    AddIDs = Table.AddIndexColumn(CleanMissing, "Report Type ID", MaxID + 1, 1),
+				    
+				    // 7. Combine the MasterList with the new rows
+				    FinalList = Table.Combine({MasterList, AddIDs})
+				in
+				    FinalList
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

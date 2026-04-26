@@ -1,0 +1,230 @@
+table 'FACT table 2'
+	lineageTag: 6c029548-a0d9-4629-bdfd-4c03233c6772
+	sourceLineageTag: aa822553-e848-48b1-8d4c-0e048cea69c9
+
+	column 'Input Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 069aebb5-0a93-4765-8b4c-25c7d93c18c7
+		sourceLineageTag: afbc9142-9a70-4c69-8356-65dd6284b6db
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Input Year
+
+		annotation SummarizationSetBy = User
+
+	column 'Input Period'
+		dataType: string
+		lineageTag: 5a7040bb-41e7-4911-a426-739a5ba701d9
+		sourceLineageTag: cc18d4b3-d016-40d1-a33f-3a77a46b43c9
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Input Period
+
+		annotation SummarizationSetBy = User
+
+	column 'Auto-generated number'
+		dataType: string
+		lineageTag: 472f6f1a-906d-43f5-b111-04267c425756
+		sourceLineageTag: 181e7fb5-e2ac-4500-9f12-054d38fa313a
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Auto-generated number
+
+		annotation SummarizationSetBy = User
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 564622f3-6fd4-491e-994b-61508e2f0d14
+		sourceLineageTag: 971d3b18-bc51-4c89-9227-c717a68c12f2
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = User
+
+	column Incremental
+		dataType: double
+		formatString: #,0
+		lineageTag: 57d69fe8-14ea-4b24-883f-e540a6fc696c
+		sourceLineageTag: 82a4cca1-4409-4227-8e28-145b064bbb49
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Incremental
+
+		annotation SummarizationSetBy = User
+
+	column Aggregated
+		dataType: double
+		lineageTag: dcbc9ae7-f04b-4ba7-8db0-395ce621661f
+		sourceLineageTag: a8b3774a-9cf0-4bc6-bcf5-450fe14b45f5
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Aggregated
+
+		annotation SummarizationSetBy = User
+
+	column 'NO GROWTH Aggregated'
+		dataType: double
+		lineageTag: dae1c39b-fb21-4f46-8d65-8ec98456adbd
+		sourceLineageTag: a5c9669f-0924-4cde-b197-42adf7fac100
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: NO GROWTH Aggregated
+
+		annotation SummarizationSetBy = User
+
+	column 'Incremental WITH GROWTH'
+		dataType: double
+		formatString: #,0
+		lineageTag: 8a74877f-6f8d-40a1-a08c-0ed7cc8a9e89
+		sourceLineageTag: a0e59f30-8c5b-4ff0-810d-8ff5c475ec25
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Incremental WITH GROWTH
+
+		annotation SummarizationSetBy = User
+
+	column #
+		dataType: string
+		lineageTag: 812f2743-cbf5-4d64-85df-97fa4ee77f00
+		sourceLineageTag: 59f6dd34-8333-46a6-9240-df39d7d4f59c
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: #
+
+		annotation SummarizationSetBy = User
+
+	column discount1
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b6d6a19-eb61-4f2a-a96e-bfb7ca1f427f
+		sourceLineageTag: 86ce2e1a-4a75-45fb-a008-f73b9c8ed0fc
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: discount1
+
+		annotation SummarizationSetBy = User
+
+	column discount2
+		dataType: double
+		lineageTag: 2cebe002-91e9-479b-9196-a428afa2e412
+		sourceLineageTag: 05b59a61-c9dd-48ed-a6e4-dc800c448ae8
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: discount2
+
+		annotation SummarizationSetBy = User
+
+	column discount3
+		dataType: double
+		lineageTag: 6a7680ee-a426-48d3-93ad-b22870f6e8aa
+		sourceLineageTag: b51ef0cb-8d70-4bfe-8045-8b9e9ea02781
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: discount3
+
+		annotation SummarizationSetBy = User
+
+	column 'Sum of Aggs GHG for cpt Growth no Discount'
+		dataType: double
+		lineageTag: 718ed4c5-f42c-4c02-a20c-e1213af3cbcf
+		sourceLineageTag: 1eced7a7-5b56-404a-98f3-e6329f2989d6
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Sum of Aggs GHG for cpt Growth no Discount
+
+		annotation SummarizationSetBy = User
+
+	column 'Cost/ton all applied'
+		dataType: double
+		lineageTag: 07432e2a-2803-47fb-8214-e0aab30e7d6f
+		sourceLineageTag: c4d099da-e637-4220-8ea4-31c25bf3f4a4
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Cost/ton all applied
+
+		annotation SummarizationSetBy = User
+
+	column 'Cost/ton with GA no dis1'
+		dataType: double
+		lineageTag: 871a6a77-4da3-4c74-aefb-60aa1ca617b8
+		sourceLineageTag: 9b04e505-96a7-42b9-a284-c200256d17d2
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Cost/ton with GA no dis1
+
+		annotation SummarizationSetBy = User
+
+	column 'Total Cost with Amortization Check'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7dd81d10-083e-4a7b-9c04-7e6830c479c4
+		sourceLineageTag: 4485791b-943f-464f-8f18-47283bd7673b
+		dataCategory: Uncategorized
+		summarizeBy: sum
+		sourceColumn: Total Cost with Amortization Check
+
+		annotation SummarizationSetBy = User
+
+	column 'KPI ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f59199e-c1e9-45d9-997f-abc6c315a2f1
+		sourceLineageTag: 3e818dba-b4d7-44d0-8464-922992726fac
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: KPI ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Pillar ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 73464f9a-bf3c-4ded-b33a-4c77f0d2d1d4
+		sourceLineageTag: d72dab4a-5a29-487c-861f-17fc842c06c7
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Pillar ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Type of Activity ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f0ac5c2-4237-4a61-8cd1-2596b08411f1
+		sourceLineageTag: fbe0e4ec-6601-4436-baeb-020c3ddd0ddd
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Type of Activity ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Geography ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0bcc95cc-7c6f-4d78-bd0c-fe8389e36d4f
+		sourceLineageTag: ba1ea13c-5d00-4b4d-a79c-04341c11edb9
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Geography ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Key'
+		dataType: string
+		lineageTag: 01df85fe-7250-4af7-8f7e-e0a007065f07
+		sourceLineageTag: 7c6ea094-dc22-474c-8abf-859fb999bc6f
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Key
+
+		annotation SummarizationSetBy = User
+
+	partition 'FACT table 2' = entity
+		mode: directQuery
+		source
+			entityName: FACT table
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

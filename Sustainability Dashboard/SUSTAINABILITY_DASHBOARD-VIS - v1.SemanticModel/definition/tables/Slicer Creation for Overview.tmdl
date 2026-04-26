@@ -1,0 +1,40 @@
+table 'Slicer Creation for Overview'
+	lineageTag: ac995733-d3e3-432b-84d2-1e8e9a63f090
+	sourceLineageTag: 05226acd-d3f7-40ca-bcf3-62bb286041a5
+
+	column 'Input Version'
+		dataType: string
+		lineageTag: 3b1e2e32-9986-4c33-a669-920c5d535077
+		sourceLineageTag: 4bca77ed-35a8-46f6-a23c-6c9780ead8c3
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Input Version
+
+		annotation SummarizationSetBy = User
+
+	column 'Slicer for Overview'
+		dataType: string
+		lineageTag: 981a625c-c300-4a4b-8f08-e7187c74c0fd
+		sourceLineageTag: 4b133d5c-9c51-44bb-a161-a437f434f1f3
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Slicer for Overview
+
+		annotation SummarizationSetBy = User
+
+	column 'Scenario Order'
+		dataType: string
+		lineageTag: 082edd6a-6bd7-486f-bcaa-9fe1efb0d60e
+		sourceLineageTag: 7f766200-c054-4daf-ac23-b88fd2484ae5
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Scenario Order
+
+		annotation SummarizationSetBy = User
+
+	partition 'Slicer Creation for Overview' = entity
+		mode: directQuery
+		source
+			entityName: Slicer Creation for Overview
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

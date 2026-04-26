@@ -1,0 +1,59 @@
+table 'Period Table'
+	lineageTag: 74b6404e-d088-4960-95cb-4f0d6a72370c
+
+	column Year
+		formatString: 0
+		lineageTag: 7504110d-d766-4a15-9495-a57dfecae25e
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		formatString: 0
+		lineageTag: e59f5f39-c635-48bc-a130-077ba40b11d4
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Period'
+		lineageTag: c508014c-dcb1-4121-8cf4-0a353b7b005b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Reporting Period]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Period Sort'
+		formatString: 0
+		lineageTag: c5ddaca6-e15f-4e2f-8775-a0d5325be65a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Period Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Period Table' = calculated
+		mode: import
+		source =
+				
+				VAR BaseTable =
+				    SELECTCOLUMNS (
+				        'Fact Projects Table History',
+				        "Year", 'Fact Projects Table History'[Year],
+				        "Quarter", 'Fact Projects Table History'[Quarter]
+				    )
+				RETURN
+				ADDCOLUMNS (
+				    DISTINCT ( BaseTable ),
+				    "Reporting Period",
+				        FORMAT ( [Year], "0000" ) & "-Q" & FORMAT ( [Quarter], "0" ),
+				    "Period Sort",
+				        [Year] * 10 + [Quarter]
+				)
+
+	annotation PBI_Id = 6af03b6b8d0a4ae58b74805698602135
+

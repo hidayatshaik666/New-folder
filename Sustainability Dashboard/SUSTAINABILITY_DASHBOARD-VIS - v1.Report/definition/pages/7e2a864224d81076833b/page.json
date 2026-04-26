@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "7e2a864224d81076833b",
+  "displayName": "Duplicate of KPI Trends par",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8f3b4327e6366c37bd02",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim KPI"
+              }
+            },
+            "Property": "Used in PBI Calculations"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "Dim KPI",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "Used in PBI Calculations"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Yes'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "633835c54a9bb2c04385",
+    "type": "Default",
+    "parameters": [],
+    "acceptsFilterContext": "None"
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "d9be4400acdd9d102eae",
+      "target": "e75c914b88aa38bdd054",
+      "type": "NoFilter"
+    },
+    {
+      "source": "fce9c8ae1a0d82c2b844",
+      "target": "ce601256106d3469b663",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7c8cb076582462c7c984",
+      "target": "87480bc6903a0d0ee40c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "7c8cb076582462c7c984",
+      "target": "ce601256106d3469b663",
+      "type": "NoFilter"
+    }
+  ]
+}

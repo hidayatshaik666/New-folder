@@ -1,0 +1,33 @@
+table 'Table - Scenario Order'
+	lineageTag: edf6d9f4-de67-4502-bf5d-4bbe8c493d37
+	sourceLineageTag: 69d3ac7c-6b3c-4b3d-ab37-b879c558bf8a
+
+	column 'Table - Scenarios'
+		dataType: string
+		isNullable: false
+		lineageTag: 46d415e7-5158-4df7-87cd-e1ec9d4495f7
+		sourceLineageTag: 2b6d0833-9087-48b9-b4fa-7ca63be4b035
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Table - Scenarios
+		sortByColumn: 'Table - Order'
+
+		annotation SummarizationSetBy = User
+
+	column 'Table - Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: ec748241-2f6c-4838-898a-5683a5fba523
+		sourceLineageTag: e2471b05-23a0-474e-aeb9-60bdc63562b8
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Table - Order
+
+		annotation SummarizationSetBy = User
+
+	partition 'Table - Scenario Order' = entity
+		mode: directQuery
+		source
+			entityName: Table - Scenario Order
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

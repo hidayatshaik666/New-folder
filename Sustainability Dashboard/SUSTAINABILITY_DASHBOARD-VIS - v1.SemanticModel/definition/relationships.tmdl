@@ -1,0 +1,145 @@
+relationship AutoDetected_3a681f22-d8af-43ab-a2ee-dfe405bf6a63
+	fromColumn: 'Fact Baseline'.Topic
+	toColumn: 'Dim Topic'.Topic
+
+relationship AutoDetected_7486db04-e4c7-4ca3-8532-acef8cf0d047
+	fromColumn: 'Fact Baseline'.'Division ID'
+	toColumn: 'Dim Division'.'Division ID'
+
+relationship AutoDetected_9845b10c-e7f8-46f1-8133-b9c0e97b60ac
+	fromColumn: 'Fact Finance Table'.Division
+	toColumn: 'Dim Division'.Division
+
+relationship AutoDetected_401c2824-880a-42ce-94ea-da933308fa2a
+	fromColumn: 'Fact Projects Table'.'KPI ID'
+	toColumn: 'Dim KPI'.'KPI ID'
+
+relationship AutoDetected_60016605-5fcd-41f9-a919-5156026e263a
+	fromColumn: 'Fact Projects Table'.'Topic ID'
+	toColumn: 'Dim Topic'.'Topic ID'
+
+relationship FactFinanceTable_EndofQuarter_DimMarsDateTable
+	fromColumn: 'Fact Finance Table'.'End of Quarter'
+	toColumn: 'Dim Mars Date Table'.calendar_dt
+
+relationship FactProjectsTable_EndofQuarterDate_DimMarsDateTable
+	fromColumn: 'Fact Projects Table'.'End of Quarter Date'
+	toColumn: 'Dim Mars Date Table'.calendar_dt
+
+relationship 18c41df9-74e1-4121-9021-26d1e9c165c1
+	fromColumn: 'Slicer Creation for Overview'.'Slicer for Overview'
+	toColumn: 'Scenario Order'.Scenario
+
+relationship a399dbb8-2406-4d0a-bd50-db37a678edcc
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: 'Slicer Creation for Overview'.'Input Version'
+	toColumn: 'FACT table 2'.'Input Period'
+
+relationship db3313a2-c28a-45ca-8805-1435f59a99ff
+	fromColumn: 'FACT table 2'.'KPI ID'
+	toColumn: 'dim KPI 2'.'KPI ID'
+
+relationship cd62e213-d7b1-408f-b477-7779292efdd8
+	fromColumn: 'FACT table 2'.'Pillar ID'
+	toColumn: 'dim Pillar'.'Pillar ID'
+
+relationship 7a036cee-b3e5-4ee1-be0a-f0b7d491f800
+	fromColumn: 'FACT table 2'.'Type of Activity ID'
+	toColumn: 'dim Type of Activity'.'Type of Activity ID'
+
+relationship 29a57735-dc11-4f2d-a2e4-57b58f17e9d3
+	fromColumn: 'FACT table 2'.'Geography ID'
+	toColumn: 'dim Geography'.'Geography ID'
+
+relationship be9b472a-37aa-4de1-9ef5-79f1d01cfd69
+	fromColumn: 'FACT table 2'.'Activity Key'
+	toColumn: 'dim Activity Details'.'Activity Key'
+
+relationship 79042170-807c-41ce-9e75-38d38fb89419
+	fromColumn: 'FACT table 2'.Year
+	toColumn: 'Investment Total Table'.Year
+
+relationship 96354141-a2fe-4626-93bc-2abc47a00c6b
+	fromColumn: 'Table Summary'.'Input Period'
+	toColumn: 'Table - Scenario Order'.'Table - Scenarios'
+
+relationship AutoDetected_320ff5f8-45bd-4e8a-b5b9-02716bf6d7ce
+	fromColumn: 'Fact Projects Table History'.'KPI ID'
+	toColumn: 'Dim KPI'.'KPI ID'
+
+relationship AutoDetected_3664a528-9578-4c1e-b584-59a730bb56dc
+	fromColumn: 'Fact Projects Table History'.Division
+	toColumn: 'Dim Division'.Division
+
+relationship AutoDetected_390349b0-6dde-4adb-a1f3-b1c89ce691d3
+	fromColumn: 'Fact Projects Table History'.'Topic ID'
+	toColumn: 'Dim Topic'.'Topic ID'
+
+relationship 58b3660d-2b2c-9473-21b3-3d7d0d502072
+	fromColumn: 'Fact Projects Table History'.Key
+	toColumn: 'Projects With Actuals'.Key
+
+relationship AutoDetected_35bd595b-af66-4255-aeb6-18c860afd7b9
+	fromColumn: 'Fact Table'.'Division ID'
+	toColumn: 'Dim Division'.'Division ID'
+
+relationship AutoDetected_450f2890-cb3f-4a2a-815f-a90eae5d40ee
+	fromColumn: 'Fact Table'.'Report Type ID'
+	toColumn: 'Dim Report Type'.'Report Type ID'
+
+relationship AutoDetected_8edb4bd8-3498-4d9a-9145-3caf788700a7
+	fromColumn: 'Fact Table'.'Topic ID'
+	toColumn: 'Dim Topic'.'Topic ID'
+
+relationship 9a2089e6-4687-5516-d326-36e90444e3b2
+	fromColumn: 'Fact Projects Table History'.'Reporting Period'
+	toColumn: 'Period Table'.'Reporting Period'
+
+relationship 22b8cd29-aaf8-4483-009c-46daa1dbea94
+	fromColumn: 'Fact Table'.'Attribute ID'
+	toColumn: 'Dim Attribute'.'Attribute ID'
+
+relationship 80c3380b-d070-bdcb-2a22-0112ccfd0193
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: Replan_Bridge.TargetYear
+	toColumn: 'Fact Projects Table History'.Year
+
+relationship 5b2c9dc0-e8fa-0456-987c-8256b4ef0672
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	toCardinality: many
+	fromColumn: Replan_Bridge.TargetQuarter
+	toColumn: 'Fact Projects Table History'.Quarter
+
+relationship 8a891415-24ca-c3e6-0e20-b84a46d65b23
+	fromColumn: 'Fact Table'.'End Of Quarter Date'
+	toColumn: 'Dim Mars Date Table'.calendar_dt
+
+relationship AutoDetected_cfd3e72c-db77-4e1e-b940-70e1f9896902
+	fromColumn: 'PN & RC KPI Values'.'Division ID'
+	toColumn: 'Dim Division'.'Division ID'
+
+relationship AutoDetected_5dac1c1a-5f7a-472f-8454-b5408ff34524
+	isActive: false
+	fromColumn: 'Fact Baseline'.Topic
+	toColumn: 'Dynamic Dim Topic'.Topic
+
+relationship 97671e1f-c04a-c1da-14fb-64a9f87521b5
+	fromColumn: 'PN & RC KPI Values'.'Attribute ID'
+	toColumn: 'Dynamic KPI List'.'KPI ID'
+
+relationship fa4f4ab9-0e4f-b0ea-95a3-7bfd18428b2c
+	fromColumn: 'PN & RC KPI Values'.'Topic ID'
+	toColumn: 'Dynamic Dim Topic'.'Topic ID'
+
+relationship 0e1d5870-6411-0e7d-0f47-df433bf3ec98
+	fromColumn: 'PN & RC KPI Values'.'Report Type ID'
+	toColumn: 'Dynamic Report Type'.'Report Type ID'
+
+relationship 972bc6ea-e7b7-4cef-85d4-8c88e1090e2c
+	fromColumn: 'PN & RC KPI Values'.'End Of Quarter Date'
+	toColumn: 'Dim Mars Date Table'.calendar_dt
+

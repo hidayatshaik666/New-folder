@@ -1,0 +1,25 @@
+table Environment
+	isHidden
+	lineageTag: 7091136e-a61b-4b63-8ed7-167f8f90022d
+
+	column Environment
+		dataType: string
+		isHidden
+		lineageTag: 75f060a8-b0e3-4dd1-a94a-26423a6b8d6b
+		summarizeBy: none
+		sourceColumn: Environment
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Environment = m
+		mode: import
+		source = "Development" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

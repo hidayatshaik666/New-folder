@@ -1,0 +1,94 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-GB
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+/// Errors in queries that were loaded on 27/08/2025 14:06:30.
+queryGroup 'Query Errors - 27/08/2025 14:06:30'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Dimension Tables'
+
+	annotation PBI_QueryGroupOrder = 3
+
+queryGroup 'Fact Tables'
+
+	annotation PBI_QueryGroupOrder = 4
+
+queryGroup Sources
+
+	annotation PBI_QueryGroupOrder = 5
+
+queryGroup 'Climate Queries'
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup 'Circularity Queries'
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup 'Climate Queries\Projects View Queries'
+
+	annotation PBI_QueryGroupOrder = 0
+
+/// Contains Historical Data
+queryGroup 'CAP Projects History'
+
+	annotation PBI_QueryGroupOrder = 7
+
+/// New Data source for the KPI's
+queryGroup 'New KPI''s'
+
+	annotation PBI_QueryGroupOrder = 8
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Sustainability Scorecard data","Environment","Measures_table","Topics and KPIs","YEE% of Targets","Targets for YEE% to Targets","Transform File","Dim KPI","Dim Region","Dim Division","Dim Topic","Dim Mars Date Table","Dim Report Type","Dim Attribute","Fact Table","Fact Baseline","Sustainability List - Export","Sustainability KPI Table","CAP Data","CAP Projects GHG Actuals","CAP Projects GHG Planned","CAP YTD Projects GHG Scopes","CAP YTD Projects GHG Total","CAP YTD Data","GHG Activity Set Scopes - YTD","GHG Activity Set Total - YTD","CAP Actuals Prev Year Data","CAP Actuals Data","GHG Activity Set Scopes - Actuals","GHG Activity Set Total - Actuals","CAP YEE Data","GHG Activity Set Scopes - YEE","GHG Activity Set Total - YEE","GHG YEE % of Target","YEE Prior Qtr","Fact Finance Table","CAP Investment and Replan - Scope","CAP Investment and Replan - Scope Prev Year","GHG Activity Set Scopes - Investment","GHG Activity Set Scopes - Replan","GHG Activity Set Total - Investment","GHG Activity Set Total - Replan","MaxQuarterPerYear","Circularity Source","Targets for Scorecard Page","Dim OE","Circularity Actual Year Grouping","Circularity Actuals","Circularity YTD","Fact Projects Table","CAP Projects GHG Investment","CAP Projects GHG Replan","CAP Project Actuals Prev Year Data","CAP Projects Investment and Replan","CAP Projects Investment and Replan - Prev Year","DirectQuery to AS - CAP refresh latest report","CAP Projects GHG Actual History","CAP Projects GHG Planned History","CAP Projects GHG Investment History","CAP Projects GHG Replan History","Fact Projects Table History","Petcare KPI Values","PN KPI Values","Sharepoint File Path","Folder_Path","RC KPI Values","PN & RC KPI Values","Topics and KPI's All","TransformKpiData","Dynamic KPI List","Dynamic Dim Topic","Staging Query","Dynamic Report Type"]
+
+annotation PBI_ProTooling = ["CalcGroup","DevMode","MCP-PBIModeling","TMDLView_Desktop"]
+
+ref table Environment
+ref table Measures_table
+ref table 'Dim KPI'
+ref table 'Dim Division'
+ref table 'Dim Mars Date Table'
+ref table 'Dim Report Type'
+ref table 'Dim Topic'
+ref table 'Dim Attribute'
+ref table 'KPI Intelligence'
+ref table 'Fact Baseline'
+ref table 'Fact Finance Table'
+ref table 'Fact Projects Table'
+ref table 'Measures (2)'
+ref table 'Investment Total Table'
+ref table 'Slicer Creation for Overview'
+ref table Subsegment/region
+ref table 'Scenario Order'
+ref table 'FACT table 2'
+ref table 'dim Activity Details'
+ref table 'dim Geography'
+ref table 'dim KPI 2'
+ref table 'dim Pillar'
+ref table 'dim Type of Activity'
+ref table 'Table Summary'
+ref table 'Table - Scenario Order'
+ref table '_List of Activities Fields'
+ref table 'Fact Projects Table History'
+ref table 'Projects With Actuals'
+ref table 'Fact Table'
+ref table 'Period Table'
+ref table Replan_Bridge
+ref table 'KPI''s'
+ref table 'PN & RC KPI Values'
+ref table 'Dynamic KPI List'
+ref table 'Dynamic Dim Topic'
+ref table 'Dynamic Report Type'
+
+ref cultureInfo en-US
+

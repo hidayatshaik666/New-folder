@@ -1,0 +1,368 @@
+table 'Fact Projects Table History'
+	lineageTag: f0025425-2576-43cb-8eb7-31d014cf8d76
+
+	measure Actual_All =
+			
+			/* Value for Actuals */
+			CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Actual")
+		lineageTag: 65f1a770-f5f2-454f-a5f3-8618c9b2142f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Investment_All =
+			
+			/* Value for Investments */
+			CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Investment")
+		lineageTag: 89ecf888-76c1-40e6-a182-4e9dd9aff6b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Planned_All =
+			
+			/* Value for Planneds */
+			CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Planned")
+		lineageTag: 811c5618-877d-4ce8-90c4-14b3cf20dfc5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Replan_All =
+			
+			/* Value for Replan */
+			CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Replan")
+		lineageTag: f2e251f8-bd51-4c5f-a330-58f965ce60dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Activity Name All' =
+			
+			/* Name of the project on the Top 10 Projects page */
+			SELECTEDVALUE('Fact Projects Table History'[Activity Name])
+		lineageTag: dd152556-4318-4d87-94fe-4ed6d1525f92
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Region with Max Planned' = ```
+			
+			VAR SelectedTimestamp = SELECTEDVALUE('Fact Projects Table History'[Timestamp])
+			VAR SelectedYear = LEFT(SelectedTimestamp, 4)
+			VAR SelectedQuarter = RIGHT(SelectedTimestamp, 2)
+			VAR PriorYearTimestamp = (VALUE(SelectedYear) - 1) & "-" & SelectedQuarter
+			VAR FilteredTable = 
+			    FILTER(
+			        'Fact Projects Table History',
+			        'Fact Projects Table History'[Timestamp] = PriorYearTimestamp &&
+			        'Fact Projects Table History'[Attribute] = "Planned"
+			    )
+			VAR MaxValue = MAXX(FilteredTable, 'Fact Projects Table History'[Value])
+			VAR TopRegion = 
+			    MAXX(
+			        FILTER(FilteredTable, 'Fact Projects Table History'[Value] = MaxValue),
+			        'Fact Projects Table History'[Unit / Region]
+			    )
+			RETURN "Region : " & TopRegion
+			```
+		lineageTag: e9632c5d-9c2d-4608-93a7-48c301cab8be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Planned Rank' =
+			
+			VAR PlannedValue = [Planned_All]
+			RETURN
+			IF (
+			    NOT ISBLANK ( PlannedValue ),
+			    RANKX (
+			        ALLSELECTED ( 'Projects With Actuals'[Project Name] ),
+			        CALCULATE ( [Planned_All] ),
+			        ,
+			        DESC,
+			        DENSE
+			    )
+			)
+		lineageTag: 21925691-a5b0-470d-840d-2bcab118a76a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Show in Top 10 (Planned)' =
+			
+			IF ( [Planned Rank] <= 10, 1 )
+		lineageTag: 88f235fc-2481-4a57-a768-432f032fb3e1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Has Any Value' =
+			
+			IF (
+			    NOT ISBLANK ( [Actual_All] )
+			        || NOT ISBLANK ( [Planned_All] )
+			        || NOT ISBLANK ( [Investment_All] )
+			        || NOT ISBLANK ( [Replan_Fixed_Q3] ),
+			    1,
+			    0
+			)
+		lineageTag: 478bf75d-ca8e-42f8-b818-669636efe043
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Planned (Aligned)' =
+			
+			VAR HasActual =
+			    CALCULATE (
+			        COUNTROWS ( 'Fact Projects Table History' ),
+			        'Fact Projects Table History'[Attribute] = "Actual"
+			    )
+			RETURN
+			IF (
+			    HasActual > 0,
+			    CALCULATE (
+			        SUM ( 'Fact Projects Table History'[Value] ),
+			        'Fact Projects Table History'[Attribute] = "Planned"
+			    ),
+			    BLANK ()
+			)
+		lineageTag: c77d69f9-a296-423f-8b55-afbb6540f2a8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Max Planned Region' = ```
+			
+			VAR MaxValue = 
+			    CALCULATE(
+			        MAX('Fact Projects Table History'[Value]), 
+			        'Fact Projects Table History'[Attribute] = "Planned"
+			    )
+			RETURN
+			    CALCULATE(
+			        FIRSTNONBLANK('Fact Projects Table History'[Unit / Region], 1),
+			        'Fact Projects Table History'[Attribute] = "Planned",
+			        'Fact Projects Table History'[Value] = MaxValue
+			    )
+			```
+		lineageTag: 97510eec-83c6-498c-b168-b7107c1ab294
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Measure
+		lineageTag: a8f06b96-0c99-4c92-a6fa-a7083554d7f5
+
+		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
+
+	measure Replan_Fixed_Q3 = ```
+			
+			CALCULATE(
+			    [Replan_All], 
+			    -- This forces Power BI to use the Inactive relationship we just created
+			    USERELATIONSHIP('Fact Projects Table History'[Year], 'Replan_Bridge'[TargetYear]),
+			    USERELATIONSHIP('Fact Projects Table History'[Quarter], 'Replan_Bridge'[TargetQuarter]),
+			    -- This keeps the slicer from filtering our "Hardcoded" 2025-Q3 logic
+			    REMOVEFILTERS('Fact Projects Table History'[Year], 'Fact Projects Table History'[Quarter])
+			)
+			// VAR _AllProjects = 
+			//     CALCULATETABLE(
+			//         VALUES('Fact Projects Table History'[Project Name]),
+			//         ALL('Fact Projects Table History'), -- Remove all filters from the table
+			//         'Fact Projects Table History'[Attribute] = "Replan",
+			//         'Fact Projects Table History'[Year] = 2025,
+			//         'Fact Projects Table History'[Quarter] = 3
+			//     )
+			
+			// RETURN
+			// CALCULATE(
+			//     [Replan_All],
+			//     REMOVEFILTERS('Fact Projects Table History'), -- Clear slicers
+			//     KEEPFILTERS(_AllProjects), -- Only keep projects from our "Golden Set"
+			//     'Fact Projects Table History'[Year] = 2025,
+			//     'Fact Projects Table History'[Quarter] = 3
+			// )
+			```
+		lineageTag: 7f5f78c7-1265-4ad0-8e18-2603f4f27198
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Replan_Test =
+			
+			CALCULATE (
+			    MAX ( 'Fact Projects Table History'[Value] ),
+			    'Fact Projects Table History'[Attribute] = "Replan",
+			    REMOVEFILTERS ( 'Period Table'[Quarter] ),
+			    'Period Table'[Quarter] = 3
+			)
+		lineageTag: 7c74541a-d094-46d7-b9d1-8e67e89603e2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: ca20ff43-c029-4dbc-b2ea-2b12604aba07
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 49021536-d863-446e-95cf-290cf86964f1
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: b5a7ea19-aa06-4224-94a9-54a26200cf4f
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'OE name'
+		dataType: string
+		lineageTag: 937a8b1c-8db2-4772-b1d8-b9b3666ed667
+		summarizeBy: none
+		sourceColumn: OE name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Project
+		dataType: string
+		lineageTag: d6fd9b88-bfa4-4e37-89c0-e7778919e904
+		summarizeBy: none
+		sourceColumn: Project
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		lineageTag: f4818233-d005-4aab-8224-6bf19bb10b6e
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: dc2abf51-b941-4383-84f6-0d034328335a
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Timestamp
+		dataType: string
+		lineageTag: 9b9bbaec-710d-4c47-916a-52dd6a25ca30
+		summarizeBy: none
+		sourceColumn: Timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit / Region'
+		dataType: string
+		lineageTag: c3bcc0bc-a23e-4ed6-b4fc-bbccbc172604
+		summarizeBy: none
+		sourceColumn: Unit / Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Activity Name'
+		dataType: string
+		lineageTag: 5092602c-d07b-4539-b504-b0576827d3c0
+		summarizeBy: none
+		sourceColumn: Activity Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Activity Status'
+		dataType: string
+		lineageTag: d917bd6d-cda3-49bc-b0da-cbbdf5def128
+		summarizeBy: none
+		sourceColumn: Activity Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KPI ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: fa04be49-2b07-4487-b140-6ce3a51c3946
+		summarizeBy: none
+		sourceColumn: KPI ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Topic ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2bca9e78-a260-404d-abc5-27501409d710
+		summarizeBy: none
+		sourceColumn: Topic ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Project Name' = COMBINEVALUES(" ", 'Fact Projects Table History'[Project], 'Fact Projects Table History'[Activity Name])
+		lineageTag: b85dc42b-e571-47c9-909c-660d824cd98e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Activity owner'
+		dataType: string
+		lineageTag: 70085061-446f-4334-bf3d-797d46c4ab9d
+		summarizeBy: none
+		sourceColumn: Activity owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column Key =
+			
+			VAR DivVal = COALESCE('Fact Projects Table History'[Division], "NA")
+			VAR ProjVal = COALESCE('Fact Projects Table History'[Project], "NA")
+			VAR ActVal  = COALESCE('Fact Projects Table History'[Activity Name], "NA")
+			RETURN
+			DivVal & "-" & ProjVal & "-" & ActVal
+		lineageTag: ae30fa17-2d73-4ae4-b27a-01c3e1f67bb0
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Period' = 'Fact Projects Table History'[Year] & "-Q" & 'Fact Projects Table History'[Quarter]
+		lineageTag: 9fd00aa2-38ea-41d4-bf3d-6803e2391299
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Baseline Quarter'
+		dataType: int64
+		formatString: 0
+		lineageTag: e8f89d84-f809-400e-8a5c-ea4f6ce43e97
+		summarizeBy: sum
+		sourceColumn: Baseline Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Replan Baseline'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b0f9cf89-c06b-4538-822d-e8dbe485bcad
+		summarizeBy: none
+		sourceColumn: Is Replan Baseline
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Fact Projects Table History' = m
+		mode: import
+		queryGroup: 'CAP Projects History'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Year = _t, Quarter = _t, Division = _t, OE name = _t, Project = _t, Attribute = _t, Value = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Year", Int64.Type}, {"Quarter", Int64.Type}, {"Division", type text}, {"OE name", type text}, {"Project", type text}, {"Attribute", type text}, {"Value", type number}}),
+				    #"Appended Query" = Table.Combine({#"Changed Type", #"CAP Projects GHG Actual History", #"CAP Projects GHG Planned History", #"CAP Projects GHG Investment History", #"CAP Projects GHG Replan History"})
+				in
+				    #"Appended Query"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

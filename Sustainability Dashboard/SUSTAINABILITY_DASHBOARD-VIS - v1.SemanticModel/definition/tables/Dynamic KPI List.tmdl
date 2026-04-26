@@ -1,0 +1,85 @@
+table 'Dynamic KPI List'
+	lineageTag: cf445ea9-04b7-4fe8-8deb-4d79229b3b6c
+
+	column 'KPI ID'
+		dataType: double
+		lineageTag: b2ba3b48-e487-444f-8c53-30282a2b3c32
+		summarizeBy: none
+		sourceColumn: KPI ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Topic
+		dataType: string
+		lineageTag: f5e4962c-a8d5-450a-93be-a94fdc71841c
+		summarizeBy: none
+		sourceColumn: Topic
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KPI Name '
+		dataType: string
+		lineageTag: fb7dc6f8-f0d2-4a43-8d82-f8918db43350
+		summarizeBy: none
+		sourceColumn: "KPI Name "
+
+		annotation SummarizationSetBy = Automatic
+
+	column JoinKey
+		dataType: string
+		lineageTag: 45368203-e3ec-4115-aefa-f0212458d8aa
+		summarizeBy: none
+		sourceColumn: JoinKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Topic ID'
+		dataType: double
+		formatString: 0
+		lineageTag: 9e5f0ba1-b23e-4003-b551-e0e70507bd60
+		summarizeBy: none
+		sourceColumn: Topic ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dynamic KPI List' = m
+		mode: import
+		queryGroup: 'New KPI''s'
+		source = ```
+				let
+				    // 1. Get your existing Master List (the one you currently edit)
+				    MasterList = #"Topics and KPI's All",
+				    
+				    // 2. Get the unique list of KPIs from your raw data (PN + RC combined)
+				    // Create a query that combines PN and RC first, then use it here
+				    AllData = #"Staging Query", 
+				    UniqueKPIs = Table.Distinct(Table.SelectColumns(AllData, {"Topic","Attributes","JoinKey"})),
+				    
+				    // 3. Find only the KPIs that DO NOT exist in the MasterList
+				    // JoinKind.LeftAnti is the magic here: it keeps only rows from UniqueKPIs NOT found in MasterList
+				    NewKPIsOnly = Table.NestedJoin(UniqueKPIs, {"JoinKey"}, MasterList, {"JoinKey"}, "Check", JoinKind.LeftAnti),
+				    MissingKPIs = Table.ExpandTableColumn(NewKPIsOnly, "Check", {"Joinkey"}, {"Found"}),
+				    FilteredMissing = Table.SelectRows(MissingKPIs, each ([Found] = null)),
+				    
+				    // 4. Assign new IDs starting after your current Max ID
+				    MaxID = List.Max(MasterList[KPI ID]),
+				    AddIDs = Table.AddIndexColumn(FilteredMissing, "NewID", MaxID + 1, 1),
+				    
+				    // 5. Clean up columns to match your MasterList structure
+				    RenameColumns = Table.RenameColumns(AddIDs, {{"NewID", "KPI ID"}, {"Attributes", "KPI Name "}}),
+				    #"Merge Dynamic Topic" = Table.NestedJoin(RenameColumns, {"Topic"}, #"Dynamic Dim Topic", {"Topic"}, "Topic.1", JoinKind.LeftOuter),
+				    #"Expanded Topic.1" = Table.ExpandTableColumn(#"Merge Dynamic Topic", "Topic.1", {"Topic ID"}, {"Topic ID"}),
+				    FinalNewKPIs = Table.SelectColumns(#"Expanded Topic.1", {"KPI ID", "Topic", "KPI Name ","JoinKey","Topic ID"}),
+				    
+				    // 6. Combine the MasterList with the new "discovered" KPIs
+				    FullList = Table.Combine({MasterList, FinalNewKPIs})
+				in
+				    FullList
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

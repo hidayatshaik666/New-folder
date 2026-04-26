@@ -1,0 +1,214 @@
+table 'Dim KPI'
+	lineageTag: 0543c3db-4604-43dc-8498-edd8ed3e07c7
+
+	column 'KPI ID'
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: aa37b9de-b518-4123-a4d5-751d05eb8886
+		summarizeBy: none
+		sourceColumn: KPI ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Definition'
+		dataType: string
+		lineageTag: 5db8c7f3-be77-4c61-8eff-cc26e59ce114
+		summarizeBy: none
+		sourceColumn: Business Definition
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data Format'
+		dataType: string
+		lineageTag: ac75dc2e-6ca5-45a1-b605-a5a2515bd3a2
+		summarizeBy: none
+		sourceColumn: Data Format
+
+		annotation SummarizationSetBy = Automatic
+
+	column Topic
+		dataType: string
+		lineageTag: 2cd197fe-b34e-4f97-8c9d-1974983fdb6b
+		summarizeBy: none
+		sourceColumn: Topic
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'KPI Name'
+		dataType: string
+		lineageTag: 91407ec9-0aee-4ecd-91f6-cb73736a3a31
+		summarizeBy: none
+		sourceColumn: KPI Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Higher is Better'
+		dataType: string
+		lineageTag: 601161b0-6fb1-4f10-ba23-e7ed8a92d5a5
+		summarizeBy: none
+		sourceColumn: Higher is Better
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Unit of Measurement'
+		dataType: string
+		lineageTag: 686e7502-7ed0-4993-b7c1-116dd202c221
+		summarizeBy: none
+		sourceColumn: Unit of Measurement
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Calculation Methodology'
+		dataType: string
+		lineageTag: c14ac426-2c7d-474f-bbaf-92e627cecced
+		summarizeBy: none
+		sourceColumn: Calculation Methodology
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Source Database (IT Dependency)'
+		dataType: string
+		lineageTag: c56d772a-1474-48ed-a779-046859b77d87
+		summarizeBy: none
+		sourceColumn: Source Database (IT Dependency)
+
+		annotation SummarizationSetBy = Automatic
+
+	column Relationships
+		dataType: string
+		lineageTag: d33aed1c-7cae-4251-bb99-ee0fd099a8ec
+		summarizeBy: none
+		sourceColumn: Relationships
+
+		annotation SummarizationSetBy = Automatic
+
+	column Constraints
+		dataType: string
+		lineageTag: 69131041-7484-4ac5-9e86-a4f26ad61157
+		summarizeBy: none
+		sourceColumn: Constraints
+
+		annotation SummarizationSetBy = Automatic
+
+	column Assumptions
+		dataType: string
+		lineageTag: 0ca7adfb-0275-49a7-bab3-f71c3ad21a42
+		summarizeBy: none
+		sourceColumn: Assumptions
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division in Scope: RC'
+		dataType: string
+		lineageTag: 81596e88-f3d4-440a-9aec-f8b9aa1874c6
+		summarizeBy: none
+		sourceColumn: Division in Scope: RC
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division in Scope: PN'
+		dataType: string
+		lineageTag: 1ce261f7-c384-474f-b396-a46c3c4e766d
+		summarizeBy: none
+		sourceColumn: Division in Scope: PN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division in Scope: MVH'
+		dataType: string
+		lineageTag: 44e6c95c-70c1-42c9-9d48-4306639f6550
+		summarizeBy: none
+		sourceColumn: Division in Scope: MVH
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Boundaries: RC'
+		dataType: string
+		lineageTag: 9d581e6b-def4-4749-9ebc-e0a8b1ab3cd8
+		summarizeBy: none
+		sourceColumn: Division Boundaries: RC
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Boundaries: PN'
+		dataType: string
+		lineageTag: 8077cbd0-20d4-4d79-8f48-707cebcb161e
+		summarizeBy: none
+		sourceColumn: Division Boundaries: PN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Boundaries: MVH'
+		dataType: string
+		lineageTag: cd757a2d-3146-421c-a674-59566aafb983
+		summarizeBy: none
+		sourceColumn: Division Boundaries: MVH
+
+		annotation SummarizationSetBy = Automatic
+
+	column Frequency
+		dataType: string
+		lineageTag: c1088b41-98e2-4914-8765-1dddb23d7185
+		summarizeBy: none
+		sourceColumn: Frequency
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Data Owner: RC'
+		dataType: string
+		lineageTag: a1e6a89e-bdff-44b7-bc47-4be8a07188d7
+		summarizeBy: none
+		sourceColumn: Division Data Owner: RC
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Data Owner: PN'
+		dataType: string
+		lineageTag: 38548742-6a5e-459c-a3d6-64122c56d2ad
+		summarizeBy: none
+		sourceColumn: Division Data Owner: PN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division Data Owner: MVH'
+		dataType: string
+		lineageTag: e3709b6f-7757-4c4e-9120-0f737b7b833d
+		summarizeBy: none
+		sourceColumn: Division Data Owner: MVH
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supporting Documents'
+		dataType: string
+		lineageTag: a99231c2-c08e-4d3c-a8fc-53a370b6fe62
+		summarizeBy: none
+		sourceColumn: Supporting Documents
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Used in PBI Calculations'
+		dataType: string
+		lineageTag: 515aa94c-d038-4ff0-a3e9-f5ea39a6f95b
+		summarizeBy: none
+		sourceColumn: Used in PBI Calculations
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim KPI' = m
+		mode: import
+		queryGroup: 'Dimension Tables'
+		source =
+				let
+				    Source = #"Sustainability KPI Table",
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"KPI ID", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"KPI Name ", "KPI Name"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

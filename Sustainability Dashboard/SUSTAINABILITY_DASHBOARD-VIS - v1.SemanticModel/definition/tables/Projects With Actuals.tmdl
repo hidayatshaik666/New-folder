@@ -1,0 +1,70 @@
+table 'Projects With Actuals'
+	lineageTag: b13190e2-21d9-4348-a2f3-bb684ee5870c
+
+	column Division
+		lineageTag: 64952ab9-b5be-4fa5-89b2-9245eb2c1dc7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Fact Projects Table History[Division]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Project
+		lineageTag: bba9f3d6-036a-4ed8-b02d-6c1ba4b99d45
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Fact Projects Table History[Project]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Key =
+			
+			VAR DivVal = COALESCE('Projects With Actuals'[Division], "NA")
+			VAR ProjVal = COALESCE('Projects With Actuals'[Project], "NA")
+			VAR ActVal  = COALESCE('Projects With Actuals'[Activity Name], "NA")
+			RETURN
+			DivVal & "-" & ProjVal & "-" & ActVal
+		lineageTag: 0a60f1d4-1ba7-4d6d-a84d-c9600c81fb4b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Activity Name'
+		lineageTag: 75c9b5c5-996e-4542-8b91-7472f5309a6a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Fact Projects Table History[Activity Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Project Name' =
+			
+			VAR ProjectVal = 'Projects With Actuals'[Project]
+			VAR ActivityVal = 'Projects With Actuals'[Activity Name]
+			RETURN
+			TRIM(
+			    COALESCE(ProjectVal, "")
+			    & " "
+			    & COALESCE(ActivityVal, "")
+			)
+		lineageTag: 8834251f-11da-4eb4-834d-2992bfd4f5b8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Projects With Actuals' = calculated
+		mode: import
+		source =
+				
+				SUMMARIZE (
+				    FILTER (
+				        'Fact Projects Table History',
+				        'Fact Projects Table History'[Attribute] = "Actual"
+				    ),
+				    'Fact Projects Table History'[Division],
+				    'Fact Projects Table History'[Project],
+				    'Fact Projects Table History'[Activity Name]
+				)
+
+	annotation PBI_Id = 6bda8d01bb0d4c1c8c2440580eebabfd
+

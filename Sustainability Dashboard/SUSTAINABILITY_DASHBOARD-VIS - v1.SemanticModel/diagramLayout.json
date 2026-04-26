@@ -1,0 +1,845 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 5644.1933459999846,
+        "y": 251.5616619999993
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 5493.4837783591665,
+            "y": 450.23828498847075
+          },
+          "nodeIndex": "Environment",
+          "nodeLineageTag": "7091136e-a61b-4b63-8ed7-167f8f90022d",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 31
+        },
+        {
+          "location": {
+            "x": 5496.5491782162335,
+            "y": 599.01188568226871
+          },
+          "nodeIndex": "Measures_table",
+          "nodeLineageTag": "1060c1d1-63fa-4b17-9e38-d2c67b06ab16",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 32
+        },
+        {
+          "location": {
+            "x": 5135.5289572992751,
+            "y": 1019.9073175524874
+          },
+          "nodeIndex": "Dim Attribute",
+          "nodeLineageTag": "d1c10dc2-1d56-48cd-b677-336d755c1ce3",
+          "size": {
+            "height": 162,
+            "width": 234
+          },
+          "zIndex": 33
+        },
+        {
+          "location": {
+            "x": 5489.3266096606767,
+            "y": 746.46514855697342
+          },
+          "nodeIndex": "KPI Intelligence",
+          "nodeLineageTag": "23f17a78-9cdd-4d9a-9560-473115b20acb",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 30
+        },
+        {
+          "location": {
+            "x": 3979.5269495960838,
+            "y": 257.24631016018742
+          },
+          "nodeIndex": "Dim KPI",
+          "nodeLineageTag": "0543c3db-4604-43dc-8498-edd8ed3e07c7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 34
+        },
+        {
+          "location": {
+            "x": 5100.7749910377706,
+            "y": 214.84375
+          },
+          "nodeIndex": "Fact Baseline",
+          "nodeLineageTag": "1ff2c798-45f7-4904-91bd-a541d4aff3e1",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 24
+        },
+        {
+          "location": {
+            "x": 3603.9245807556536,
+            "y": 337.33492112779044
+          },
+          "nodeIndex": "Fact Finance Table",
+          "nodeLineageTag": "5e5b988c-a75a-4490-bdda-b49007b3f8d7",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 25
+        },
+        {
+          "location": {
+            "x": 4640.1193037681078,
+            "y": 967.30013486781559
+          },
+          "nodeIndex": "Fact Projects Table",
+          "nodeLineageTag": "1133ed2b-34bb-429c-b219-4a4b6b855ffd",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 26
+        },
+        {
+          "location": {
+            "x": 3772.7749910377706,
+            "y": 665.21875
+          },
+          "nodeIndex": "Dim Division",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 27
+        },
+        {
+          "location": {
+            "x": 4407.1109936121911,
+            "y": 214.84375
+          },
+          "nodeIndex": "Dim Mars Date Table",
+          "nodeLineageTag": "1a6dd864-5a95-4fad-8099-01901f7f0da5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 35
+        },
+        {
+          "location": {
+            "x": 4052.4337213776339,
+            "y": 1015.9855420520199
+          },
+          "nodeIndex": "Dim Report Type",
+          "nodeLineageTag": "93786eae-77fe-49c2-924c-09a570750c52",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 28
+        },
+        {
+          "location": {
+            "x": 4760.7749910377706,
+            "y": 520.53125190734863
+          },
+          "nodeIndex": "Dim Topic",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 29
+        },
+        {
+          "location": {
+            "x": 1834.7749910377709,
+            "y": 579.07194243390779
+          },
+          "nodeIndex": "Measures (2)",
+          "nodeLineageTag": "eee32b5f-19cb-4578-b839-68f02b96ce2b",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 2118.7749910377706,
+            "y": 639.07194243390779
+          },
+          "nodeIndex": "_List of Activities Fields",
+          "nodeLineageTag": "291f1d74-50df-42eb-8a68-5f9a6b809177",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 1032.7749910377709,
+            "y": 487.867772609815
+          },
+          "nodeIndex": "dim Activity Details",
+          "nodeLineageTag": "d603ecf8-f63e-4860-a0d3-c92f7aed7ce7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 174.41428506603438,
+            "y": 749.77105401254289
+          },
+          "nodeIndex": "dim Geography",
+          "nodeLineageTag": "f4b4ac02-9c15-4709-8ecf-f481460ab1d6",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 977.0850090419508,
+            "y": 840.22682637450578
+          },
+          "nodeIndex": "dim KPI 2",
+          "nodeLineageTag": "64f762ef-d834-41c5-9454-a779e0993c5c",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 337.09280090959555,
+            "y": 225.25878496563826
+          },
+          "nodeIndex": "dim Pillar",
+          "nodeLineageTag": "fbd46e35-85d1-4813-aaba-f7e73b6433f1",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 690.05919111238813,
+            "y": 976.88509990217733
+          },
+          "nodeIndex": "dim Type of Activity",
+          "nodeLineageTag": "7be37a15-f561-44ab-b13f-660ae101a581",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 461.43975664860625,
+            "y": 452.03353285881633
+          },
+          "nodeIndex": "FACT table 2",
+          "nodeLineageTag": "6c029548-a0d9-4629-bdfd-4c03233c6772",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 858.609690060317,
+            "y": 307.03802317115174
+          },
+          "nodeIndex": "Investment Total Table",
+          "nodeLineageTag": "ba3b0ec0-f5ae-4fb9-93f5-a9bed2858cbd",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 9
+        },
+        {
+          "location": {
+            "x": 747.95907548710647,
+            "y": 520.65271605882845
+          },
+          "nodeIndex": "Scenario Order",
+          "nodeLineageTag": "e6130c12-0223-47d1-bbdc-868b72030a86",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 10
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 391.17313872979628
+          },
+          "nodeIndex": "Slicer Creation for Overview",
+          "nodeLineageTag": "ac995733-d3e3-432b-84d2-1e8e9a63f090",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 11
+        },
+        {
+          "location": {
+            "x": 2402.7749910377706,
+            "y": 615.07194243390779
+          },
+          "nodeIndex": "Subsegment/region",
+          "nodeLineageTag": "737b395f-760c-48d2-87cd-2414e19c9bc5",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 12
+        },
+        {
+          "location": {
+            "x": 1600.7749910377709,
+            "y": 601.07194243390779
+          },
+          "nodeIndex": "Table - Scenario Order",
+          "nodeLineageTag": "edf6d9f4-de67-4502-bf5d-4bbe8c493d37",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 1316.7749910377709,
+            "y": 515.07194243390779
+          },
+          "nodeIndex": "Table Summary",
+          "nodeLineageTag": "7191429d-fec7-47d1-9cf5-9cd97e14cf1d",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 14
+        },
+        {
+          "location": {
+            "x": 2686.7749910377706,
+            "y": 565.07194243390779
+          },
+          "nodeIndex": "Fact Projects Table History",
+          "nodeLineageTag": "f0025425-2576-43cb-8eb7-31d014cf8d76",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 2692.6399140377712,
+            "y": 276.70379143390875
+          },
+          "nodeIndex": "Projects With Actuals",
+          "nodeLineageTag": "b13190e2-21d9-4348-a2f3-bb684ee5870c",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 16
+        },
+        {
+          "location": {
+            "x": 5730.5491782162335,
+            "y": 540.07194243390779
+          },
+          "nodeIndex": "Fact Table",
+          "nodeLineageTag": "fa60c012-1db9-42b9-b57b-3a6e986a2fef",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 17
+        },
+        {
+          "location": {
+            "x": 5964.5491782162335,
+            "y": 577.57194243390779
+          },
+          "nodeIndex": "Period Table",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 18
+        },
+        {
+          "location": {
+            "x": 6198.5491782162335,
+            "y": 558.82194243390779
+          },
+          "nodeIndex": "Replan_Bridge",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 19
+        },
+        {
+          "location": {
+            "x": 6432.5491782162335,
+            "y": 554.69694243390779
+          },
+          "nodeIndex": "KPI's",
+          "nodeLineageTag": "264e6cb4-16f8-4747-b149-5a04ee2249d3",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 20
+        },
+        {
+          "location": {
+            "x": 7000.5491782162335,
+            "y": 474.50944243390779
+          },
+          "nodeIndex": "Dynamic Dim Topic",
+          "nodeLineageTag": "ac86ac60-d018-41a6-898c-c5d6ea66ea40",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 21
+        },
+        {
+          "location": {
+            "x": 7234.5491782162335,
+            "y": 488.50944243390779
+          },
+          "nodeIndex": "Dynamic KPI List",
+          "nodeLineageTag": "cf445ea9-04b7-4fe8-8deb-4d79229b3b6c",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 22
+        },
+        {
+          "location": {
+            "x": 7518.5491782162335,
+            "y": 524.50944243390779
+          },
+          "nodeIndex": "Dynamic Report Type",
+          "nodeLineageTag": "781137ae-8430-4f3d-b089-35b7e4a09ef6",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 23
+        },
+        {
+          "location": {
+            "x": 6716.5491782162335,
+            "y": 388.50944243390779
+          },
+          "nodeIndex": "PN & RC KPI Values",
+          "nodeLineageTag": "bdd2a287-7d5a-4cda-93cf-5a26f95bf8d0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 36
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 56.4473930053779,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 1,
+      "scrollPosition": {
+        "x": 158.2594538386459,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 261.56174483757627,
+            "y": 0
+          },
+          "nodeIndex": "Dim Mars Date Table",
+          "nodeLineageTag": "1a6dd864-5a95-4fad-8099-01901f7f0da5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 504.954215080641,
+            "y": 246.2469789999999
+          },
+          "nodeIndex": "Fact Finance Table",
+          "nodeLineageTag": "5e5b988c-a75a-4490-bdda-b49007b3f8d7",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 638.11054850466871,
+            "y": 603.59393184413625
+          },
+          "nodeIndex": "Fact Projects Table",
+          "nodeLineageTag": "1133ed2b-34bb-429c-b219-4a4b6b855ffd",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 914.04458208067683,
+            "y": 36.095513999999966
+          },
+          "nodeIndex": "Dim Attribute",
+          "nodeLineageTag": "d1c10dc2-1d56-48cd-b677-336d755c1ce3",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 14.172488000000016,
+            "y": 690.517133
+          },
+          "nodeIndex": "Dim Division",
+          "nodeLineageTag": "750afa6a-20e1-4e5e-b716-10811de949e2",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 1",
+      "zoomValue": 56.447393005377755,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 2,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 563.58333206176758,
+            "y": 0
+          },
+          "nodeIndex": "Dim KPI",
+          "nodeLineageTag": "0543c3db-4604-43dc-8498-edd8ed3e07c7",
+          "size": {
+            "height": 182.5,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "Dim Topic",
+          "nodeLineageTag": "cc80ae80-ddc2-4b8a-9646-de146108a366",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 338.5,
+            "y": 251.25
+          },
+          "nodeIndex": "Fact Projects Table History",
+          "nodeLineageTag": "f0025425-2576-43cb-8eb7-31d014cf8d76",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 786,
+            "y": 556
+          },
+          "nodeIndex": "Projects With Actuals",
+          "nodeLineageTag": "b13190e2-21d9-4348-a2f3-bb684ee5870c",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 810.75,
+            "y": 0
+          },
+          "nodeIndex": "Period Table",
+          "nodeLineageTag": "74b6404e-d088-4960-95cb-4f0d6a72370c",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1074,
+            "y": 223
+          },
+          "nodeIndex": "Replan_Bridge",
+          "nodeLineageTag": "ac4d12f4-0619-48c7-b246-816473d4f4ac",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Fact Projects history",
+      "zoomValue": 50,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 3,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 319.895116016588,
+            "y": 238.43018967551592
+          },
+          "nodeIndex": "Fact Table",
+          "nodeLineageTag": "fa60c012-1db9-42b9-b57b-3a6e986a2fef",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 65,
+            "y": 0
+          },
+          "nodeIndex": "Dim Division",
+          "nodeLineageTag": "750afa6a-20e1-4e5e-b716-10811de949e2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 361.18895655686447,
+            "y": 24.967196396556858
+          },
+          "nodeIndex": "Dim Report Type",
+          "nodeLineageTag": "93786eae-77fe-49c2-924c-09a570750c52",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 268.48209209503386
+          },
+          "nodeIndex": "Dim Topic",
+          "nodeLineageTag": "cc80ae80-ddc2-4b8a-9646-de146108a366",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 651.77090435369541,
+            "y": 16.509209370139537
+          },
+          "nodeIndex": "Dim Attribute",
+          "nodeLineageTag": "d1c10dc2-1d56-48cd-b677-336d755c1ce3",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 848.13801874621618,
+            "y": 200.27239171445552
+          },
+          "nodeIndex": "Dim Mars Date Table",
+          "nodeLineageTag": "1a6dd864-5a95-4fad-8099-01901f7f0da5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Fact Table",
+      "zoomValue": 60,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 4,
+      "scrollPosition": {
+        "x": 0,
+        "y": 60
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 379.81656154672157,
+            "y": 304.31930067399128
+          },
+          "nodeIndex": "PN & RC KPI Values",
+          "nodeLineageTag": "bdd2a287-7d5a-4cda-93cf-5a26f95bf8d0",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 289.78049232116757,
+            "y": 0
+          },
+          "nodeIndex": "Dynamic Dim Topic",
+          "nodeLineageTag": "ac86ac60-d018-41a6-898c-c5d6ea66ea40",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 551.75,
+            "y": 0
+          },
+          "nodeIndex": "Dynamic KPI List",
+          "nodeLineageTag": "cf445ea9-04b7-4fe8-8deb-4d79229b3b6c",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 817.5,
+            "y": 2.5
+          },
+          "nodeIndex": "Dynamic Report Type",
+          "nodeLineageTag": "781137ae-8430-4f3d-b089-35b7e4a09ef6",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 26.25,
+            "y": 0
+          },
+          "nodeIndex": "Dim Division",
+          "nodeLineageTag": "750afa6a-20e1-4e5e-b716-10811de949e2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 250
+          },
+          "nodeIndex": "Dim Mars Date Table",
+          "nodeLineageTag": "1a6dd864-5a95-4fad-8099-01901f7f0da5",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        }
+      ],
+      "name": "PN & RC KPI",
+      "zoomValue": 80,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "PN & RC KPI",
+  "defaultDiagram": "All tables"
+}

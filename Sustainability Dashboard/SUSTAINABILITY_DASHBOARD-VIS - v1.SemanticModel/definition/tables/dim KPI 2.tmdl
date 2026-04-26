@@ -1,0 +1,32 @@
+table 'dim KPI 2'
+	lineageTag: 64f762ef-d834-41c5-9454-a779e0993c5c
+	sourceLineageTag: ac8eba14-5a28-4a68-b0ec-4f846c0ee150
+
+	column 'KPI ID'
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		lineageTag: 5e45fbf3-2e97-4ac0-8fe0-4bf1cfcff126
+		sourceLineageTag: 87e16bbf-36e1-4249-9148-9996929fb5db
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: KPI ID
+
+		annotation SummarizationSetBy = User
+
+	column KPI
+		dataType: string
+		lineageTag: 03c3b7d8-3c2e-4985-a37c-882f8aa07814
+		sourceLineageTag: ebbaf333-4fe1-4a6c-91bf-62395bc775b7
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: KPI
+
+		annotation SummarizationSetBy = User
+
+	partition 'dim KPI 2' = entity
+		mode: directQuery
+		source
+			entityName: dim KPI
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

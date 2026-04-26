@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "3bdba2337938a02c7b08",
+  "position": {
+    "x": 612.985418265541,
+    "y": 163.56101304681505,
+    "z": 15000,
+    "height": 42.732156561780506,
+    "width": 39.785111281657713,
+    "tabOrder": 16000
+  },
+  "visualGroup": {
+    "displayName": "Help Drilldown",
+    "groupMode": "ScaleMode"
+  }
+}

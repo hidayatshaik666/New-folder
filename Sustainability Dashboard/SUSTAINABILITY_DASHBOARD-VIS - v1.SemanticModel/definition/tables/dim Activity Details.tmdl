@@ -1,0 +1,288 @@
+table 'dim Activity Details'
+	lineageTag: d603ecf8-f63e-4860-a0d3-c92f7aed7ce7
+	sourceLineageTag: d31d46a5-5e3e-4c1d-9b01-b6761b7b21a9
+
+	column Count
+		dataType: int64
+		formatString: 0
+		lineageTag: ddfd064d-f2a3-4490-8ef9-b1d39f99bc46
+		sourceLineageTag: f354e5ae-3298-4424-861a-89b90a2b0768
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Count
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Key'
+		dataType: string
+		isNullable: false
+		lineageTag: 3b3c6880-10c5-4225-a804-d6d6a0108391
+		sourceLineageTag: 2c761e0e-37ca-4a45-81f9-a961f576d3bd
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Key
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Name'
+		dataType: string
+		lineageTag: 06956bba-2faa-400a-80ce-a24fa2101021
+		sourceLineageTag: 879eeb44-8cea-4cb2-8319-74aca38de5aa
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Name
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Description'
+		dataType: string
+		lineageTag: f5cc1cee-4283-4085-b50c-15d7af77caa7
+		sourceLineageTag: cb22e8a2-bf82-4afd-8889-2c4b4ce68616
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Description
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity owner'
+		dataType: string
+		lineageTag: dce52515-ab2d-4b3d-ac12-a798c1cee75a
+		sourceLineageTag: 53a3e994-e79d-491e-9772-c2a75a15cd42
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity owner
+
+		annotation SummarizationSetBy = User
+
+	column 'Targeted commodities'
+		dataType: string
+		lineageTag: 6f5d0b66-f8e2-4db6-b2cf-8789fefce2ea
+		sourceLineageTag: 54d997c9-78f5-4799-b65d-15673fc5e912
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Targeted commodities
+
+		annotation SummarizationSetBy = User
+
+	column 'Start year'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ad1911c-fc9d-4dfe-bdfd-f3f49cb08bb9
+		sourceLineageTag: 72d55e9f-738b-419f-ac5a-b124707830fc
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Start year
+
+		annotation SummarizationSetBy = User
+
+	column 'End Year'
+		dataType: int64
+		formatString: 0
+		lineageTag: c406d942-04e7-4417-ab09-88b66018abf1
+		sourceLineageTag: cbdca4f0-2024-45de-8ba7-be7383d4a2f0
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: End Year
+
+		annotation SummarizationSetBy = User
+
+	column 'Existing in CAP'
+		dataType: string
+		lineageTag: aa8c0acf-634b-4dd8-9c43-cbfa66bbddf2
+		sourceLineageTag: 60467b62-4968-480c-b021-297f9d238ee5
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Existing in CAP
+
+		annotation SummarizationSetBy = User
+
+	column 'Activity Status'
+		dataType: string
+		lineageTag: 437213ae-ac7a-4aee-9cb2-a0541f19dd82
+		sourceLineageTag: 720e5090-c06f-48c9-b828-acadcee8682d
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Activity Status
+
+		annotation SummarizationSetBy = User
+
+	column 'PPM ID'
+		dataType: string
+		lineageTag: 205ba3d8-4354-4a7a-9dfc-9e482179afb2
+		sourceLineageTag: cbe7838c-cdc8-4c7d-8cb7-9ebbed31bb12
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: PPM ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Conversions & Assumptions'
+		dataType: string
+		lineageTag: 3459255b-98e4-48ad-a0ba-e8a45723fa2f
+		sourceLineageTag: 45a5a7c7-81d9-49ad-bfeb-41c191ca211e
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Conversions & Assumptions
+
+		annotation SummarizationSetBy = User
+
+	column 'Level of Confidence'
+		dataType: string
+		lineageTag: c2baf10f-974a-413f-8e96-ae34ae7fec89
+		sourceLineageTag: f80115fa-74d5-48b9-a6b7-bbbb92ccc349
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Level of Confidence
+
+		annotation SummarizationSetBy = User
+
+	column 'Risk Factors'
+		dataType: string
+		lineageTag: 94938820-e08f-4d3e-ad08-99435368aa47
+		sourceLineageTag: 0a32aa30-520f-4e07-b1fa-835dc44c3647
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Risk Factors
+
+		annotation SummarizationSetBy = User
+
+	column Opportunities
+		dataType: string
+		lineageTag: 4048e520-6ba8-46fb-bf8f-63d7f1a0f560
+		sourceLineageTag: 4dc6d332-d823-4be2-9109-1eb14e593a2f
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Opportunities
+
+		annotation SummarizationSetBy = User
+
+	column Brands
+		dataType: string
+		lineageTag: dfba574c-98e6-45fb-a394-7304937abc88
+		sourceLineageTag: c867d52a-dc44-4efc-aa0d-7e40ca46778b
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Brands
+
+		annotation SummarizationSetBy = User
+
+	column Suppliers
+		dataType: string
+		lineageTag: 0907c7bb-f395-4e94-a930-9721f06a36e2
+		sourceLineageTag: 91e7e695-80d8-46c0-944a-9c9203700ab6
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Suppliers
+
+		annotation SummarizationSetBy = User
+
+	column 'Implementation Partners'
+		dataType: string
+		lineageTag: a26bfc01-7f36-4417-b994-eb4b1197b9fb
+		sourceLineageTag: 5a27f560-93bc-44ac-b3cf-76d95a32f38d
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Implementation Partners
+
+		annotation SummarizationSetBy = User
+
+	column Comments
+		dataType: string
+		lineageTag: e5ec99e2-df14-4f12-a205-c64e72d8ca1f
+		sourceLineageTag: a0e1ead0-d73d-4cbc-93fa-50c3ea057103
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Comments
+
+		annotation SummarizationSetBy = User
+
+	column 'Investment needed'
+		dataType: string
+		lineageTag: 92720e25-1973-4922-adfc-b039dd82234e
+		sourceLineageTag: 4f316de1-65ea-403c-8a80-235a5f15dbba
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Investment needed
+
+		annotation SummarizationSetBy = User
+
+	column 'GHG Scope'
+		dataType: int64
+		formatString: 0
+		lineageTag: b6819bd5-23e7-4834-902a-51d7eacf3b8b
+		sourceLineageTag: 32430f46-c0bb-422e-9e63-880332eac7c2
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: GHG Scope
+
+		annotation SummarizationSetBy = User
+
+	column 'AEP status'
+		dataType: string
+		lineageTag: 87d33678-2d8f-4f45-938d-d42fda3436d3
+		sourceLineageTag: 0b6dfbf1-9bf8-4d83-926f-00ce0fb80fcb
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: AEP status
+
+		annotation SummarizationSetBy = User
+
+	column 'Justification for NOT excluding outliers'
+		dataType: string
+		lineageTag: b356287b-1abf-4dba-83cf-112c09e061d7
+		sourceLineageTag: d70cf70b-287d-4971-bf06-c5cf61136496
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Justification for NOT excluding outliers
+
+		annotation SummarizationSetBy = User
+
+	column 'Years of ammortization'
+		dataType: int64
+		formatString: 0
+		lineageTag: 497f0ebf-dd72-4cf7-8323-dcf8f2ecf363
+		sourceLineageTag: fc366d0e-14fb-4b57-81f0-53bf759a93da
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Years of ammortization
+
+		annotation SummarizationSetBy = User
+
+	column 'Confidence Level Copy'
+		dataType: string
+		lineageTag: 4a8634c8-53ef-4f6a-bdf5-1befeb8c3d2f
+		sourceLineageTag: 3bb4c485-81a1-4a87-ab7e-ea362bb0d7e7
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Confidence Level Copy
+		sortByColumn: 'Confidence Order'
+
+		annotation SummarizationSetBy = User
+
+	column 'Confidence Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9035f4fc-ee6c-4a53-8f56-50711fb98305
+		sourceLineageTag: 440eef94-630b-480f-9727-b15a2e33fe1c
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Confidence Order
+
+		annotation SummarizationSetBy = User
+
+	column Technology
+		dataType: string
+		lineageTag: 22f96d9a-961e-4b97-9b66-1f1d45eb50a3
+		sourceLineageTag: 0f72731b-0095-4f8a-bff5-458419fe8705
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Technology
+
+		annotation SummarizationSetBy = User
+
+	partition 'dim Activity Details' = entity
+		mode: directQuery
+		source
+			entityName: dim Activity Details
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

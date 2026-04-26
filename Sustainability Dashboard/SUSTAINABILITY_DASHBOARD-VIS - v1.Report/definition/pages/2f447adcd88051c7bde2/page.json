@@ -1,0 +1,193 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "2f447adcd88051c7bde2",
+  "displayName": "Duplicate of KPI Trends",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8f3b4327e6366c37bd02",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim KPI"
+              }
+            },
+            "Property": "Used in PBI Calculations"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "Dim KPI",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "Used in PBI Calculations"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Yes'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "a970c5748aded9170557",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact Table"
+              }
+            },
+            "Property": "Attribute"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "Fact Table",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "Attribute"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Actuals'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "33133107dcb779255820",
+    "type": "Default",
+    "parameters": [],
+    "acceptsFilterContext": "None"
+  },
+  "visualInteractions": [
+    {
+      "source": "f7f0dcd7a25646509137",
+      "target": "9554a92c2a50388206cd",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8b7840d7b70b083cb347",
+      "target": "2d578a14a4de9e693c52",
+      "type": "NoFilter"
+    },
+    {
+      "source": "8b7840d7b70b083cb347",
+      "target": "9554a92c2a50388206cd",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "9554a92c2a50388206cd",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "ad92020102a3ada3d397",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "89e297bae12b7080cb03",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "342938c8a7c0cb2bcdba",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "92a9fed2b7b7d00d0872",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "7dd658e62dd380b1e23c",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "82a8fb6919dc78b0bd6b",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "8b7840d7b70b083cb347",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "f7f0dcd7a25646509137",
+      "type": "DataFilter"
+    },
+    {
+      "source": "87d8af7935a7c38e9ae4",
+      "target": "866eea25ed7d01e05768",
+      "type": "DataFilter"
+    }
+  ]
+}

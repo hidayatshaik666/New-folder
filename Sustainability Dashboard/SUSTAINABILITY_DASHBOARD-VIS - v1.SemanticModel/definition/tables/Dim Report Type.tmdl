@@ -1,0 +1,41 @@
+table 'Dim Report Type'
+	lineageTag: 93786eae-77fe-49c2-924c-09a570750c52
+
+	column 'Report Type ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9d1050e1-0580-4a83-9fae-73709df63147
+		summarizeBy: none
+		sourceColumn: Report Type ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report Type'
+		dataType: string
+		lineageTag: 3fc50fee-1c6b-4aa9-ba55-ac4b164858b8
+		summarizeBy: none
+		sourceColumn: Report Type
+		sortByColumn: 'Report Type ID'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim Report Type' = m
+		mode: import
+		queryGroup: 'Dimension Tables'
+		source =
+				let
+				    Source = #"Sustainability Scorecard data",
+				    #"Imported Excel Workbook" = Excel.Workbook(Source),
+				    #"Report Type_Sheet" = #"Imported Excel Workbook"{[Item="Report Type",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Report Type_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Report Type ID", Int64.Type}, {"Report Type", type text}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Report Type] <> "YEE Quarterly Updates"))
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,176 @@
+createOrReplace
+
+	table 'Fact Projects Table History'
+		lineageTag: f0025425-2576-43cb-8eb7-31d014cf8d76
+
+		measure Actual_All =
+				
+				/* Value for Actuals */
+				CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Actual")
+			lineageTag: 65f1a770-f5f2-454f-a5f3-8618c9b2142f
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Investment_All =
+				
+				/* Value for Investments */
+				CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Investment") * -1
+			lineageTag: 89ecf888-76c1-40e6-a182-4e9dd9aff6b2
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Planned_All =
+				
+				/* Value for Planneds */
+				CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Planned")
+			lineageTag: 811c5618-877d-4ce8-90c4-14b3cf20dfc5
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure Replan_All =
+				
+				/* Value for Replan */
+				CALCULATE(MAX('Fact Projects Table History'[Value]), 'Fact Projects Table History'[Attribute]="Replan") * -1
+			lineageTag: f2e251f8-bd51-4c5f-a330-58f965ce60dc
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		measure 'Activity Name All' =
+				
+				/* Name of the project on the Top 10 Projects page */
+				SELECTEDVALUE('Fact Projects Table History'[Activity Name])
+			lineageTag: dd152556-4318-4d87-94fe-4ed6d1525f92
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column Year
+			dataType: int64
+			formatString: 0
+			lineageTag: ca20ff43-c029-4dbc-b2ea-2b12604aba07
+			summarizeBy: sum
+			sourceColumn: Year
+
+			annotation SummarizationSetBy = Automatic
+
+		column Quarter
+			dataType: int64
+			formatString: 0
+			lineageTag: 49021536-d863-446e-95cf-290cf86964f1
+			summarizeBy: sum
+			sourceColumn: Quarter
+
+			annotation SummarizationSetBy = Automatic
+
+		column Division
+			dataType: string
+			lineageTag: b5a7ea19-aa06-4224-94a9-54a26200cf4f
+			summarizeBy: none
+			sourceColumn: Division
+
+			annotation SummarizationSetBy = Automatic
+
+		column Project
+			dataType: string
+			lineageTag: d6fd9b88-bfa4-4e37-89c0-e7778919e904
+			summarizeBy: none
+			sourceColumn: Project
+
+			annotation SummarizationSetBy = Automatic
+
+		column Attribute
+			dataType: string
+			lineageTag: f4818233-d005-4aab-8224-6bf19bb10b6e
+			summarizeBy: none
+			sourceColumn: Attribute
+
+			annotation SummarizationSetBy = Automatic
+
+		column Value
+			dataType: double
+			lineageTag: dc2abf51-b941-4383-84f6-0d034328335a
+			summarizeBy: sum
+			sourceColumn: Value
+
+			annotation SummarizationSetBy = Automatic
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+		column Timestamp
+			dataType: string
+			lineageTag: 9b9bbaec-710d-4c47-916a-52dd6a25ca30
+			summarizeBy: none
+			sourceColumn: Timestamp
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'OE name'
+			dataType: string
+			lineageTag: 937a8b1c-8db2-4772-b1d8-b9b3666ed667
+			summarizeBy: none
+			sourceColumn: OE name
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Activity Name'
+			dataType: string
+			lineageTag: 5092602c-d07b-4539-b504-b0576827d3c0
+			summarizeBy: none
+			sourceColumn: Activity Name
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'KPI ID'
+			dataType: int64
+			formatString: 0
+			lineageTag: fa04be49-2b07-4487-b140-6ce3a51c3946
+			summarizeBy: none
+			sourceColumn: KPI ID
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Topic ID'
+			dataType: int64
+			formatString: 0
+			lineageTag: 2bca9e78-a260-404d-abc5-27501409d710
+			summarizeBy: none
+			sourceColumn: Topic ID
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Activity Status'
+			dataType: string
+			lineageTag: d917bd6d-cda3-49bc-b0da-cbbdf5def128
+			summarizeBy: none
+			sourceColumn: Activity Status
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Unit / Region'
+			dataType: string
+			lineageTag: c3bcc0bc-a23e-4ed6-b4fc-bbccbc172604
+			summarizeBy: none
+			sourceColumn: Unit / Region
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Project Name' = COMBINEVALUES(" ", 'Fact Projects Table History'[Project], 'Fact Projects Table History'[Activity Name])
+			lineageTag: b85dc42b-e571-47c9-909c-660d824cd98e
+			summarizeBy: none
+
+			annotation SummarizationSetBy = Automatic
+
+		partition 'Fact Projects Table History' = m
+			mode: import
+			queryGroup: 'CAP Projects History'
+			source =
+					let
+					    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Year = _t, Quarter = _t, Division = _t, OE name = _t, Project = _t, Attribute = _t, Value = _t]),
+					    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Year", Int64.Type}, {"Quarter", Int64.Type}, {"Division", type text}, {"OE name", type text}, {"Project", type text}, {"Attribute", type text}, {"Value", type number}}),
+					    #"Appended Query" = Table.Combine({#"Changed Type", #"CAP Projects GHG Actual History", #"CAP Projects GHG Planned History", #"CAP Projects GHG Investment History", #"CAP Projects GHG Replan History"})
+					in
+					    #"Appended Query"
+
+		annotation PBI_NavigationStepName = Navigation
+
+		annotation PBI_ResultType = Table
+

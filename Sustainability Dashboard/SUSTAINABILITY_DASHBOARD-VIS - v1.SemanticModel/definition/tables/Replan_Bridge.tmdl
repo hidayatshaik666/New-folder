@@ -1,0 +1,42 @@
+table Replan_Bridge
+	lineageTag: ac4d12f4-0619-48c7-b246-816473d4f4ac
+
+	column 'Reporting Period'
+		lineageTag: c6ababd1-86fc-4909-96d7-950727005e5a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: Fact Projects Table History[Reporting Period]
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetYear
+		formatString: 0
+		lineageTag: 7c22abba-71da-40c1-b1a0-6a91386db046
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TargetYear]
+
+		annotation SummarizationSetBy = Automatic
+
+	column TargetQuarter
+		formatString: 0
+		lineageTag: fa49388e-5445-4a94-a8a9-d3870c994189
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [TargetQuarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Replan_Bridge = calculated
+		mode: import
+		source =
+				
+				VAR AllPeriods = DISTINCT('Fact Projects Table History'[Reporting Period]) -- Ensure you have a key column like "2025-Q1"
+				RETURN
+				    GENERATE(
+				        AllPeriods,
+				        ROW("TargetYear", 2025, "TargetQuarter", 3)
+				    )
+
+	annotation PBI_Id = fa87e3f32b6e46cabc81f18c35c5ebef
+

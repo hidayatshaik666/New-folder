@@ -1,0 +1,435 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.1.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY24SU10",
+      "reportVersionAtImport": {
+        "visual": "1.8.95",
+        "report": "2.0.95",
+        "page": "1.3.95"
+      },
+      "type": "SharedResources"
+    },
+    "customTheme": {
+      "name": "Mars_Centra_theme.final49702644496501636.json",
+      "reportVersionAtImport": {
+        "visual": "1.8.101",
+        "report": "2.0.101",
+        "page": "1.3.101"
+      },
+      "type": "RegisteredResources"
+    }
+  },
+  "objects": {
+    "section": [
+      {
+        "properties": {
+          "verticalAlignment": {
+            "expr": {
+              "Literal": {
+                "Value": "'Top'"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          },
+          "visible": {
+            "expr": {
+              "Literal": {
+                "Value": "false"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "publicCustomVisuals": [
+    "massFilter2E7137AC1174403C8CF3456F3EB0B7D7"
+  ],
+  "resourcePackages": [
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "Background_Images_Master6423999615211803173542.png",
+          "path": "Background_Images_Master6423999615211803173542.png",
+          "type": "Image"
+        },
+        {
+          "name": "Colour_Logo_Without_Line_-_Tra8212126284086587.png",
+          "path": "Colour_Logo_Without_Line_-_Tra8212126284086587.png",
+          "type": "Image"
+        },
+        {
+          "name": "dpm_nav_home_selected9666631632965592.svg",
+          "path": "dpm_nav_home_selected9666631632965592.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_selected21507071214876727.svg",
+          "path": "icon_nav_analysis_selected21507071214876727.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_selected37838957021227093.svg",
+          "path": "icon_nav_analysis_selected37838957021227093.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_selected6202260517595323.svg",
+          "path": "icon_nav_analysis_selected6202260517595323.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_selected6656365296498836.svg",
+          "path": "icon_nav_analysis_selected6656365296498836.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_selected9184157473132475.svg",
+          "path": "icon_nav_analysis_selected9184157473132475.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_Unselected16630838350385418.svg",
+          "path": "icon_nav_analysis_Unselected16630838350385418.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_Unselected17992583148871442.svg",
+          "path": "icon_nav_analysis_Unselected17992583148871442.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_Unselected18142961840709675.svg",
+          "path": "icon_nav_analysis_Unselected18142961840709675.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_Unselected1873572274628464.svg",
+          "path": "icon_nav_analysis_Unselected1873572274628464.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_analysis_Unselected18925960128028173.svg",
+          "path": "icon_nav_analysis_Unselected18925960128028173.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_home_selected11450097309363039.svg",
+          "path": "icon_nav_home_selected11450097309363039.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_home_selected4151773385139159.svg",
+          "path": "icon_nav_home_selected4151773385139159.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_home_selected7013877431249635.svg",
+          "path": "icon_nav_home_selected7013877431249635.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_home_unselected2614994396375636.svg",
+          "path": "icon_nav_home_unselected2614994396375636.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_nav_home_unselected8706239859593132.svg",
+          "path": "icon_nav_home_unselected8706239859593132.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_sel1441715721518.svg",
+          "path": "icon_visswitch_tableheader_sel1441715721518.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_sel36686189678142944.svg",
+          "path": "icon_visswitch_tableheader_sel36686189678142944.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_sel5676552108937976.svg",
+          "path": "icon_visswitch_tableheader_sel5676552108937976.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_sel8196834901575957.svg",
+          "path": "icon_visswitch_tableheader_sel8196834901575957.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_sel8727621299982458.svg",
+          "path": "icon_visswitch_tableheader_sel8727621299982458.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_sel8949543048028742.svg",
+          "path": "icon_visswitch_tableheader_sel8949543048028742.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_uns16315924434229423.svg",
+          "path": "icon_visswitch_tableheader_uns16315924434229423.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_tableheader_uns6619790787046475.svg",
+          "path": "icon_visswitch_tableheader_uns6619790787046475.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_02034231899521488.svg",
+          "path": "icon_visswitch_verticalcolumn_02034231899521488.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_10935555193087032.svg",
+          "path": "icon_visswitch_verticalcolumn_10935555193087032.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_12142335935115645.svg",
+          "path": "icon_visswitch_verticalcolumn_12142335935115645.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_24571455577363077.svg",
+          "path": "icon_visswitch_verticalcolumn_24571455577363077.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_41966896617695904.svg",
+          "path": "icon_visswitch_verticalcolumn_41966896617695904.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_4396358331474579.svg",
+          "path": "icon_visswitch_verticalcolumn_4396358331474579.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_4477788167161475.svg",
+          "path": "icon_visswitch_verticalcolumn_4477788167161475.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_5107197699495887.svg",
+          "path": "icon_visswitch_verticalcolumn_5107197699495887.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_5775151003952704.svg",
+          "path": "icon_visswitch_verticalcolumn_5775151003952704.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_visswitch_verticalcolumn_7994738429259988.svg",
+          "path": "icon_visswitch_verticalcolumn_7994738429259988.svg",
+          "type": "Image"
+        },
+        {
+          "name": "Mars_Centra_theme.final49702644496501636.json",
+          "path": "Mars_Centra_theme.final49702644496501636.json",
+          "type": "Image"
+        },
+        {
+          "name": "Sustainability_Background_Temp7261190287678221.jpg",
+          "path": "Sustainability_Background_Temp7261190287678221.jpg",
+          "type": "Image"
+        },
+        {
+          "name": "VerticalNav680320478984026960745521189446.png",
+          "path": "VerticalNav680320478984026960745521189446.png",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_unselected07511408851685475.svg",
+          "path": "icon_glossary_unselected07511408851685475.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_selected9619855582095594.svg",
+          "path": "icon_glossary_selected9619855582095594.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_selected7277029197172394.svg",
+          "path": "icon_glossary_selected7277029197172394.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_unselected3992578929447844.svg",
+          "path": "icon_glossary_unselected3992578929447844.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_unselected7283706009233545.svg",
+          "path": "icon_glossary_unselected7283706009233545.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_unselected9340371602887697.svg",
+          "path": "icon_glossary_unselected9340371602887697.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_selected940734352438418.svg",
+          "path": "icon_glossary_selected940734352438418.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_selected5621341183497163.svg",
+          "path": "icon_glossary_selected5621341183497163.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_unselected17269796188898112.svg",
+          "path": "icon_glossary_unselected17269796188898112.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_selected6764456130036853.svg",
+          "path": "icon_glossary_selected6764456130036853.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_glossary_selected4918075555634772.svg",
+          "path": "icon_glossary_selected4918075555634772.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_unselected5234377738854097.svg",
+          "path": "icon_top_projects_unselected5234377738854097.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_unselected8727966242180019.svg",
+          "path": "icon_top_projects_unselected8727966242180019.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_unselected38677336092268866.svg",
+          "path": "icon_top_projects_unselected38677336092268866.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_unselected9844674375691206.svg",
+          "path": "icon_valuecration_unselected9844674375691206.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_selected3167334955478892.svg",
+          "path": "icon_valuecration_selected3167334955478892.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_selected6140776779763033.svg",
+          "path": "icon_valuecration_selected6140776779763033.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_unselected49837580016761596.svg",
+          "path": "icon_valuecration_unselected49837580016761596.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_unselected7918495580837408.svg",
+          "path": "icon_valuecration_unselected7918495580837408.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_unselected6280441715528927.svg",
+          "path": "icon_valuecration_unselected6280441715528927.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_unselected39669975209298713.svg",
+          "path": "icon_top_projects_unselected39669975209298713.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_selected6390671888634907.svg",
+          "path": "icon_top_projects_selected6390671888634907.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_selected7487964905091409.svg",
+          "path": "icon_top_projects_selected7487964905091409.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_selected30300997677932173.svg",
+          "path": "icon_top_projects_selected30300997677932173.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_selected41249869354219115.svg",
+          "path": "icon_top_projects_selected41249869354219115.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_top_projects_selected9578732550539573.svg",
+          "path": "icon_top_projects_selected9578732550539573.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_selected8014276706243849.svg",
+          "path": "icon_valuecration_selected8014276706243849.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_selected3944547369239435.svg",
+          "path": "icon_valuecration_selected3944547369239435.svg",
+          "type": "Image"
+        },
+        {
+          "name": "icon_valuecration_selected2787741757230576.svg",
+          "path": "icon_valuecration_selected2787741757230576.svg",
+          "type": "Image"
+        }
+      ]
+    },
+    {
+      "name": "SharedResources",
+      "type": "SharedResources",
+      "items": [
+        {
+          "name": "CY24SU10",
+          "path": "BaseThemes/CY24SU10.json",
+          "type": "BaseTheme"
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "useStylableVisualContainerHeader": true,
+    "exportDataMode": "AllowSummarized",
+    "defaultDrillFilterOtherVisuals": true,
+    "allowChangeFilterTypes": true,
+    "useEnhancedTooltips": true,
+    "useDefaultAggregateDisplayName": true
+  },
+  "slowDataSourceSettings": {
+    "isCrossHighlightingDisabled": false,
+    "isSlicerSelectionsButtonEnabled": false,
+    "isFilterSelectionsButtonEnabled": false,
+    "isFieldWellButtonEnabled": false,
+    "isApplyAllButtonEnabled": false
+  }
+}

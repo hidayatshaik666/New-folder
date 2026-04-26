@@ -1,0 +1,51 @@
+table 'Measures (2)'
+	lineageTag: eee32b5f-19cb-4578-b839-68f02b96ce2b
+	sourceLineageTag: 11923a84-b7e0-486e-8904-1ac8b42e9040
+
+	measure Total_Sales_Year = EXTERNALMEASURE("Total_Sales_Year", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: ba33984f-161f-4f14-9156-33df33afd61e
+		sourceLineageTag: 1765c9ad-f5b6-4ccd-93ea-ab0a206d2e47
+		dataCategory: Uncategorized
+
+	measure Total_Sales_Year_Chart = EXTERNALMEASURE("Total_Sales_Year_Chart", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: 4275156d-92bc-4d58-a3a5-6f716e15e399
+		sourceLineageTag: ea7f329a-eae5-4bab-bbbb-33a4fae2a722
+		dataCategory: Uncategorized
+
+	measure 'Last Refreshed' = EXTERNALMEASURE("Last Refreshed", STRING, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: bbf9a160-5c6c-4131-a153-dd1e86030a55
+		sourceLineageTag: 2834bd14-667d-46a3-9506-fda1af27a7d8
+		dataCategory: Uncategorized
+
+	measure 'Bottom MACC Value' = EXTERNALMEASURE("Bottom MACC Value", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: dcb93054-7295-4025-9b06-7d53665e6220
+		sourceLineageTag: a3f8116b-b9f1-40ba-9299-8721d3b8d4a0
+		dataCategory: Uncategorized
+
+	measure 'Middle MACC Value' = EXTERNALMEASURE("Middle MACC Value", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: b86961db-bd51-4038-b77e-3bf9df83b4f1
+		sourceLineageTag: a760c0bb-740c-48b8-8997-61c2b0f68c34
+		dataCategory: Uncategorized
+
+	measure 'Top MACC Value' = EXTERNALMEASURE("Top MACC Value", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: d5244d8e-5088-4adb-8352-833afe27c20f
+		sourceLineageTag: a662cdc5-fd9f-46a5-a6e5-e73c060646a5
+		dataCategory: Uncategorized
+
+	measure cost/ton = EXTERNALMEASURE("cost/ton", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		formatString: 0
+		lineageTag: 75361bef-1569-4f90-b103-9191f4f57c91
+		sourceLineageTag: 4da1bd9c-ef1c-4421-8b42-597c0cab38a9
+		dataCategory: Uncategorized
+
+	measure 'Rounding Cash Out' = EXTERNALMEASURE("Rounding Cash Out", DOUBLE, "DirectQuery to AS - CAP refresh latest report")
+		lineageTag: 1436850b-c207-4748-9e56-bf4cd5b17a01
+		sourceLineageTag: 96a13b47-684c-419c-a741-189bcbbcfde0
+		dataCategory: Uncategorized
+
+	partition 'Measures (2)' = entity
+		mode: directQuery
+		source
+			entityName: Measures (2)
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

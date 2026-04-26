@@ -1,0 +1,42 @@
+table 'Dim Topic'
+	lineageTag: cc80ae80-ddc2-4b8a-9646-de146108a366
+
+	column Topic
+		dataType: string
+		lineageTag: 6def217b-02dd-4733-99ee-36c562f5e4e0
+		summarizeBy: none
+		sourceColumn: Topic
+		sortByColumn: 'Topic ID'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Topic ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 26c9ecfe-83c4-4bc1-aa01-f21554856578
+		summarizeBy: none
+		sourceColumn: Topic ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim Topic' = m
+		mode: import
+		queryGroup: 'Dimension Tables'
+		source =
+				let
+				    Source = #"Sustainability Scorecard data",
+				    #"Imported Excel Workbook" = Excel.Workbook(Source),
+				    Topic_Sheet = #"Imported Excel Workbook"{[Item="Topic",Kind="Sheet"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(Topic_Sheet,{{"Column1", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"Topic", type text}, {"Topic ID", Int64.Type}}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Changed Type1", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

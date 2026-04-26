@@ -1,0 +1,152 @@
+table 'PN & RC KPI Values'
+	lineageTag: bdd2a287-7d5a-4cda-93cf-5a26f95bf8d0
+
+	column UOM
+		dataType: string
+		lineageTag: ce90efcb-c15b-4406-b39a-e4bdfe4e2417
+		summarizeBy: none
+		sourceColumn: UOM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: cdf283fa-6d6e-46f1-b255-d5f1cac35727
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Attribute
+		dataType: string
+		lineageTag: ee0ad7b2-2188-4cdf-ab97-114b8c4bc09b
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: dd5d5a64-f20f-4eb8-825b-38629201112f
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: e714df64-ac82-490a-880b-8a1bd2a7b346
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End Of Quarter Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6518b229-1866-4704-b131-8c04e0edbf5d
+		summarizeBy: none
+		sourceColumn: End Of Quarter Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Timestamp
+		dataType: string
+		lineageTag: b31ad764-e8af-4b32-834c-93360f542ce9
+		summarizeBy: none
+		sourceColumn: Timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Timestamp - KPI Trends'
+		dataType: string
+		lineageTag: 21c3518c-0050-4def-b041-a7dd6115cf86
+		summarizeBy: none
+		sourceColumn: Timestamp - KPI Trends
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: cc2af375-0d86-4146-9eb8-fecbf1d4cd8d
+		summarizeBy: none
+		sourceColumn: Division ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Topic ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: e5f469e3-8833-4a4d-9332-ec5a804675cb
+		summarizeBy: none
+		sourceColumn: Topic ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Report Type ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b8847be-82cb-4092-8591-326d2d7a23f6
+		summarizeBy: none
+		sourceColumn: Report Type ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Attribute ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5344353c-5e09-4a32-9822-2c7558209fe6
+		summarizeBy: none
+		sourceColumn: Attribute ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'PN & RC KPI Values' = m
+		mode: import
+		queryGroup: 'New KPI''s'
+		source = ```
+				let
+				    Source = Table.Combine({#"PN KPI Values", #"RC KPI Values"}),
+				    // Define the list of items to exclude
+				    ItemsToRemove = {
+				        "Advocate", "Circular", "D4C score", "Eliminate", 
+				        "Scope 1 Annual GHG reduction through activity set", 
+				        "Scope 1 cumulative GHG reduction through activity set", 
+				        "Scope 2 Annual GHG reduction through activity set", 
+				        "Scope 2 cumulative GHG reduction through activity set", 
+				        "Scope 3 Annual GHG reduction through activity set", 
+				        "Scope 3 cumulative GHG reduction through activity set", 
+				        "TEST KPI1", 
+				        //"Total Annual GHG reduction through activity set", 
+				        //"Total cumulative GHG reduction through activity set", 
+				        "Volume of packaging classified as D4C", 
+				        "Volume of packaging classified as NOT D4C"
+				    },
+				
+				    // Filter the table using the list
+				    #"Filtered Attributes" = Table.SelectRows(Source, each not List.Contains(ItemsToRemove, [Attributes])),
+				    #"Merged Queries" = Table.NestedJoin(#"Filtered Attributes", {"JoinKey"}, #"Dynamic KPI List", {"JoinKey"}, "Dynamic KPI List", JoinKind.LeftOuter),
+				    #"Expanded Dynamic KPI List" = Table.ExpandTableColumn(#"Merged Queries", "Dynamic KPI List", {"KPI ID", "Topic ID"}, {"KPI ID", "Topic ID"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Dynamic KPI List",{{"KPI ID", "Attribute ID"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Attribute ID", Int64.Type}, {"Topic ID", Int64.Type}}),
+				    #"Merged Queries1" = Table.FuzzyNestedJoin(#"Changed Type", {"Attribute"}, #"Dynamic Report Type", {"Report Type"}, "Dim Report Type", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),
+				    #"Expanded Dim Report Type" = Table.ExpandTableColumn(#"Merged Queries1", "Dim Report Type", {"Report Type ID"}, {"Report Type ID"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded Dim Report Type",{{"Report Type ID", Int64.Type}}),
+				    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed Type1",{"Topic", "Attributes", "Division", "JoinKey"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Dimension Columns",{"Timestamp", "Year", "Quarter", "Attribute",  "End Of Quarter Date", "Timestamp - KPI Trends", "Division ID", "Attribute ID", "Topic ID", "Report Type ID","UOM", "Value"}),
+				    // Removed Scope 1, 2, 3 GHG annual and Cummulative KPI's Data
+				    #"Removed GHG Scopes Data" = Table.SelectRows(#"Reordered Columns", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28))
+				in
+				    #"Removed GHG Scopes Data"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,82 @@
+table 'dim Geography'
+	lineageTag: f4b4ac02-9c15-4709-8ecf-f481460ab1d6
+	sourceLineageTag: def801eb-868d-4910-8b3b-106c8030870c
+
+	column 'Geography ID'
+		dataType: int64
+		isNullable: false
+		formatString: 0
+		lineageTag: 3808aede-7f1c-458e-a876-bab6007cc346
+		sourceLineageTag: 81f0d2fa-c06a-4e32-848d-83fcaf439db5
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Geography ID
+
+		annotation SummarizationSetBy = User
+
+	column 'Geography Concat'
+		dataType: string
+		lineageTag: db8fe9dd-24eb-4634-a21a-e19504ddc0ab
+		sourceLineageTag: 5541d09b-dab9-4e67-bd1f-da1d138fafc7
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Geography Concat
+
+		annotation SummarizationSetBy = User
+
+	column Subsegment
+		dataType: string
+		lineageTag: d20afebe-717f-4200-8625-79413399847b
+		sourceLineageTag: 91d0e5cb-7208-4dfa-9361-9f922b10ac80
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Subsegment
+
+		annotation SummarizationSetBy = User
+
+	column 'Unit / Region'
+		dataType: string
+		lineageTag: a41d9251-f821-4af8-977c-8cfc88b5def7
+		sourceLineageTag: bd5a2058-0f95-4a2c-b5a3-63959aeb9c5c
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Unit / Region
+
+		annotation SummarizationSetBy = User
+
+	column 'OE name'
+		dataType: string
+		lineageTag: 3e989a83-a01e-439f-928e-f860ce6ac195
+		sourceLineageTag: 3fc587f9-e590-4e28-9f12-629f82038187
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: OE name
+
+		annotation SummarizationSetBy = User
+
+	column Country
+		dataType: string
+		lineageTag: 1923dff2-81b3-434b-9c37-7698fa3b7da0
+		sourceLineageTag: 1221f1d4-c595-42c5-bb19-02996e2cdfef
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = User
+
+	column 'Mars site'
+		dataType: string
+		lineageTag: 416228db-4b4c-4260-a097-e93c694df087
+		sourceLineageTag: 07a9ed75-4a6a-478e-9b5f-c8ab275d8e43
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Mars site
+
+		annotation SummarizationSetBy = User
+
+	partition 'dim Geography' = entity
+		mode: directQuery
+		source
+			entityName: dim Geography
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

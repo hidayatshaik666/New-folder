@@ -1,0 +1,68 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
+  "name": "a22deb90535c72c2d987",
+  "position": {
+    "x": 425.85365853658539,
+    "y": 294.14634146341461,
+    "z": 1000,
+    "height": 568.53658536585363,
+    "width": 1112.9268292682927
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact Projects Table History"
+                    }
+                  },
+                  "Property": "Project Name"
+                }
+              },
+              "queryRef": "Fact Projects Table History.Project Name",
+              "nativeQueryRef": "Project Name"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact Projects Table History"
+                    }
+                  },
+                  "Property": "Replan_Fixed_Q3"
+                }
+              },
+              "queryRef": "Fact Projects Table History.Replan_Always_Q3",
+              "nativeQueryRef": "Replan_Always_Q3"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Fact Projects Table History"
+                  }
+                },
+                "Property": "Replan_Fixed_Q3"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

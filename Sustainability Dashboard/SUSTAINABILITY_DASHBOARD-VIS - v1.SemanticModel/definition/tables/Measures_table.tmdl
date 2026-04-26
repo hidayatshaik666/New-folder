@@ -1,0 +1,1762 @@
+table Measures_table
+	lineageTag: 1060c1d1-63fa-4b17-9e38-d2c67b06ab16
+
+	measure BannerBackgroundColour = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE(Environment[Environment]),
+			        "Development", "#FF4145", 
+			        "UAT","#FFE333", 
+			        "Production","#FFFFFF00"
+			        )
+			```
+		isHidden
+		lineageTag: f329d6b4-cfd5-461f-84f8-ec6c4a54c112
+
+		changedProperty = IsHidden
+
+	measure EnvironmentBanner = ```
+			
+			    VAR _environment = 
+			        SELECTEDVALUE(Environment[Environment])
+			
+			RETURN
+			    if (
+			        _environment="Production", "",
+			        "This is a " &_environment& " report")
+			```
+		isHidden
+		lineageTag: f53b88f3-0ec9-467f-a8e9-862f64911c80
+
+		changedProperty = IsHidden
+
+	measure 'Gif Placeholder' = "   "
+		lineageTag: 57dfe1f4-d778-413f-b4b8-0bc6c7939afe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure BannerTextColour = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE(Environment[Environment]),
+			        "Development", "FFFFFF", 
+			        "UAT","#000000", 
+			        "Production","#FFFFFF00"
+			        )
+			```
+		isHidden
+		lineageTag: dfffe53b-fc2c-4517-a9c6-075d7704c781
+
+		changedProperty = IsHidden
+
+	measure 'KPI Dynamic Measure' = ```
+			
+			/* KPI Dynamic measure for the scorecard page, retreiving calculations for each KPI on the page for the selected time period, year and division */
+			
+			VAR __SingleKPICheck = HASONEVALUE('Dim KPI'[KPI Name]) -- Checks that only one KPI is being evaluated at a visual level
+			VAR __KPIName = SELECTEDVALUE('Dim KPI'[KPI Name]) -- Returns the name of the KPI that is being evaluated from the KPI Dimension table
+			VAR ReportType = SELECTEDVALUE('Dim Report Type'[Report Type])
+			VAR _ErrorString = "KPI Mapping Error: The KPI " & __KPIName & " can not be calculated due to an unmapped SWITCH function"
+			
+			RETURN
+			    SWITCH(
+			            TRUE(),
+			            -- For every KPI, confrim that only one KPI is being evaluated, and return the Base Measure for that KPI Calculation
+			           __SingleKPICheck
+			            = TRUE ()
+			            && __KPIName = "Advocate", [Advocate], 
+			            __SingleKPICheck
+			            = TRUE ()
+			            && __KPIName = "Circular", [Circular], 
+			            __SingleKPICheck
+			            = TRUE ()
+			            && __KPIName = "Absolute GHG emissions (total actual GHG footprint)", [Absolute GHG emmisions (total actual GHG footprint)], 
+			            __SingleKPICheck
+			            = TRUE() 
+			            && __KPIName = "Annual GHG reduction through carbon credits", [Annual GHG reduction through carbon credits],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Finished goods tonnage", [Finished goods tonnage],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "T1 suppliers with valid EcoVadis rating", [T1 suppliers with valid EcoVadis rating],   
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Cumulative people reached with TP programs (since 2015)", [Cumulative people reached with TP programs (since 2015)],               
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "D4C score", [D4C Score],            
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Total targeted T1 suppliers", [Total targeted T1 suppliers],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Eliminate", [Eliminate],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Extreme and High-Risk Own Operations Sites", [Extreme and High-Risk Own Operations Sites],
+			             __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Extreme and High-Risk Tier 1 Supplier Sites", [Extreme and High-Risk Tier 1 Supplier Sites],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Extreme and High-Risk Own Operations Sites Actioned", [Extreme and High-Risk Own Operations Sites Actioned],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Extreme and High-Risk Tier 1 Supplier Sites Actioned", [Extreme and High-Risk Own Operations Sites Actioned],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Tons of Specialty Recycling Diverted", [Tons of Specialty Recycling Diverted],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Tons of Waste Diverted through Prevention Programs", [Tons of Waste Diverted through Prevention Programs],            
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Pet Visits", [Pet Visits],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "RAcc Program", [RAcc Program],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Raw materials tonnage", [Raw materials tonnage],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Recycled content volume", [Recycled content volume],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Recycled plastic volume", [Recycled plastic volume],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Revenue", [Revenue],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Scope 1 Annual GHG reduction through activity set", [Scope 1 Annual GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Scope 1 cumulative GHG reduction through activity set", [Scope 1 cumulative GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Scope 2 Annual GHG reduction through activity set", [Scope 2 Annual GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Scope 2 cumulative GHG reduction through activity set", [Scope 2 cumulative GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Scope 3 Annual GHG reduction through activity set", [Scope 3 Annual GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Scope 3 cumulative GHG reduction through activity set", [Scope 3 cumulative GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Total Annual GHG reduction through activity set", [Total Annual GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Total cumulative GHG reduction through activity set", [Total cumulative GHG reduction through activity set],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Total non-medical waste", [Total non-medical waste],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Total plastic volume (virgin + recycled)", [Total plastic volume (virgin + recycled)],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Volume of packaging classified as D4C", [Volume of packaging classified as D4C],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Volume of packaging classified as NOT D4C", [Volume of packaging classified as NOT D4C],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "GHG change vs 2015", [GHG change vs 2015],
+			              __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "GHG intensity by (ton of purchased material)", [GHG intensity by (ton of purchased material)],
+			             __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "GHG intensity by ($M revenue)", [GHG intensity by ($M revenue)],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "GHG intensity change vs 2015 (ton of purchased material)", [GHG Intensity Change vs 2015 (tone of purchased material)],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "% D4C", [% D4C],
+			             __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "% Circular", [% Circular],
+			              __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "% Advocate", [% Advocate],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "% Eliminate", [% Eliminate],
+			              __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "% virgin plastic change vs 2019", [% virgin plastic change vs 2019],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "% recycled content", [% recycled content],
+			            __SingleKPICheck
+			            = TRUE()
+			            && __KPIName = "Waste intensity (kg per pet visit)", [Waste intensity (kg per pet visit)],
+			           __SingleKPICheck = BLANK(), BLANK(),
+			 -- If KPI can not be found, then an error is return to the user
+			            ERROR ("KPI Mapping Error: The KPI can not be calculated due to an unmapped SWITCH function")
+			    )
+			
+			```
+		displayFolder: KPI Dynamic Measure
+		lineageTag: 1171274a-5be2-47ae-aaa9-9cb44486e22c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Absolute GHG emmisions (total actual GHG footprint)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Absolute GHG emissions (total actual GHG footprint)"
+			    )
+			```
+		formatString: 0
+		displayFolder: Base Measures
+		lineageTag: 08d9e40c-e65e-4334-a04f-1148899fa541
+
+	measure Advocate = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Advocate"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: a2dc479f-6567-4c87-829a-f48d7d1c3786
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Circular = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Circular"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 3f82ae06-618d-4bf4-9fd6-3054b29a18f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Eliminate = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Eliminate"
+			    )
+			    
+			```
+		displayFolder: Base Measures
+		lineageTag: bb381944-9b69-44c3-8551-dcb83678169e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Extreme and High-Risk Own Operations Sites' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Extreme and High-Risk Own Operations Sites"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: e237f569-d95c-4ba9-9f86-62cfdf704598
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Extreme and High-Risk Own Operations Sites Actioned' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Extreme and High-Risk Own Operations Sites Actioned"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 3534c978-d22b-42b7-b6e3-4bdfd6bef714
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Extreme and High-Risk Tier 1 Supplier Sites' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Extreme and High-Risk Tier 1 Supplier Sites"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 69a79406-6b07-4b70-82fb-e897493a09b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Extreme and High-Risk Tier 1 Supplier Sites Actioned' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Extreme and High-Risk Tier 1 Supplier Sites Actioned"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 04b7da13-2235-4852-aee7-704a650ccd37
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Raw materials tonnage' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Raw materials tonnage"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 595453ac-0a2c-475b-b4ab-07199ae0049a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Recycled content volume' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Recycled content volume"
+			    ) 
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 8a6d57b9-85fb-47f4-93d6-e927a87d0d73
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Scope 1 Annual GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Scope 1 Annual GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: f3507612-6b55-4160-9732-415d86ee7b52
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Scope 1 cumulative GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Scope 1 cumulative GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: ee4ee9a7-3252-4f69-b33c-e9e70cc1684b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Scope 2 Annual GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Scope 2 Annual GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 11debbb4-bf5b-45f4-9a73-bcab7fa0caac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Scope 2 cumulative GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Scope 2 cumulative GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 7ae6adc6-d343-4a1a-a14d-c419ff49470c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Scope 3 Annual GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Scope 3 Annual GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 14c7c5a5-243a-413c-bc4d-c4694b68a46f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Scope 3 cumulative GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Scope 3 cumulative GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 8b5b75ca-42ac-4d02-a654-91cccc0d32ed
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Annual GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Total Annual GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: f4b6f00c-5f70-4cdf-af33-6815d611693e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total cumulative GHG reduction through activity set' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Total cumulative GHG reduction through activity set"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 6b7293fd-76a9-4796-ab8e-d1de388b4826
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total plastic volume (virgin + recycled)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Total plastic volume (virgin + recycled)"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: fb0f97f1-8f6a-4e11-9146-6bcffe90382e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Volume of packaging classified as D4C' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    [Circular] + [Advocate]
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 58af228d-3679-4650-b96d-39b1c8ddac33
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Volume of packaging classified as NOT D4C' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    [Design] + [Eliminate]
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: a0d4cbe5-573d-4e5b-981e-bea187303522
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Annual GHG reduction through carbon credits' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Annual GHG reduction through carbon credits"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 5a61f247-d841-4e96-b65b-d782700cdf83
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pet Visits' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Pet Visits"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: d474ec98-08cb-4019-bdad-c7c194aa4bca
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RAcc Program' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "RAcc Program"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: a8181fd1-33b3-4b5c-95b6-1c15e6b167b2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Recycled plastic volume' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Recycled plastic volume"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: e2474887-ec8a-4957-884f-62cfe8aa1abd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Revenue = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Revenue"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: a20c75ea-b601-4177-b352-df59ef650c8e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total non-medical waste' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Total non-medical waste"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 2b67fcd8-b2dd-49f9-b63b-9f44647060de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Current Quarter' = ```
+			
+			/*Scorecard Current Values obtained from the KPI Dynamic Measure. YEE% of Target Delivered is calculated separately as this is derived from two other KPIs (YEE and Targets) */ 
+			VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+			VAR ReportType = SELECTEDVALUE('Dim Report Type'[Report Type])
+			VAR KPI_Value = 
+			    CALCULATE(
+			        [KPI Dynamic Measure], 
+			        'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			    )
+			
+			VAR YEE_Percent = 
+			    CALCULATE(
+			        [YEE% of Target Delivered], 
+			        'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			    )
+			
+			RETURN
+			    SWITCH(
+			        ReportType,
+			        "YEE % of Target Delivered",
+			            //BLANK(),
+			            IF(
+			                OR(CONTAINSSTRING(KPIName, "%"), [NoCalcList]), 
+			                //CONTAINSSTRING(KPIName, "%"), 
+			                BLANK(),
+			                YEE_Percent
+			            ),
+			        "YTD Active Projects",
+			            IF(
+			                OR(CONTAINSSTRING(KPIName, "%"), [NoCalcList]),
+			                BLANK(),
+			                KPI_Value
+			            ),
+			        "Targets",
+			            IF(
+			                //OR(CONTAINSSTRING(KPIName, "%"), [NoCalcList]),
+			                CONTAINSSTRING(KPIName, "%"),
+			                BLANK(),
+			                KPI_Value
+			            ),
+			        KPI_Value
+			    )
+			```
+		lineageTag: b27507f0-0077-4448-ba1f-1a0400b02a72
+
+		formatStringDefinition = ```
+				VAR FormatString = SELECTEDVALUE('Dim KPI'[Data Format])
+				VAR CurrentValue = ABS(IF(SELECTEDMEASURE()= "-", BLANK(), SELECTEDMEASURE()))
+				VAR ReportType = SELECTEDVALUE('Dim Report Type'[Report Type])
+				VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+				RETURN
+				
+				
+				IF(ReportType IN {"Replan", "Investment YEE"}, 
+				SWITCH (
+				        TRUE (),
+				        // Special cases to force K and M in the sample report
+				        CurrentValue <= 1E3, "$#,0.0",
+				        CurrentValue <= 1E6, "$#,0,.0 K",
+				        CurrentValue <= 1E9, "$#,0,,.0 M",
+				        CurrentValue <= 1E12, "$#,0,,,.0 B"
+				    ),
+				
+				//IF(ReportType = "YEE % of Target Delivered" && CONTAINSSTRING(KPIName, "%"), BLANK(),
+				IF(ReportType = "YEE % of Target Delivered", "#,0.0%",
+				
+				IF(ReportType IN {"YTD Active Projects", "Total Planned Activities"},
+				SWITCH (
+				        TRUE (),
+				        // Special cases to force K and M in the sample report
+				        CurrentValue <= 1E3, "#,0",
+				        CurrentValue <= 1E6, "#,0, K",
+				        CurrentValue <= 1E9, "#,0,, M",
+				        CurrentValue <= 1E12, "#,0,,, B"
+				    ),
+				
+				IF(CONTAINSSTRING(FormatString, "%"), FormatString
+				,
+				
+				IF(CONTAINSSTRING(FormatString, "$"),
+				    SWITCH (
+				        TRUE (),
+				        // Special cases to force K and M in the sample report
+				        CurrentValue <= 1E3, "$#,0.0",
+				        CurrentValue <= 1E6, "$#,0,.0 K",
+				        CurrentValue <= 1E9, "$#,0,,.0 M",
+				        CurrentValue <= 1E12, "$#,0,,,.0 B"
+				    ),
+				
+				IF(CONTAINSSTRING(FormatString, " kt"),
+				    SWITCH (
+				        TRUE (),
+				        // Special cases to force K and M in the sample report
+				        CurrentValue <= 1E3, "#,0.0 kt",
+				        CurrentValue <= 1E6, "#,0,.0 K kt",
+				        CurrentValue <= 1E9, "#,0,,.0 M kt",
+				        CurrentValue <= 1E12, "#,0,,,.0 B kt"
+				    ),
+				
+				    SWITCH (
+				        TRUE (),
+				        // Special cases to force K and M in the sample report
+				       CurrentValue <= 1E3, "#,0; -#,0" ,
+				       CurrentValue<= 1E6, "#,0,.0 K;,-#,0,.0 K",
+				       CurrentValue <= 1E9, "#,0,,.0 M; -#,0,,.0 M",
+				       CurrentValue <= 1E12, "#,0,,,.#0 B; -#,0,,,.#0 B"
+				    )))))))
+				```
+
+	measure 'Timestamp title' = ```
+			
+			/* Title for the matrix on the Scorecard page */
+			    VAR SelectedDivisions = COUNTROWS(VALUES('Dim Division'[Division]))
+			    VAR AllDivisions = COUNTROWS(ALLNOBLANKROW('Dim Division'[Division]))
+			    VAR Divisions_List = 
+			        IF(
+			            SelectedDivisions >= AllDivisions,
+			            "All of Petcare",
+			            CONCATENATEX(
+			                VALUES('Dim Division'[Division]),
+			                'Dim Division'[Division],
+			                ", "
+			            )
+			        )
+			
+			    RETURN
+			        "Reporting Period: " & 
+			        " " &
+			        SELECTEDVALUE('Fact Table'[Timestamp]) & 
+			        " for " & 
+			        Divisions_List
+			
+			```
+		lineageTag: fc3881fb-bfec-468e-b2f9-23269515dd02
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Division title' =
+			
+			
+			SELECTEDVALUE('Dim Division'[Division])
+		lineageTag: f499990d-f42e-4c2d-bb48-53bd250bd490
+
+	measure 'Circularity/Waste Topic Title' =
+			
+			
+			IF(
+			SELECTEDVALUE('Dim Division'[Division]) = "MVH", "Waste", "Circularity")
+		lineageTag: 1ffa763b-5312-464b-a032-c189e19dd40e
+
+	measure 'Topic Background Colour' =
+			
+			
+			VAR SelectedKPI = SELECTEDVALUE('Dim KPI'[KPI Name])
+			VAR TopicName = LOOKUPVALUE('Dim KPI'[Topic], 'Dim KPI'[KPI Name], SelectedKPI)
+			VAR Topic = SELECTEDVALUE('Dim Topic'[Topic])
+			
+			RETURN
+			
+			    SWITCH(
+			        TRUE(),
+			        Topic = "Climate", "#FF0000",
+			        Topic = "Circularity", "#0044E4",
+			        Topic = "Waste", "#0044E4",
+			        Topic = "Thriving People", "#E6E6FA",
+			        BLANK()
+			    )
+		lineageTag: fab1a05e-e43e-4b9d-afbf-e8aeee78905a
+
+	measure 'Topic Name' = ```
+			
+			/*Topic of the selected KPI*/
+			VAR SelectedKPI = SELECTEDVALUE('Dim KPI'[KPI Name])
+			VAR TopicName = LOOKUPVALUE('Dim KPI'[Topic], 'Dim KPI'[KPI Name], SelectedKPI)
+			
+			RETURN
+			TopicName
+			
+			```
+		lineageTag: 87994a65-fb87-44f9-bba6-2aae28ba47f4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Topic Name 2' =
+			
+			IF(ISINSCOPE('Dim Topic'[Topic]), SELECTEDVALUE('Dim Topic'[Topic]))
+		lineageTag: 5558a6f9-a25b-445e-a89f-d48ed2631f22
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total targeted T1 suppliers' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Total targeted T1 suppliers"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: b1d900e7-5931-47e7-8e55-c06c2a7ff87a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'T1 suppliers with valid EcoVadis rating' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "T1 suppliers with valid EcoVadis rating"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 54d003e6-c17e-4b89-9ae3-70084255e505
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Finished goods tonnage' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Finished goods tonnage"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 23641b49-f20a-4464-aa27-648d2108cd14
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cumulative people reached with TP programs (since 2015)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Cumulative people reached with TP programs (since 2015)"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: cf889777-126f-4f6c-8244-cbb590a57d20
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2015 GHG Baseline (tonnes)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2015 GHG Baseline (tonnes)"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 7afcada5-5c5d-4469-b251-a3f3c69ad44f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2015 Intensity on raw material tonnage' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2015 Intensity on raw material tonnage"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 7c316cdb-2ab4-46dd-ab55-74d2f90e8748
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2020 Baseline Non-Medical Waste (tonnes) - Recycled or Compost' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2020 Baseline Non-Medical Waste (tonnes) - Recycled or Compost"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 8d7fd64c-8c3d-4e69-8fae-eff8c3564fe8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2015 MVH Revenue Baseline (TUSD)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2015 MVH Revenue Baseline (TUSD)"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 50e2324f-0c74-4dac-ac04-90b628c8b1af
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2020 MVH Vet Visit Baseline (#)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2020 MVH Vet Visit Baseline (#)"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 1fd24d8e-3108-4ac5-a1d2-f03d734b222d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2019 Virgin Plastic baseline (Plastic Only tonnes)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2019 Virgin Plastic baseline (Plastic Only tonnes)"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: a0a24599-a389-4be4-ae1e-bdf0f0071d84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '2020 Baseline Non-Medical Waste (tonnes) - Total' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Baseline'[Value]),
+			        'Fact Baseline'[Metric] = "2020 Baseline Non-Medical Waste (tonnes) - Total"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 355f7ab4-ef45-49dd-98c6-58bc311b831d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'GHG change vs 2015' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR Absolute_GHG_Emmissions = [Absolute GHG emmisions (total actual GHG footprint)]
+			 VAR GHG_Baseline_2015 = [2015 GHG Baseline (tonnes)]
+			
+			RETURN
+			 IF(ISBLANK(Absolute_GHG_Emmissions) || ISBLANK(GHG_Baseline_2015), BLANK(), 
+			 
+			    DIVIDE(Absolute_GHG_Emmissions, GHG_Baseline_2015) - 1) 
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 16ace4b0-5551-46f3-a051-93ce85d7e414
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'GHG intensity by (ton of purchased material)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR Absolute_GHG_Emmissions = [Absolute GHG emmisions (total actual GHG footprint)]
+			 VAR Raw_Materials_Tonnage = [Raw materials tonnage]
+			
+			RETURN
+			 IF(ISBLANK(Absolute_GHG_Emmissions) || ISBLANK(Raw_Materials_Tonnage), BLANK() 
+			 
+			   , DIVIDE(Absolute_GHG_Emmissions, Raw_Materials_Tonnage) - 1)
+			```
+		displayFolder: Base Measures
+		lineageTag: 809f6e97-c1c2-432a-8035-07bcbcfed8f3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'GHG intensity by ($M revenue)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR Absolute_GHG_Emmissions = [Absolute GHG emmisions (total actual GHG footprint)]
+			 VAR _Revenue = [Revenue]
+			
+			RETURN
+			 IF(ISBLANK(Absolute_GHG_Emmissions) || ISBLANK(_Revenue), BLANK() 
+			 
+			   , DIVIDE(Absolute_GHG_Emmissions, _Revenue))
+			```
+		displayFolder: Base Measures
+		lineageTag: b1acad68-580d-4ece-9096-3181ca8a7219
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% D4C' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			VAR Volume_D4C = [Volume of packaging classified as D4C]
+			VAR Volume_Not_D4C = [Volume of packaging classified as NOT D4C]
+			
+			RETURN
+			IF(ISBLANK(Volume_D4C) || ISBLANK(Volume_Not_D4C), BLANK()
+			   , DIVIDE(Volume_D4C, (Volume_D4C + Volume_Not_D4C)))
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 6474147f-686c-49de-95aa-857973c96434
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Circular' = ```
+			
+			 /* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR _Circular = [Circular]
+			 VAR Volume_D4C = [Volume of packaging classified as D4C]
+			 VAR Volume_Not_D4C = [Volume of packaging classified as NOT D4C]
+			
+			 RETURN
+			 IF(ISBLANK(_Circular) || ISBLANK(Volume_D4C) || ISBLANK(Volume_Not_D4C), BLANK()
+			   , DIVIDE(_Circular, (Volume_D4C + Volume_Not_D4C)) )
+			```
+		displayFolder: Base Measures
+		lineageTag: af715b7a-37c4-482d-b778-cebb88549bc5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Advocate' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR _Advocate = [Advocate]
+			 VAR _Volume_D4C = [Volume of packaging classified as D4C]
+			 VAR _Volume_Not_D4C = [Volume of packaging classified as NOT D4C]
+			
+			RETURN
+			IF(ISBLANK(_Advocate) || ISBLANK(_Volume_D4C) || ISBLANK(_Volume_Not_D4C), BLANK()
+			    , DIVIDE(_Advocate, (_Volume_D4C + _Volume_Not_D4C)))
+			```
+		displayFolder: Base Measures
+		lineageTag: 3504bb5b-fe16-49dc-ad50-9c989f87d556
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% Eliminate' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR _Eliminate = [Eliminate] 
+			 VAR _Volume_D4C = [Volume of packaging classified as D4C]
+			 VAR _Volume_Not_D4C = [Volume of packaging classified as NOT D4C]
+			
+			 RETURN
+			
+			 IF(ISBLANK(_Eliminate) ||ISBLANK(_Volume_D4C) || ISBLANK(_Volume_Not_D4C), BLANK()
+			 
+			    , DIVIDE(_Eliminate, (_Volume_D4C + _Volume_Not_D4C)))
+			```
+		displayFolder: Base Measures
+		lineageTag: c731eea9-5fe2-47ed-96ea-141705bef854
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% virgin plastic change vs 2019' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			 VAR _Total_Plastic_Volume = [Total plastic volume (virgin + recycled)]
+			 VAR _Recycled_Content_Volume = [Recycled content volume]
+			 VAR _2019_Baseline = [2019 Virgin Plastic baseline (Plastic Only tonnes)]
+			 
+			 RETURN
+			 IF(ISBLANK(_Total_Plastic_Volume) || ISBLANK(_Recycled_Content_Volume) || ISBLANK(_2019_Baseline), BLANK()
+			 , (DIVIDE((_Total_Plastic_Volume - _Recycled_Content_Volume), _2019_Baseline) - 1))
+			```
+		displayFolder: Base Measures
+		lineageTag: 578d985d-e154-4fd3-ba29-c9318a52e94d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% recycled content' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			VAR _Recycled_Content_Volume = [Recycled content volume]
+			VAR _Total_Plastic_Volume = [Total plastic volume (virgin + recycled)]
+			
+			RETURN
+			
+			IF(ISBLANK(_Recycled_Content_Volume) || ISBLANK(_Total_Plastic_Volume), BLANK()
+			    , DIVIDE(_Recycled_Content_Volume, _Total_Plastic_Volume))
+			```
+		displayFolder: Base Measures
+		lineageTag: fb13a103-b6fd-4a6d-b1bd-8b50ff2e885e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'GHG Intensity Change vs 2015 (tone of purchased material)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			VAR _GHG_Intensity_Of_Purchased_Material = [GHG intensity by (ton of purchased material)]
+			VAR _2025_Baseline = [2015 GHG Baseline (tonnes)] 
+			
+			RETURN
+			IF(ISBLANK(_GHG_Intensity_Of_Purchased_Material) || ISBLANK(_GHG_Intensity_Of_Purchased_Material), BLANK()
+			    , DIVIDE(_GHG_Intensity_Of_Purchased_Material, _2025_Baseline) - 1)
+			```
+		displayFolder: Base Measures
+		lineageTag: 159bbf66-5587-47a5-b3ff-dae128e496e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Waste intensity (kg per pet visit)' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			VAR _TotalNonMedicalWaste = [Total non-medical waste]
+			VAR _PetVisits = [Pet Visits]
+			
+			RETURN
+			    IF(
+			        ISBLANK(_TotalNonMedicalWaste) || ISBLANK(_PetVisits), 
+			        BLANK(), 
+			        DIVIDE([Total non-medical waste], [Pet Visits])
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: ce3e7ab9-7f0b-4614-b78d-fba267c60e68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'KPI Name Title' =
+			
+			/* Returns selected KPI for dynamic title */
+			SELECTEDVALUE('Dim KPI'[KPI Name])
+		lineageTag: 03cb9d8c-02eb-4fc3-9eb7-f460cc180659
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Business Definition' = SELECTEDVALUE('Dim KPI'[Business Definition])
+		lineageTag: 48b95dfe-5adf-4cb3-bef8-56094be9fb73
+
+	measure 'Prior Year' = ```
+			
+			/* KPI value for previous year */
+			VAR KPI_Value = 
+			CALCULATE([KPI Dynamic Measure], 
+			'KPI Intelligence'[Time Period Calculations] = "Prior Year")
+			RETURN
+			KPI_Value 
+			
+			```
+		lineageTag: 75fdabb7-540e-4dfc-ace4-42b027538cdd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Last Quarter' = ```
+			
+			/* KPI value for the previous quarter of the selected KPI(s) */
+			VAR KPI_Value = 
+			CALCULATE([KPI Dynamic Measure], 
+			'KPI Intelligence'[Time Period Calculations] = "Last Quarter")
+			RETURN
+			KPI_Value 
+			
+			```
+		lineageTag: 9ccd4873-0ae9-4b2a-95b1-85d895d586de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Variance to PY %' = ```
+			
+			/*Calculation for Variance to PY % */
+			VAR KPI_Value = 
+			CALCULATE([KPI Dynamic Measure], 
+			'KPI Intelligence'[Time Period Calculations] = "Variance to PY %")
+			RETURN
+			KPI_Value 
+			```
+		lineageTag: 3e0c7395-258c-4e3a-8d53-2fce0b8849f1
+
+		formatStringDefinition = "#,0.0%"
+
+	measure 'Variance to CY Target %' = ```
+			
+			/*Calculation for Variance to CY Target % */
+			VAR KPI_Value = 
+			CALCULATE([KPI Dynamic Measure], 
+			'KPI Intelligence'[Time Period Calculations] = "Variance to CY Target %")
+			RETURN
+			KPI_Value 
+			```
+		lineageTag: 9283ac42-b8d7-4e3c-a653-f1656541fa2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RAG Color – Current Quarter' = ```
+			
+			/* Color coding for the scorecard */
+			    VAR ReportType = SELECTEDVALUE('Dim Report Type'[Report Type])
+			    VAR PercCurrentYEEValue  = CALCULATE([Current Quarter], 'Dim Report Type'[Report Type] = "YEE % of Target Delivered")
+			    VAR CurrentYEEValue  = CALCULATE([Current Quarter], 'Dim Report Type'[Report Type] = "YEE")
+			
+			    VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+			    // VAR __SingleKPICheck = HASONEVALUE('Dim KPI'[KPI Name])
+			    VAR SelectedYear = VALUES('Fact Table'[Year])
+			    VAR ReportingPeriod = VALUES('Fact Table'[Timestamp])
+			    VAR Division = VALUES('Dim Division'[Division ID])
+			    VAR _stdQuarter = SELECTEDVALUE('Fact Table'[Standard Quarter])
+			    VAR CurrentTarget = CALCULATE(
+			        CALCULATE(
+			            [KPI Dynamic Measure],
+			            'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			        ),
+			        ALLEXCEPT(
+			            'Fact Table',
+			            'Dim Division'[Division],
+			            'Fact Table'[Year],
+			            'Fact Table'[Standard Quarter],
+			            'Fact Table'[Timestamp]
+			        ),
+			        'Dim Report Type'[Report Type] = "Targets",
+			        'Fact Table'[Standard Quarter] = _stdQuarter,
+			        'Fact Table'[Year] = SelectedYear
+			    )
+			    
+			    VAR HigherIsBetter = SELECTEDVALUE('Dim KPI'[Higher is Better])
+			    
+			    RETURN
+			        IF(
+			            (SelectedYear <> CONVERT(LEFT(ReportingPeriod, 4), INTEGER)) || (_stdQuarter <> RIGHT(ReportingPeriod, 2)),
+			            BLANK(),
+			            IF(
+			                ISBLANK(PercCurrentYEEValue),
+			                IF(
+			                    ISBLANK(CurrentYEEValue),
+			                    4,
+			                    IF(CONTAINSSTRING(KPIName, "%"), 
+			                        SWITCH (
+			                            TRUE(),
+			                            HigherIsBetter = "Y" && ReportType="YEE" && CurrentYEEValue >= 0.90 ,  1, //"#BFE898",   // green
+			                            HigherIsBetter = "Y" && ReportType="YEE" && CurrentYEEValue >= 0.75 ,  2, //"#00AF66",   // amber
+			                            HigherIsBetter = "Y" && ReportType="YEE" && CurrentYEEValue < 0.75 ,  3, //"#FF1414",   // red
+			                            HigherIsBetter = "N" && ReportType="YEE" && CurrentYEEValue >= 0.90 ,  3, //"#FF1414"   // red
+			                            HigherIsBetter = "N" && ReportType="YEE" && CurrentYEEValue >= 0.75 ,  2, //"#00AF66",   // amber
+			                            HigherIsBetter = "N" && ReportType="YEE" && CurrentYEEValue < 0.75 ,  1 //"#BFE898",   // green
+			                        ),
+			                        SWITCH (
+			                            TRUE(),
+			                            HigherIsBetter = "Y" && ReportType="YEE" && CurrentYEEValue >= CurrentTarget ,  1, //"#00AF66",   // green
+			                            HigherIsBetter = "N" && ReportType="YEE" && CurrentYEEValue <= CurrentTarget ,  1, //"#00AF66",   // green
+			                            HigherIsBetter = "Y" && ReportType="YEE" && CurrentYEEValue < CurrentTarget ,  3, //"#BFE898",   // red
+			                            HigherIsBetter = "N" && ReportType="YEE" && CurrentYEEValue > CurrentTarget ,  3 //"#BFE898"   // red
+			                        )
+			                    )
+			                ),
+			                SWITCH (
+			                    TRUE(),        
+			                    HigherIsBetter = "Y" && ReportType IN {"YEE", "YEE % of Target Delivered"}  && PercCurrentYEEValue >= 0.90,  1, //"#00AF66",   // green
+			                    HigherIsBetter = "Y" && ReportType IN {"YEE", "YEE % of Target Delivered"}  && PercCurrentYEEValue >= 0.75, 2, //  "#F5CD47",   // amber
+			                    HigherIsBetter = "Y" && ReportType IN {"YEE", "YEE % of Target Delivered"} && PercCurrentYEEValue < 0.75,  3, //  "#FF1414",   // red
+			                    HigherIsBetter = "N" && ReportType IN {"YEE", "YEE % of Target Delivered"}  && PercCurrentYEEValue >= 0.90, 3, // "#FF1414" ,   // red
+			                    HigherIsBetter = "N" && ReportType IN {"YEE", "YEE % of Target Delivered"}  && PercCurrentYEEValue >= 0.75, 2, // "#F5CD47",   // amber
+			                    HigherIsBetter = "N" && ReportType IN {"YEE", "YEE % of Target Delivered"}  && PercCurrentYEEValue < 0.75,  1, // "#00AF66",   // green
+			                    4 //"#FFFFFF")
+			                )
+			            )
+			        )
+			```
+		lineageTag: aedf6f5e-1ebe-4371-b58b-8ae96b0dd89a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Tons of Waste Diverted through Prevention Programs' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Tons of Waste Diverted through Prevention Programs"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: 3df9f7be-879a-4709-ac68-5ab2e2d7827a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Tons of Specialty Recycling Diverted' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Tons of Specialty Recycling Diverted"
+			    )
+			
+			```
+		displayFolder: Base Measures
+		lineageTag: bbfbfa0f-a136-43cd-8fc9-9aba6b0abdc9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Selected Year' = LEFT(SELECTEDVALUE('Fact Table'[Timestamp]), 4)
+		lineageTag: 979d750d-51e3-4149-bf7e-2ed5a0b481e5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YEE% of Target Delivered' = ```
+			
+			    /* Measure for calculating YEE% of Target for the scorecard page. Calculates current target and YEE from the KPI Dynamic measure for the given filter selections and returns current YEE divided by target */
+			
+			    VAR ReportType = SELECTEDVALUE('Dim Report Type'[Report Type])
+			    VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+			    VAR __SingleKPICheck = HASONEVALUE('Dim KPI'[KPI Name])
+			    VAR SelectedYear = VALUES('Fact Table'[Year])
+			    VAR ReportingPeriod = VALUES('Fact Table'[Timestamp])
+			    VAR Division_ID = VALUES('Dim Division'[Division ID])
+			    
+			    VAR _stdQuarter = SELECTEDVALUE('Fact Table'[Standard Quarter])
+			    VAR CurrentTarget = CALCULATE(
+			        CALCULATE(
+			            [KPI Dynamic Measure],
+			            'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			        ),
+			        ALLEXCEPT(
+			            'Fact Table',
+			            'Dim Division'[Division],
+			            'Fact Table'[Year],
+			            'Fact Table'[Standard Quarter],
+			            'Fact Table'[Timestamp]
+			        ),
+			        'Dim Report Type'[Report Type] = "Targets",
+			        'Fact Table'[Standard Quarter] = _stdQuarter,
+			        'Fact Table'[Year] = SelectedYear
+			    )
+			    VAR CurrentYEE =
+			    CALCULATE(
+			        CALCULATE(
+			            [KPI Dynamic Measure],
+			            'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			        ),
+			        ALLEXCEPT(
+			            'Fact Table',
+			            'Dim Division'[Division],
+			            'Fact Table'[Timestamp]
+			        ),
+			        'Dim Report Type'[Report Type] = "YEE",
+			        'Fact Table'[Standard Quarter] = _stdQuarter,
+			        'Fact Table'[Year] = SelectedYear
+			    )
+			
+			    RETURN
+			        IF(
+			            ISBLANK(CurrentTarget),
+			            BLANK(),
+			            CurrentYEE / CurrentTarget
+			        )
+			```
+		displayFolder: KPI Dynamic Measure
+		lineageTag: c739d82f-07f4-4f85-9dd9-2004c92194be
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure NoCalcList = ```
+			
+			/* List of KPIs where YEE% of Target delivered and YTD Active Projects are not applicable */
+			    VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+			
+			    RETURN
+			        IF(
+			            KPIName in {
+			                "GHG change vs 2015", 
+			                "GHG intensity by (ton of purchased material)", 
+			                "GHG intensity by ($M revenue)", 
+			                "GHG intensity change vs 2015 (ton of purchased material)", 
+			                "Waste intensity (kg per pet visit)"
+			            }, 
+			            TRUE(), 
+			            FALSE()
+			        )
+			```
+		lineageTag: 33097381-a5c8-4e28-8f53-bb875689f81e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Finance Costs - Replan vs Current YEE' = ```
+			
+			
+			/* Difference between Replan and Current YEE on the Investment Summary Costs Chart (value shown in bubble at the bottom) */
+			
+			VAR Replan = 
+			    CALCULATE(
+			        SUM('Fact Finance Table'[Value]),
+			        'Fact Finance Table'[Attribute] = "Current Year Replan",
+			        'Fact Finance Table'[KPI] IN {"COGS", "CAPEX", "OHS"}
+			    )
+			
+			VAR Current_YEE = 
+			    CALCULATE(
+			        SUM('Fact Finance Table'[Value]),
+			        'Fact Finance Table'[Attribute] = "YEE Current quarter",
+			        'Fact Finance Table'[KPI] IN {"COGS", "CAPEX", "OHS"}
+			    )
+			
+			Return Current_YEE - Replan
+			```
+		formatString: 0
+		lineageTag: 28100376-3a4f-4834-9f91-bb5f985ab48d
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Finance Sust Pillar - Replan vs Current YEE' = ```
+			
+			/* Difference between Replan and Current YEE on the Investment Summary Sustainability Pillar Chart (value shown in bubble at the bottom) */
+			VAR Replan = 
+			    CALCULATE(
+			        SUM('Fact Finance Table'[Value]),
+			        'Fact Finance Table'[Attribute] = "Current Year Replan",
+			        'Fact Finance Table'[KPI] IN {"Circularity", "Enablers", "Climate & Sourcing", "Thriving People"}
+			    )
+			
+			VAR Current_YEE = 
+			    CALCULATE(
+			        SUM('Fact Finance Table'[Value]),
+			        'Fact Finance Table'[Attribute] = "YEE Current quarter",
+			        'Fact Finance Table'[KPI] IN {"Circularity", "Enablers", "Climate & Sourcing", "Thriving People"}
+			    )
+			
+			Return DIVIDE((Current_YEE - Replan), Replan, 0)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c710075e-c147-4b85-8c6a-0bc38ca491b2
+
+	measure 'Finance Cost Chart Title' = ```
+			
+			/* Title of the Cost chart on the Investment Summary page, showing dynamic division selection */
+			
+			    Var Initial_Title = "INVESTMENTS ($M) PER COST TYPE - "
+			
+			    VAR SelectedDivisions = COUNTROWS(VALUES('Fact Finance Table'[Division]))
+			    VAR AllDivisions = COUNTROWS(ALLNOBLANKROW('Fact Finance Table'[Division]))
+			    VAR Divisions_List = 
+			        IF(
+			            SelectedDivisions >= AllDivisions,
+			            "All of Petcare",
+			            CONCATENATEX(
+			                VALUES('Fact Finance Table'[Division]),
+			                IF([Division] = "Pet Nutrition", "PN", IF([Division] = "Royal Canin", "RC", [Division])),
+			                ", "
+			            )
+			        )
+			
+			    RETURN
+			        Initial_Title & UPPER(Divisions_List)
+			        
+			```
+		lineageTag: 8017eec3-e54b-42c6-babc-84252c59ab4b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Finance Sustainability Chart Title' = ```
+			
+			/* Title of the Sustainability chart on the Investment Summary page, showing dynamic division selection */
+			    Var Initial_Title = "INVESTMENTS ($M) PER SUSTAINABILITY PILLAR - "
+			
+			    VAR SelectedDivisions = COUNTROWS(VALUES('Fact Finance Table'[Division]))
+			    VAR AllDivisions = COUNTROWS(ALLNOBLANKROW('Fact Finance Table'[Division]))
+			    VAR Divisions_List = 
+			        IF(
+			            SelectedDivisions >= AllDivisions,
+			            "All of Petcare",
+			            CONCATENATEX(
+			                VALUES('Fact Finance Table'[Division]),
+			                IF([Division] = "Pet Nutrition", "PN", IF([Division] = "Royal Canin", "RC", [Division])),
+			                ", "
+			            )
+			        )
+			
+			    RETURN
+			        Initial_Title & UPPER(Divisions_List)
+			
+			```
+		lineageTag: fa67e775-ca33-48a0-b94d-18db4772c111
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Investment Aggregate' =
+			
+			/*Calculation for the charts on the Investment Summary page */
+			SUM('Fact Finance Table'[Value])
+		formatString: #,0
+		lineageTag: af47921a-7ad7-4023-a89c-c24c32122e4f
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Design = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "Design"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 295e31fb-1068-40b8-8b3c-6929bf8435f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'D4C Score' = ```
+			
+			/* Calculation for the KPI/metric - All base measures are calculations of that KPI/metric */ 
+			    CALCULATE(
+			        SUM('Fact Table'[Value]),
+			        'Dim Attribute'[Attribute] = "D4C Score"
+			    )
+			```
+		displayFolder: Base Measures
+		lineageTag: 75538889-adc5-4707-83b4-f89c5365d14d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Actual =
+			
+			/* Value for Actuals */
+			CALCULATE(MAX('Fact Projects Table'[Value]), 'Fact Projects Table'[Attribute]="Actual")
+		formatString: #,0
+		displayFolder: Projects View
+		lineageTag: 6869cfe9-cc9f-42bb-b1bc-8ce7e0d7f8b4
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Planned =
+			
+			/* Value for planned */
+			CALCULATE(MAX('Fact Projects Table'[Value]), 'Fact Projects Table'[Attribute]="Planned")
+		formatString: #,0
+		displayFolder: Projects View
+		lineageTag: be44946b-bc0a-4241-bff3-b1f47a4f6e1c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Investment =
+			
+			/* Value for Investments - shown on the left of the tornado chart */
+			CALCULATE(MAX('Fact Projects Table'[Value]), 'Fact Projects Table'[Attribute]="Investment") * -1
+		displayFolder: Projects View
+		lineageTag: 5cf551c8-a6a2-470d-a47c-7233585af304
+
+		formatStringDefinition = "#,0;#,0"
+
+	measure Replan =
+			
+			/* Value for Replan */
+			CALCULATE(MAX('Fact Projects Table'[Value]), 'Fact Projects Table'[Attribute]="Replan") * -1
+		displayFolder: Projects View
+		lineageTag: 45c6d7f5-81fa-41dd-ad45-4423131074ad
+
+		formatStringDefinition = "#,0;#,0"
+
+	measure 'Activity Name' =
+			
+			/* Name of the project on the Top 10 Projects page */
+			SELECTEDVALUE('Fact Projects Table'[Activity Name])
+		displayFolder: Projects View
+		lineageTag: 8cfd5e0a-3d79-4f92-af74-9af2b233776d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'KPI Trends Values - TEST' = ```
+			
+			
+			/*KPI Trends Charts values obtained from the KPI Dynamic Measure for the Year of the selected Reporting Period */ 
+			VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+			VAR ReportType = SELECTEDVALUE('Dim Report Type'[Report Type])
+			VAR ReportingPeriod = SELECTEDVALUE('Fact Table'[Timestamp])
+			VAR KPI_Value = 
+			    CALCULATE(
+			        [KPI Dynamic Measure], 
+			        'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			    )
+			
+			RETURN
+			    KPI_Value
+			```
+		lineageTag: 271ee4c3-4b34-46e4-a2f6-3aeb30eaa708
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Target for Year' = ```
+			
+			    VAR KPI_Value = 
+			        CALCULATE(
+			            [KPI Dynamic Measure], 
+			            'Fact Table'[Attribute] = "Targets",
+			            'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			        )
+			
+			    RETURN 
+			        KPI_Value
+			    // VAR KPIName = SELECTEDVALUE('Dim KPI'[KPI Name])
+			    // //VAR KPIName = SELECTEDVALUE('Dim Attribute'[Attribute])
+			    // VAR SelectedYear = VALUES('Fact Table'[Reporting Year])
+			    // VAR SelectedQuarter = SELECTEDVALUE('Fact Table'[Reporting Quarter])
+			    // VAR Division_ID = VALUES('Dim Division'[Division ID])
+			    
+			    // RETURN
+			    //     CALCULATE(MAX('Fact Finance Table'[Value]), 'Fact Table'[Attribute] = "Targets", 'Fact Table'[Reporting Year] = SelectedYear, 'Fact Table'[Reporting Quarter] = SelectedQuarter, 'Fact Table'[Division ID] = Division_ID, 'Fact Table'[Column] = KPIName)
+			```
+		lineageTag: 97d96cdd-f5bb-4fda-9572-68ea3e1194bf
+
+		formatStringDefinition = ```
+				
+				    VAR CurrentValue = 
+				        ABS(IF(SELECTEDMEASURE()= "-", BLANK(), SELECTEDMEASURE()))
+				    
+				    RETURN
+				        SWITCH (
+				                TRUE (),
+				                // Special cases to force K and M in the sample report
+				                CurrentValue <= 1E3, "#,0.0",
+				                CurrentValue <= 1E6, "#,0,.0 K",
+				                CurrentValue <= 1E9, "#,0,,.0 M",
+				                CurrentValue <= 1E12, "#,0,,,.0 B"
+				            )
+				
+				```
+
+	measure 'Top 10 Projects - Current Period Title' = ```
+			
+			    VAR MaxYear = MAX ('Fact Projects Table'[Year])
+			    VAR MaxQuarter = 
+			        CALCULATE(
+			            MAX('Fact Projects Table'[Quarter]),
+			            'Fact Projects Table'[Year] = MaxYear
+			        )
+			    RETURN
+			        MaxYear & "-Q" & MaxQuarter
+			```
+		lineageTag: 07a059e1-58ca-4146-b05f-0518d0d063fa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'YEE for Year' = ```
+			
+			    VAR KPI_Value = 
+			    CALCULATE(
+			        [KPI Dynamic Measure], 
+			        'Fact Table'[Attribute] = "YEE",
+			        'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			    )
+			
+			    RETURN KPI_Value
+			```
+		lineageTag: 297a1ad7-a91f-45ba-8b63-e657a12359cb
+
+		formatStringDefinition = ```
+				
+				    VAR CurrentValue = 
+				        ABS(IF(SELECTEDMEASURE()= "-", BLANK(), SELECTEDMEASURE()))
+				    
+				    RETURN
+				        SWITCH (
+				                TRUE (),
+				                // Special cases to force K and M in the sample report
+				                CurrentValue <= 1E3, "#,0.0",
+				                CurrentValue <= 1E6, "#,0,.0 K",
+				                CurrentValue <= 1E9, "#,0,,.0 M",
+				                CurrentValue <= 1E12, "#,0,,,.0 B"
+				            )
+				
+				```
+
+	measure 'Actual Display' = ```
+			
+			"Actual: " & 
+			FORMAT(
+			    CALCULATE(
+			        SUM('Fact Projects Table History'[Value]),
+			        'Fact Projects Table History'[Attribute] = "Actual"
+			    ),
+			    "#,##,##0.00"
+			)
+			```
+		displayFolder: Base Measures
+		lineageTag: 9c0690af-bee8-4e4e-bde8-4f1eb7146149
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Planned Display' = ```
+			
+			"Planned: " & 
+			FORMAT(
+			    CALCULATE(
+			        SUM('Fact Projects Table History'[Value]),
+			        'Fact Projects Table History'[Attribute] = "Planned"
+			    ),
+			    "#,##,##0.00"
+			)
+			```
+		displayFolder: Base Measures
+		lineageTag: 61e6b10b-e69b-4a15-acba-52892e52532d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Investment Display' = ```
+			
+			"Investment: " & 
+			FORMAT(
+			    CALCULATE(
+			        SUM('Fact Projects Table History'[Value]),
+			        'Fact Projects Table History'[Attribute] = "Investment"
+			    ),
+			    "#,##,##0.00"
+			)
+			```
+		formatString: 0.000
+		displayFolder: Base Measures
+		lineageTag: 3844edfa-9232-4dd4-8533-b9675cab7431
+
+	measure 'Replan Display' = ```
+			
+			"Replan: " & 
+			FORMAT(
+			    CALCULATE(
+			        SUM('Fact Projects Table History'[Value]),
+			        'Fact Projects Table History'[Attribute] = "Replan"
+			    ),
+			    "#,##,##0.00"
+			)
+			```
+		displayFolder: Base Measures
+		lineageTag: 06e06524-0c59-43d7-ad5a-eb7d0eb2a71e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Max Planned Region Display' = ```
+			
+			    "Region: " & [Max Planned Region]
+			```
+		displayFolder: Base Measures
+		lineageTag: 75f0c2e1-7bd2-4b1e-9725-b2dd1cbca357
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Activity Owner Display' = ```
+			
+			"Activity Owner: " & 
+			CALCULATE(
+			    FIRSTNONBLANK('Fact Projects Table History'[Activity Owner], 1)
+			)
+			```
+		displayFolder: Base Measures
+		lineageTag: b50c0790-9258-4894-91f7-3e499e78feb7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Actual for Year' = ```
+			
+			    VAR KPI_Value = 
+			    CALCULATE(
+			        [KPI Dynamic Measure], 
+			        'Fact Table'[Attribute] = "Actuals",
+			        'KPI Intelligence'[Time Period Calculations] = "Current Quarter"
+			    )
+			
+			    RETURN KPI_Value
+			```
+		lineageTag: 1bdcf02c-0915-404c-ac4f-62914a6480db
+
+		formatStringDefinition = ```
+				
+				    VAR CurrentValue = 
+				        ABS(IF(SELECTEDMEASURE()= "-", BLANK(), SELECTEDMEASURE()))
+				    
+				    RETURN
+				        SWITCH (
+				                TRUE (),
+				                // Special cases to force K and M in the sample report
+				                CurrentValue <= 1E3, "#,0.0",
+				                CurrentValue <= 1E6, "#,0,.0 K",
+				                CurrentValue <= 1E9, "#,0,,.0 M",
+				                CurrentValue <= 1E12, "#,0,,,.0 B"
+				            )
+				
+				```
+
+	partition Measures_table = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

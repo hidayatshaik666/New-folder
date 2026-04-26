@@ -1,0 +1,240 @@
+table 'Fact Table'
+	lineageTag: fa60c012-1db9-42b9-b57b-3a6e986a2fef
+
+	column Timestamp
+		dataType: string
+		lineageTag: 651231d3-72b5-4e0d-b712-3f2a5b161194
+		summarizeBy: none
+		sourceColumn: Timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 66ecb367-0f47-43cb-9ae1-6f824757981e
+		summarizeBy: none
+		sourceColumn: Division ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Topic ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 244c34ac-ba42-4e66-8ca8-55c85b5fd1f9
+		summarizeBy: none
+		sourceColumn: Topic ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Attribute ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: a039b0c7-c76a-459f-af40-214a57593649
+		summarizeBy: none
+		sourceColumn: Attribute ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 99fcd3ee-3c40-4112-be72-b8cf285d6e8d
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End Of Quarter Date'
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 061345fe-8e58-48d5-ad88-766f6ccc6e13
+		summarizeBy: none
+		sourceColumn: End Of Quarter Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Attribute
+		dataType: string
+		lineageTag: ac9dac1b-00e6-4c35-9806-7899f17be240
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 0af4fc2b-b5cc-4efd-8312-0e159913feaf
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Report Type ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 01c19db2-a3bf-4226-ab96-266d0020f8e8
+		summarizeBy: none
+		sourceColumn: Report Type ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Standard Quarter'
+		dataType: string
+		lineageTag: 70b6348d-b2ea-4044-8620-10bbb3fb59a2
+		summarizeBy: none
+		sourceColumn: Standard Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Timestamp - KPI Trends'
+		dataType: string
+		lineageTag: 524b7444-cab9-4035-a961-55072b1f3008
+		summarizeBy: none
+		sourceColumn: Timestamp - KPI Trends
+
+		annotation SummarizationSetBy = Automatic
+
+	column OE
+		dataType: string
+		lineageTag: b90e759a-ded4-4126-aca6-f416a716dc01
+		summarizeBy: none
+		sourceColumn: OE
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division =
+			
+			SWITCH(
+			    'Fact Table'[Division ID],
+			    1, "Pet Nutrition",
+			    2, "Royal Canin",
+			    3, "MVH",
+			    4, "SDX"
+			)
+		lineageTag: 204efcf4-9678-45e5-99c0-a38182bbded9
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment = "Petcare"
+		lineageTag: 60130add-2f7e-49e9-b962-0871cb22b782
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Year' = ```
+			
+			
+			//VAR ReportingYear = YEAR('Fact Table'[End Of Quarter Date])
+			VAR ReportingYear = CONVERT(LEFT('Fact Table'[Timestamp - KPI Trends], 4), INTEGER)
+			RETURN 
+			    IF(ReportingYear = 'Fact Table'[Year], ReportingYear, BLANK())
+			```
+		formatString: 0
+		lineageTag: 4bcb8f9d-2736-47a8-98a4-812bdaac6d4c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Quarter' = ```
+			
+			        //IF(ISBLANK('Fact Table'[Reporting Year]), BLANK(), CONCATENATE("Q", QUARTER('Fact Table'[End Of Quarter Date])))
+			        IF(ISBLANK('Fact Table'[Reporting Year]), BLANK(), RIGHT('Fact Table'[Timestamp - KPI Trends], 2))
+			```
+		lineageTag: 74f694d9-978d-4b71-8653-f76f7a8dedfe
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Year (Actuals)' =
+			
+			VAR InputYear =
+			    VALUE ( LEFT ( 'Fact Table'[Timestamp - KPI Trends], 4 ) )
+			RETURN
+			IF (
+			    'Fact Table'[Attribute] = "Actuals",
+			    'Fact Table'[Year],
+			    IF ( InputYear = 'Fact Table'[Year], InputYear )
+			)
+		formatString: 0
+		lineageTag: c7648a79-ebff-41b7-8ef4-dc52288f6896
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+	column 'Reporting Quarter (Actuals)' = ```
+			
+			        //IF(ISBLANK('Fact Table'[Reporting Year]), BLANK(), CONCATENATE("Q", QUARTER('Fact Table'[End Of Quarter Date])))
+			        IF(ISBLANK('Fact Table'[Reporting Year (Actuals)]), BLANK(), RIGHT('Fact Table'[Timestamp - KPI Trends], 2))
+			```
+		lineageTag: 57f802d0-760f-46ac-a217-c6a0f55d25e8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Fact Table' = m
+		mode: import
+		queryGroup: 'Fact Tables'
+		source = ```
+				let
+				    Source = #"Sustainability List - Export",
+				    #"Select Required Columns" = Table.SelectColumns(Source,{"Timestamp", "Division", "Division ID", "Topic", "Topic ID", "Data Field", "Attribute ID", "Year", "Actuals", "YEE", "Total Planned Activities", "YTD Active Projects", "Replan ($M)", "Investment YEE ($M)", "Targets", "YTD"}),
+				    #"Added End of Quarter Date Column" = Table.AddColumn(#"Select Required Columns", "End Of Quarter Date", each let
+				    parts = Text.Split([Timestamp], "-Q"),
+				    year = Number.FromText(parts{0}),
+				    quarter = Number.FromText(parts{1}),
+				    lastMonth = quarter * 3,
+				    lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+				in
+				    lastDay),
+				    #"Changed End of Quarter to Date type" = Table.TransformColumnTypes(#"Added End of Quarter Date Column",{{"End Of Quarter Date", type date}}),
+				    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed End of Quarter to Date type",{"Division", "Topic", "Data Field"}),
+				    #"Renamed Replan & Investment Columns" = Table.RenameColumns(#"Removed Dimension Columns",{{"Replan ($M)", "Replan"}, {"Investment YEE ($M)", "Investment YEE"}}),
+				    //#"Added YEE % of Target Delivered" = Table.AddColumn(#"Renamed Replan & Investment Columns", "YEE % of Target Delivered", each [YEE]/[Targets], type number),
+				    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Renamed Replan & Investment Columns", {"Year", "Attribute ID", "Topic ID", "Division ID", "End Of Quarter Date", "Timestamp"}, "Attribute", "Value"),
+				    #"Appended Query" = Table.Combine({#"Unpivoted Other Columns", #"YEE Prior Qtr"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Appended Query", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+				    #"Expanded Report Type" = Table.ExpandTableColumn(#"Merged Queries", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+				    #"Changed Value Type to Decimal" = Table.TransformColumnTypes(#"Expanded Report Type",{{"Value", type number}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Changed Value Type to Decimal",each [Value],each if [Report Type] = "Replan" or  [Report Type]="Investment YEE" then [Value]*1000000 else [Value],Replacer.ReplaceValue,{"Value"}),
+				    #"Added Standard Quarter" = Table.AddColumn(#"Replaced Value", "Standard Quarter", each if [Report Type ID] = 3 and Number.From([Year])  = Date.Year([End Of Quarter Date]) then "Q" & Text.From(Date.QuarterOfYear([End Of Quarter Date])) else null),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Standard Quarter",{{"Value", type number}, {"Report Type ID", Int64.Type}, {"Standard Quarter", type text}, {"Year", Int64.Type}, {"Attribute ID", Int64.Type}, {"Topic ID", Int64.Type}, {"Division ID", Int64.Type}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Report Type ID] <> 9)),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Filtered Rows", "Timestamp", "Timestamp - Copy"),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Duplicated Column",{{"Timestamp - Copy", "Timestamp - KPI Trends"}}),
+				    #"Remove older data from table" = Table.SelectRows(#"Renamed Columns1", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28 and [Attribute ID] <> 29 and [Attribute] <> "Targets")),
+				      #"Append All Calculated KPIs" = 
+				        Table.Combine({
+				            #"Remove older data from table", 
+				            #"GHG Activity Set Scopes - YTD", 
+				            #"GHG Activity Set Total - YTD", 
+				            #"GHG Activity Set Scopes - Actuals", 
+				            #"GHG Activity Set Total - Actuals",
+				            #"GHG Activity Set Scopes - YEE",
+				            #"GHG Activity Set Total - YEE",
+				            #"GHG Activity Set Scopes - Investment",
+				            #"GHG Activity Set Total - Investment",
+				            #"GHG Activity Set Scopes - Replan",
+				            #"GHG Activity Set Total - Replan",
+				            //#"CAP YTD Projects GHG Scopes",
+				            //#"CAP YTD Projects GHG Total",
+				            #"Circularity Actuals",
+				            #"Circularity YTD",
+				            #"Targets for Scorecard Page",
+				            #"GHG YEE % of Target"
+				        })
+				in
+				    #"Append All Calculated KPIs"
+				// in
+				//     #"Remove older data from table"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

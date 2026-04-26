@@ -1,0 +1,182 @@
+table 'Dim Mars Date Table'
+	lineageTag: 1a6dd864-5a95-4fad-8099-01901f7f0da5
+	dataCategory: Time
+
+	column bk_date
+		dataType: int64
+		formatString: 0
+		lineageTag: df571f47-8615-4b5c-821a-1a08deab1930
+		summarizeBy: sum
+		sourceColumn: bk_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column calendar_dt
+		dataType: dateTime
+		isKey
+		formatString: Short Date
+		lineageTag: a2835ab4-a73a-4e7e-9ec3-8ff9c7ff97bc
+		summarizeBy: none
+		sourceColumn: calendar_dt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column month_desc
+		dataType: string
+		lineageTag: ce7edb03-4ce4-4a03-9b2a-232a0ce1c3e2
+		summarizeBy: none
+		sourceColumn: month_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column month_short_term_desc
+		dataType: string
+		lineageTag: 1d50bb63-cd5c-4957-a3c7-fbd6197dc841
+		summarizeBy: none
+		sourceColumn: month_short_term_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column mars_period_desc
+		dataType: string
+		lineageTag: 6a913198-7abe-4b54-b32a-10941155199b
+		summarizeBy: none
+		sourceColumn: mars_period_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column mars_quarter_desc
+		dataType: string
+		lineageTag: 285372ac-158b-465e-b5fa-d3f6b8d0eb4f
+		summarizeBy: none
+		sourceColumn: mars_quarter_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column year_number_int
+		dataType: int64
+		formatString: 0
+		lineageTag: 6960a808-5979-4c46-8ad2-9b0c2aa3231d
+		summarizeBy: sum
+		sourceColumn: year_number_int
+
+		annotation SummarizationSetBy = Automatic
+
+	column mars_fiscal_year_number_int
+		dataType: int64
+		formatString: 0
+		lineageTag: 8371c8a9-c003-498f-a76c-2e6abcb65c1a
+		summarizeBy: sum
+		sourceColumn: mars_fiscal_year_number_int
+
+		annotation SummarizationSetBy = Automatic
+
+	column mars_week_in_period_desc
+		dataType: string
+		lineageTag: 523ead29-003a-4301-b8e2-550943d5a069
+		summarizeBy: none
+		sourceColumn: mars_week_in_period_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column mars_week_in_year_int
+		dataType: int64
+		formatString: 0
+		lineageTag: 1e529c61-ba42-4613-83bb-10d4afcd2e88
+		summarizeBy: sum
+		sourceColumn: mars_week_in_year_int
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week_desc
+		dataType: string
+		lineageTag: 58a82ab7-bd2a-4a23-934c-c6c9f4cf7693
+		summarizeBy: none
+		sourceColumn: day_of_week_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week_short_term_desc
+		dataType: string
+		lineageTag: f758fe7b-b1c0-4e59-b3ef-15916b5ffe46
+		summarizeBy: none
+		sourceColumn: day_of_week_short_term_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week_int
+		dataType: int64
+		formatString: 0
+		lineageTag: 35662551-07d4-412f-891c-f2320a59d249
+		summarizeBy: sum
+		sourceColumn: day_of_week_int
+
+		annotation SummarizationSetBy = Automatic
+
+	column mars_day_in_period_desc
+		dataType: int64
+		formatString: 0
+		lineageTag: 1fdd6080-9105-4e01-96c4-c1aefe452ba7
+		summarizeBy: sum
+		sourceColumn: mars_day_in_period_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_day_of_period_dt
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 55f8ed15-2e93-4a2a-a9b5-1d4854945180
+		summarizeBy: none
+		sourceColumn: first_day_of_period_dt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Standard Quarter'
+		dataType: string
+		lineageTag: 00a088ff-d5ae-43a2-86fa-804bffaefe0c
+		summarizeBy: none
+		sourceColumn: Standard Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Year and Quarter combined label for slicer (e.g. 2024 Q1)
+	column 'Reporting Period' = FORMAT('Dim Mars Date Table'[year_number_int], "0") & " " & 'Dim Mars Date Table'[mars_quarter_desc]
+		dataType: string
+		lineageTag: 92571630-16e7-4bba-aeab-8f713a8584ad
+		summarizeBy: none
+		sortByColumn: 'Reporting Period Sort'
+
+		annotation SummarizationSetBy = Automatic
+
+	/// Numeric sort key for Reporting Period (e.g. 20241)
+	column 'Reporting Period Sort' = 'Dim Mars Date Table'[year_number_int] * 10 + VALUE(RIGHT('Dim Mars Date Table'[mars_quarter_desc], 1))
+		dataType: int64
+		isHidden
+		lineageTag: 5632a3d5-7c3e-4a5e-9965-ba83ff9b3523
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim Mars Date Table' = m
+		mode: import
+		queryGroup: 'Dimension Tables'
+		source =
+				let
+				    Source = #"Sustainability Scorecard data",
+				    #"Imported Excel Workbook" = Excel.Workbook(Source),
+				    #"Mars Date Table_Sheet" = #"Imported Excel Workbook"{[Item="Mars Date Table",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Mars Date Table_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"bk_date", Int64.Type}, {"calendar_dt", type date}, {"month_desc", type text}, {"month_short_term_desc", type text}, {"mars_period_desc", type text}, {"mars_quarter_desc", type text}, {"year_number_int", Int64.Type}, {"mars_fiscal_year_number_int", Int64.Type}, {"mars_week_in_period_desc", type text}, {"mars_week_in_year_int", Int64.Type}, {"day_of_week_desc", type text}, {"day_of_week_short_term_desc", type text}, {"day_of_week_int", Int64.Type}, {"mars_day_in_period_desc", Int64.Type}, {"first_day_of_period_dt", type date}, {"current_day_flg", type date}, {"current_month_flg", type text}, {"current_year_flg", type any}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"current_year_flg", "current_month_flg", "current_day_flg"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Columns", "Standard Quarter", each "Q" & Text.From(Date.QuarterOfYear([calendar_dt])))
+				in
+				    #"Added Custom"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

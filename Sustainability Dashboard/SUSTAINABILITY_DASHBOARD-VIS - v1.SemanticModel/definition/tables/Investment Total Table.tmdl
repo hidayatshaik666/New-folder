@@ -1,0 +1,33 @@
+table 'Investment Total Table'
+	lineageTag: ba3b0ec0-f5ae-4fb9-93f5-a9bed2858cbd
+	sourceLineageTag: 3f88f291-070e-46c4-ad3c-f623a0ba1b9d
+
+	column Year
+		dataType: string
+		isNullable: false
+		lineageTag: f554d451-086a-401f-aefe-3b33d31db284
+		sourceLineageTag: 8b4f56a7-feae-47a1-b23c-1387bbc8d6cd
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Year
+		sortByColumn: 'Year Order'
+
+		annotation SummarizationSetBy = User
+
+	column 'Year Order'
+		dataType: int64
+		formatString: 0
+		lineageTag: 0dbc6403-f855-4f8d-a938-354a78143dbd
+		sourceLineageTag: 616d3853-d812-48cc-b120-de2655a57080
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: Year Order
+
+		annotation SummarizationSetBy = User
+
+	partition 'Investment Total Table' = entity
+		mode: directQuery
+		source
+			entityName: Investment Total Table
+			expressionSource: 'DirectQuery to AS - CAP refresh latest report'
+

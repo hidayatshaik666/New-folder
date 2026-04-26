@@ -1,0 +1,2390 @@
+expression 'Sustainability Scorecard data' =
+		let
+		    Source = Table.SelectRows(SharePoint.Files("https://team.effem.com/sites/PetcareSustainability/", [ApiVersion = 15]), each [Name] = "Sustainability Scorecard Dataset.xlsx")[Content]{0}
+		in
+		    Source
+	lineageTag: c836d847-f214-4e28-9274-0762a6b0fd4d
+	queryGroup: Sources
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Binary
+
+expression 'Sustainability List - Export' =
+		let
+		    Source = SharePoint.Tables("https://team.effem.com/sites/PetcareSustainability", [Implementation="2.0", ViewMode="All"]),
+		    #"22e5b82a-c3e1-47b1-b9e5-81de2207c42a" = Source{[Id="22e5b82a-c3e1-47b1-b9e5-81de2207c42a"]}[Items],
+		    #"Removed Columns" = Table.RemoveColumns(#"22e5b82a-c3e1-47b1-b9e5-81de2207c42a",{"ID", "Content Type", "Modified", "Created", "Created By", "Modified By", "Version", "Attachments", "Edit", "Type", "Item Child Count", "Folder Child Count", "Label setting", "Retention label", "Retention label Applied", "Label applied by", "Item is a Record", "App Created By", "App Modified By", "Title", "Color Tag", "Compliance Asset Id"}),
+		    #"Remove rows of Petcare (excluding SDX)" = Table.SelectRows(#"Removed Columns", each ([Division] <> "Petcare (excluding SDX)")),
+		    #"Remove old MVH KPI Rows" = Table.SelectRows(#"Remove rows of Petcare (excluding SDX)", each ([Data Field] <> "Non-medical waste that is recycled or composted" and [Data Field] <> "Total non-medical waste")),
+		    #"Remove old KPI data" = Table.SelectRows(#"Remove old MVH KPI Rows", each ([Data Field] <> "Advocate" and [Data Field] <> "Circular" and [Data Field] <> "D4C score" and [Data Field] <> "Eliminate" and [Data Field] <> "Scope 1 Annual GHG reduction through activity set" and [Data Field] <> "Scope 1 cumulative GHG reduction through activity set" and [Data Field] <> "Scope 2 Annual GHG reduction through activity set" and [Data Field] <> "Scope 2 cumulative GHG reduction through activity set" and [Data Field] <> "Scope 3 Annual GHG reduction through activity set" and [Data Field] <> "Scope 3 cumulative GHG reduction through activity set" and [Data Field] <> "TEST KPI1" and [Data Field] <> "Total Annual GHG reduction through activity set" and [Data Field] <> "Total cumulative GHG reduction through activity set" and [Data Field] <> "Volume of packaging classified as D4C" and [Data Field] <> "Volume of packaging classified as NOT D4C")),
+		    #"Added Division ID Column" = Table.AddColumn(#"Remove old KPI data", "Division ID", each if [Division] = "Pet Nutrition" then 1 else if [Division] = "Royal Canin" then 2 else if [Division] = "MVH" then 3 else if [Division] = "Petcare (excluding SDX)" then 4 else if [Division] = "SDX" then 5 else null),
+		    #"Reordered Columns" = Table.ReorderColumns(#"Added Division ID Column",{"Timestamp", "Division", "Division ID", "Topic", "Data Field", "Year", "Actuals", "YEE", "Total Planned Activities", "YTD Active Projects", "Replan ($M)", "Investment YEE ($M)", "Target IVCP", "Targets", "YTD", "YEE Quarterly Updates", "YEE % of Target Delivered"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Reordered Columns",{{"Division ID", Int64.Type}}),
+		    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Topic"}, #"Dim Topic", {"Topic"}, "Topic.1", JoinKind.LeftOuter),
+		    #"Expanded Topic.1" = Table.ExpandTableColumn(#"Merged Queries", "Topic.1", {"Topic ID"}, {"Topic ID"}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded Topic.1",{{"Topic ID", Int64.Type}}),
+		    #"Reordered Columns1" = Table.ReorderColumns(#"Changed Type1",{"Timestamp", "Division", "Division ID", "Topic", "Topic ID", "Data Field", "Year", "Actuals", "YEE", "Total Planned Activities", "YTD Active Projects", "Replan ($M)", "Investment YEE ($M)", "Target IVCP", "Targets", "YTD", "YEE Quarterly Updates", "YEE % of Target Delivered"}),
+		    #"Added Attribute ID" = Table.AddColumn(#"Reordered Columns1", "Attribute ID", each if [Data Field] = "Absolute GHG emissions (total actual GHG footprint)" then 1 else if [Data Field] = "Advocate" then 2 else if [Data Field] = "Annual GHG reduction through carbon credits" then 3 else if [Data Field] = "Finished goods tonnage" then 4 else if [Data Field] = "Circular" then 5 else if [Data Field] = "D4C score" then 6 else if [Data Field] = "Eliminate" then 7 else if [Data Field] = "Extreme and High-Risk Own Operations Sites" then 8 else if [Data Field] = "Extreme and High-Risk Tier 1 Supplier Sites" then 9 else if [Data Field] = "Extreme and High-Risk Own Operations Sites Actioned" then 10 else if [Data Field] = "Extreme and High-Risk Tier 1 Supplier Sites Actioned" then 11 else if [Data Field] = "Total targeted T1 suppliers" then 12 else if [Data Field] = "T1 suppliers with valid EcoVadis rating" then 13 else if [Data Field] = "Cumulative people reached with TP programs (since 2015)" then 14 else if [Data Field] = "Tons of Waste Diverted through Prevention Programs" then 15 else if [Data Field] = "Pet visits" then 16 else if [Data Field] = "RAcc Program" then 17 else if [Data Field] = "Raw materials tonnage" then 18 else if [Data Field] = "Recycled content volume" then 19 else if [Data Field] = "Recycled plastic volume" then 20 else if [Data Field] = "Revenue" then 21 else if [Data Field] = "Scope 1 Annual GHG reduction through activity set" then 22 else if [Data Field] = "Scope 1 cumulative GHG reduction through activity set" then 23 else if [Data Field] = "Scope 2 Annual GHG reduction through activity set" then 24 else if [Data Field] = "Scope 2 cumulative GHG reduction through activity set" then 25 else if [Data Field] = "Scope 3 Annual GHG reduction through activity set" then 26 else if [Data Field] = "Scope 3 cumulative GHG reduction through activity set" then 27 else if [Data Field] = "Total Annual GHG reduction through activity set" then 28 else if [Data Field] = "Total cumulative GHG reduction through activity set" then 29 else if [Data Field] = "Tons of Specialty Recycling Diverted" then 30 else if [Data Field] = "Total plastic volume (virgin + recycled)" then 31 else if [Data Field] = "Volume of packaging classified as D4C" then 32 else if [Data Field] = "Volume of packaging classified as NOT D4C" then 33 else null),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Added Attribute ID",{{"Attribute ID", Int64.Type}}),
+		    #"Reordered Columns2" = Table.ReorderColumns(#"Changed Type2",{"Timestamp", "Division", "Division ID", "Topic", "Topic ID", "Data Field", "Attribute ID", "Year", "Actuals", "YEE", "Total Planned Activities", "YTD Active Projects", "Replan ($M)", "Investment YEE ($M)", "Target IVCP", "Targets", "YTD", "YEE Quarterly Updates", "YEE % of Target Delivered"}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Reordered Columns2",0,null,Replacer.ReplaceValue,{"Timestamp", "Division", "Division ID", "Topic", "Topic ID", "Data Field", "Attribute ID", "Year", "Actuals", "YEE", "Total Planned Activities", "YTD Active Projects", "Replan ($M)", "Investment YEE ($M)", "Target IVCP", "Targets", "YTD", "YEE Quarterly Updates", "YEE % of Target Delivered"})
+		in
+		    #"Replaced Value"
+	lineageTag: cdb36686-9434-4af9-acef-0373918b9cd7
+	queryGroup: Sources
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sustainability KPI Table' = ```
+		let
+		    Source = SharePoint.Tables("https://team.effem.com/sites/PetcareSustainability", [Implementation="2.0", ViewMode="All"]),
+		    #"629eea79-81e7-4ce5-a9e4-f24db6c0f9ff" = Source{[Id="629eea79-81e7-4ce5-a9e4-f24db6c0f9ff"]}[Items],
+		    #"Removed Other Columns" = 
+		        Table.SelectColumns(
+		            #"629eea79-81e7-4ce5-a9e4-f24db6c0f9ff",
+		            {
+		                "KPI ID",
+		                "Topic",
+		                "KPI Name",
+		                "Data Format",
+		                "Business Definition",
+		                "Higher is Better",
+		                "Unit of Measurement",
+		                "Calculation Methodology",
+		                "Source Database (IT Dependency)",
+		                "Relationships",
+		                "Constraints",
+		                "Assumptions",
+		                "Division in Scope: RC",
+		                "Division in Scope: PN",
+		                "Division in Scope: MVH",
+		                "Division Boundaries: RC",
+		                "Division Boundaries: PN",
+		                "Division Boundaries: MVH",
+		                "Frequency",
+		                "Division Data Owner: RC",
+		                "Division Data Owner: PN",
+		                "Division Data Owner: MVH",
+		                "Supporting Documents",
+		                "Used in PBI Calculations"
+		            }
+		        ),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"KPI Name", "KPI Name "}})
+		in
+		    #"Renamed Columns"
+		```
+	lineageTag: d8f112db-b1f3-4310-8b97-64fb9c209dc4
+	queryGroup: Sources
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'YEE Prior Qtr' = ```
+		let
+		    Source = #"Sustainability List - Export",
+		    #"Select Required Columns" = Table.SelectColumns(Source,{"Timestamp", "Division", "Division ID", "Topic", "Topic ID", "Data Field", "Attribute ID", "Year",  "YEE"}),   
+		    #"Added End of Quarter Date Column" = Table.AddColumn(#"Select Required Columns", "End Of Quarter Date", each let
+		    parts = Text.Split([Timestamp], "-Q"),
+		    year = Number.FromText(parts{0}),
+		    quarter = Number.FromText(parts{1}),
+		    lastMonth = quarter * 3,
+		    lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		in
+		    lastDay),
+		    #"Changed End of Quarter to Date type" = Table.TransformColumnTypes(#"Added End of Quarter Date Column",{{"End Of Quarter Date", type date}}),
+		    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed End of Quarter to Date type",{"Division", "Topic", "Data Field"}),
+		    #"Filtered Rows1" = Table.SelectRows(#"Removed Dimension Columns", each ([YEE] <> null)),
+		    #"Unpivoted Other Columns" = Table.UnpivotOtherColumns(#"Filtered Rows1", {"Year", "Attribute ID", "Topic ID", "Division ID", "End Of Quarter Date", "Timestamp"}, "Attribute", "Value"),
+		    #"Added Custom" = Table.AddColumn(#"Unpivoted Other Columns", "TimestampNew", each (if Text.End([Timestamp],1)="4" then Number.ToText(Number.FromText(Text.Start([Timestamp],4))+1) else Text.Start([Timestamp],4)) &"-" &(if Text.End([Timestamp],1)="4" then "Q1" else "Q"& Number.ToText(Number.FromText(Text.End([Timestamp],1))+1)), type text),
+		    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Timestamp"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"TimestampNew", "Timestamp"}})
+		in
+		    #"Renamed Columns"
+		```
+	lineageTag: 17887008-e2fa-40f3-b95e-b2e7578a40f2
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP YTD Data' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Pillar", "Type of activity", /*"Activity owner",*/ "Existing in CAP", /*"Activity Status",*/ "Level of Confidence", "AEP status"}),
+		    #"AllColumns" = Table.ColumnNames(#"Removed Columns"),
+		    #"ColumnsToRemove" = 
+		        List.Select(
+		            #"AllColumns", 
+		            each
+		                not Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) and 
+		                not Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "discount", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Result" = Table.SelectColumns(#"Removed Columns", #"ColumnsToRemove")
+		in
+		    Result
+		```
+	lineageTag: 84e01ceb-0677-4074-9adc-4a8243f1f8dc
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Scopes - YTD' = ```
+		let
+		    Source = #"CAP YTD Data",
+		    #"Group YTD Data Rows to get YTD" = Table.Group(Source, {"Timestamp", "Input Year", "Division", "OE name", "GHG Scope"}, {{"YTD", each List.Sum([GHG YTD]), type nullable number}}),
+		    #"Remove Rows where Scope is 0 or null" = Table.SelectRows(#"Group YTD Data Rows to get YTD", each ([GHG Scope] <> null and [GHG Scope] <> 0)),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Remove Rows where Scope is 0 or null", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merged Queries", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "YTD", type text),
+		    #"Added Standard Quarter column" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each null),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter column", "Timestamp", "Timestamp - Copy"),
+		    #"Renamed columns" = Table.RenameColumns(#"Add Timestamp - KPI Trends column",{{"Input Year", "Year"}, {"YTD", "Value"}, {"Timestamp - Copy", "Timestamp - KPI Trends"}, {"OE name", "OE"}}),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Renamed columns", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Add End of Quarter Date" = 
+		        Table.AddColumn(
+		            #"Get Report Type ID", 
+		            "End Of Quarter Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Add End of Quarter Date",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Data Type of Columns to Match with Fact Table",{"Division", "GHG Scope"})
+		in
+		    #"Removed Columns"
+		```
+	lineageTag: bf523162-1b56-46a0-9759-c12039fb7ac1
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Total - YTD' =
+		let
+		    Source = #"GHG Activity Set Scopes - YTD",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Year", "Topic ID", "Division ID", "OE", "Attribute", "Standard Quarter", "Timestamp - KPI Trends", "Report Type ID", "End Of Quarter Date"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Grouped Rows", "Attribute ID", each 28, Int64.Type)
+		in
+		    #"Create Attribute ID column"
+	lineageTag: ca01459a-d881-40eb-9e77-c711a4989866
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP YEE Data' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Pillar", "Type of activity", /*"Activity owner",*/ "Existing in CAP", /*"Activity Status",*/ "Level of Confidence", "GHG YTD", "AEP status", "Start year", "End Year"}),
+		    #"AllColumns" = Table.ColumnNames(#"Removed Columns"),
+		    // Dynamic removal of columns not needed (columns containing certain text)
+		    #"ColumnsToRemove" = 
+		        List.Select(
+		            #"AllColumns", 
+		            each
+		                Text.Contains(_, "no growth & discounted", Comparer.OrdinalIgnoreCase) or 
+		                (not Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) and 
+		                not Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "discount", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase))
+		        ),
+		    #"Result" = Table.SelectColumns(#"Removed Columns", #"ColumnsToRemove"),
+		    // Replace GYG (no growth & discounted) columns with just their corresponding years
+		    #"RenamedColumns" = 
+		        Table.TransformColumnNames(
+		            Result, 
+		            each let
+		                ExtractNumbers = 
+		                    if Text.Contains(_,"no growth & discounted") 
+		                    then Text.Start(Text.Select(_, {"0".."9"}), 4) 
+		                    else _
+		            in
+		                ExtractNumbers
+		        ),
+		    #"Merged Queries" = Table.NestedJoin(RenamedColumns, {"Input Year"}, MaxQuarterPerYear, {"Input Year"}, "MaxQuarterPerYear", JoinKind.LeftOuter),
+		    #"Expanded MaxQuarterPerYear" = Table.ExpandTableColumn(#"Merged Queries", "MaxQuarterPerYear", {"Max Quarter"}, {"Max Quarter"})
+		in
+		    #"Expanded MaxQuarterPerYear"
+		```
+	lineageTag: 5396bd98-2d27-4eca-bba5-7ae98de3dbdc
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Topics and KPIs' =
+		let
+		    Source = #"Sustainability KPI Table",
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Used in PBI Calculations] = "Yes")),
+		    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows",{"Data Format", "Business Definition", "Higher is Better", "Unit of Measurement", "Calculation Methodology", "Source Database (IT Dependency)", "Relationships", "Constraints", "Assumptions", "Division in Scope: RC", "Division in Scope: PN", "Division in Scope: MVH", "Division Boundaries: RC", "Division Boundaries: PN", "Division Boundaries: MVH", "Frequency", "Division Data Owner: RC", "Division Data Owner: PN", "Division Data Owner: MVH", "Supporting Documents", "Used in PBI Calculations"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns"),
+		    #"Merged Queries" = Table.NestedJoin(#"Removed Duplicates", {"Topic"}, #"Dim Topic", {"Topic"}, "Topic.1", JoinKind.LeftOuter),
+		    #"Expanded Topic.1" = Table.ExpandTableColumn(#"Merged Queries", "Topic.1", {"Topic ID"}, {"Topic ID"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Topic.1",{{"KPI ID", type number}})
+		in
+		    #"Changed Type"
+	lineageTag: cdb69a50-f956-47b6-a17a-8f115c647228
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Scopes - YEE' = ```
+		let
+		    Source = #"CAP YEE Data",
+		    // Get all Year columns to aggregate in group by
+		    #"RemainingColumns" = Table.ColumnNames(Source),
+		    Digits = {"0","1","2","3","4","5","6","7","8","9"},
+		    // select only those column names where a digit exists, then keep those columns
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns",
+		            // Text.PositionOfAny(c, Digits) returns the position of the first digit found (or -1 if none)
+		            (c) => Text.PositionOfAny(c, Digits) <> -1
+		        ),
+		        
+		    // #"ColumnsToGroup" = 
+		    //     List.Select(
+		    //         #"RemainingColumns",
+		    //         // Text.PositionOfAny(c, Digits) returns the position of the first digit found (or -1 if none)
+		    //         (c) => Text.PositionOfAny(c, Digits) = -1
+		    //     ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division", "OE name", "GHG Scope", "Max Quarter"},
+		    // Build aggregation operations dynamically
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            // (colName) => { 
+		            //     colName, 
+		            //     each List.Sum(List.RemoveNulls(List.Transform(_, (r) => Record.Field(r, colName)))), 
+		            //     type number 
+		            // }
+		            //(colName) => {colName, each List.Sum(_), type number}
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"GroupedTable" = Table.Group(Source, #"ColumnsToGroup", #"Aggregations"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(GroupedTable, #"ColumnsToAggregate", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"FilterByYear" = 
+		        Table.SelectRows(
+		            #"Changed Type", 
+		            each [Year] = [Input Year]
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year] and ([Max Quarter] < 4 or [Input Quarter] < 4))
+		            //each [Year] >= [Input Year]
+		        ),
+		    #"Remove Rows where Scope is 0 or null" = Table.SelectRows(#"FilterByYear", each ([GHG Scope] <> null and [GHG Scope] <> 0)),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Remove Rows where Scope is 0 or null", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merged Queries", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "YEE", type text),
+		    // Look at quarters for current year
+		    #"Added Standard Quarter" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each if [Year] = [Input Year] then Text.Combine({"Q", Text.From([Input Quarter], "en-GB")}) else null, type text),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter", "Timestamp", "Timestamp - Copy"),
+		    #"Renamed columns" = Table.RenameColumns(#"Add Timestamp - KPI Trends column",{{"Timestamp - Copy", "Timestamp - KPI Trends"}, {"OE name", "OE"}}),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Renamed columns", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Add End of Quarter Date" = 
+		        Table.AddColumn(
+		            #"Get Report Type ID", 
+		            "End Of Quarter Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Add End of Quarter Date",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Data Type of Columns to Match with Fact Table",{"Division", "GHG Scope", "Input Year", "Max Quarter", "Input Quarter"})
+		in
+		    #"Removed Columns"
+		```
+	lineageTag: da3b0d6d-1f7a-4a35-9353-fc38e68b5af7
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Total - YEE' =
+		let
+		    Source = #"GHG Activity Set Scopes - YEE",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Year", "Topic ID", "Division ID", "OE", "Attribute", "Standard Quarter", "Timestamp - KPI Trends", "Report Type ID", "End Of Quarter Date"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Grouped Rows", "Attribute ID", each 28, Int64.Type)
+		in
+		    #"Create Attribute ID column"
+	lineageTag: 8b6ecf47-12a7-4572-906e-431eba210b6e
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Investment and Replan - Scope' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Pillar", "Type of activity", "Activity owner", "Existing in CAP", "Activity Status", "Level of Confidence", "GHG YTD", "AEP status", "Start year", "End Year"}),
+		    #"AllColumns" = Table.ColumnNames(#"Removed Columns"),
+		    #"ColumnsToRemove" = 
+		        List.Select(
+		            #"AllColumns", 
+		            each
+		                not Text.Contains(_, "discount", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Result" = Table.SelectColumns(#"Removed Columns", #"ColumnsToRemove"),
+		    #"RemainingColumns" = Table.ColumnNames(#"Result"),
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns", 
+		            each
+		                Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division", "OE name", "GHG Scope"},
+		    #"GroupedTable" = Table.Group(#"Result", #"ColumnsToGroup", #"Aggregations"),
+		    
+		    // Filter only columns that contain "COGS" to get each year once
+		    #"COGSColumns" = List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		    
+		    // Extract each year (assuming it's the only number in the name)
+		    #"Years" = List.Transform(
+		        List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		        each Text.Select(_, {"0".."9"})   // keeps only digits
+		    ),
+		
+		    // Add new columns for each year dynamically
+		    #"AddYearTotals" =
+		        List.Accumulate(
+		            #"Years",
+		            #"GroupedTable",
+		            (state, y) =>
+		                Table.AddColumn(
+		                    state,
+		                    y,
+		                    each List.Sum(
+		                        List.Transform(
+		                            List.Select(#"ColumnsToAggregate", (c) => Text.Contains(c, y)),
+		                            (col) => Record.Field(_, col)
+		                        )
+		                    ),
+		                    type number
+		                )
+		        ),
+		    #"AggregatedTableColumns" = Table.ColumnNames(#"AddYearTotals"),
+		    #"AggregatedColumnsToRemove" = 
+		        List.Select(
+		            #"AggregatedTableColumns", 
+		            each
+		                not Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"AggregatedTable" = Table.SelectColumns(#"AddYearTotals", #"AggregatedColumnsToRemove"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(#"AggregatedTable", #"Years", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"FilterByYear" = 
+		        Table.SelectRows(
+		            #"Changed Type", 
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year])
+		            each [Year] >= [Input Year]
+		        ),
+		    #"Added Custom" = Table.AddColumn(FilterByYear, "Investment", each if [Year] = [Input Year] then [Value] else null, type number),
+		    // #"Inserted Subtraction" = Table.AddColumn(#"Added Custom", "PrevYear", each [Input Year] - 1, Int64.Type)
+		    // #"Added Custom1" = Table.AddColumn(#"Inserted Subtraction", "Replan Quarter", each 3, type number),
+		    // #"Merged Queries" = Table.NestedJoin(#"Added Custom1", {"Input Year", "Input Quarter", "Division", "GHG Scope"}, #"Changed Type1", {"PrevYear", "Replan Quarter", "Division", "GHG Scope"}, "Changed Type1", JoinKind.LeftOuter),
+		    // #"Expanded Changed Type1" = Table.ExpandTableColumn(#"Merged Queries", "Changed Type1", {"Value"}, {"Replan"}),
+		    // #"Removed Columns1" = Table.RemoveColumns(#"Expanded Changed Type1",{"Input Year", "Input Quarter", "Value", "PrevYear", "Replan Quarter"})
+		    #"Renamed OE" = Table.RenameColumns(#"Added Custom", {{"OE name", "OE"}})
+		in
+		    //#"Removed Columns1"
+		    #"Renamed OE"
+		```
+	lineageTag: a755d72a-f360-41c8-814c-223fd3936346
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression MaxQuarterPerYear =
+		let
+		    Source = #"CAP Data",
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Input Year", "Input Quarter"}),
+		    #"Grouped Rows" = Table.Group(#"Removed Other Columns", {"Input Year"}, {{"Max Quarter", each List.Max([Input Quarter]), type nullable number}})
+		in
+		    #"Grouped Rows"
+	lineageTag: 0d4ad57a-445d-45b5-aba6-1c8cc3245633
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Scopes - Investment' = ```
+		let
+		    Source = #"CAP Investment and Replan - Scope",
+		    #"Removed Columns1" = Table.RemoveColumns(Source,{"Value"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Columns1", each ([Investment] <> null)),
+		    #"Remove GHG Scope 0 and null" = Table.SelectRows(#"Filtered Rows", each ([GHG Scope] <> null and [GHG Scope] <> 0)),
+		    #"Removed Duplicates" = Table.Distinct(#"Remove GHG Scope 0 and null"),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Removed Duplicates", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merged Queries", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "Investment YEE", type text),
+		    #"Added Standard Quarter column" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each null),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter column", "Timestamp", "Timestamp - Copy"),
+		    #"Renamed columns" = Table.RenameColumns(#"Add Timestamp - KPI Trends column",{{"Timestamp - Copy", "Timestamp - KPI Trends"}, {"Investment", "Value"}}),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Renamed columns", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Add End of Quarter Date" = 
+		        Table.AddColumn(
+		            #"Get Report Type ID", 
+		            "End Of Quarter Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Add End of Quarter Date",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}, {"Value", type number}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Data Type of Columns to Match with Fact Table",{"Division", "GHG Scope", "Input Year", "Input Quarter"})
+		in
+		    #"Removed Columns"
+		```
+	lineageTag: 50df16d0-e407-48d1-ac37-a6b57ac694dd
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Scopes - Replan' = ```
+		let
+		    Source = #"CAP Investment and Replan - Scope",
+		    #"Removed Columns1" = Table.RemoveColumns(Source,{"Investment", "Value"}),
+		    #"Remove GHG Scope 0 and null" = Table.SelectRows(#"Removed Columns1", each ([GHG Scope] = 1 or [GHG Scope] = 2 or [GHG Scope] = 3)),
+		    #"Insert Prev Year Column" = Table.AddColumn(#"Remove GHG Scope 0 and null", "Prev Year", each [Input Year] - 1, type number),
+		    #"Merged Queries1" = Table.NestedJoin(#"Insert Prev Year Column", {"Prev Year", "Year", "GHG Scope", "Division"}, #"CAP Investment and Replan - Scope Prev Year", {"Input Year", "Year", "GHG Scope", "Division"}, "CAP Investment and Replan - Scope Prev Year", JoinKind.LeftOuter),
+		    #"Expanded CAP Investment and Replan - Scope Prev Year" = Table.ExpandTableColumn(#"Merged Queries1", "CAP Investment and Replan - Scope Prev Year", {"Value"}, {"Value"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Expanded CAP Investment and Replan - Scope Prev Year", each ([Value] <> null)),
+		    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows"),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Removed Duplicates", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merged Queries", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "Replan", type text),
+		    #"Added Standard Quarter column" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each null),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter column", "Timestamp", "Timestamp - Copy"),
+		    #"Renamed columns" = Table.RenameColumns(#"Add Timestamp - KPI Trends column",{{"Timestamp - Copy", "Timestamp - KPI Trends"}}),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Renamed columns", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Add End of Quarter Date" = 
+		        Table.AddColumn(
+		            #"Get Report Type ID", 
+		            "End Of Quarter Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Add End of Quarter Date",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Data Type of Columns to Match with Fact Table",{"Division", "GHG Scope", "Input Year", "Input Quarter", "Prev Year"})
+		in
+		    #"Removed Columns"
+		```
+	lineageTag: 91889fb0-d1af-42c6-b675-b7b5f2d88318
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Total - Investment' =
+		let
+		    Source = #"GHG Activity Set Scopes - Investment",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Year", "Topic ID", "Division ID", "OE", "Attribute", "Standard Quarter", "Timestamp - KPI Trends", "Report Type ID", "End Of Quarter Date"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Grouped Rows", "Attribute ID", each 28, Int64.Type)
+		in
+		    #"Create Attribute ID column"
+	lineageTag: 465b63b1-13ff-421b-8f5c-7e5d595500aa
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Total - Replan' =
+		let
+		    Source = #"GHG Activity Set Scopes - Replan",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Year", "Topic ID", "Division ID", "OE", "Attribute", "Standard Quarter", "Timestamp - KPI Trends", "Report Type ID", "End Of Quarter Date"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Grouped Rows", "Attribute ID", each 28, Int64.Type)
+		in
+		    #"Create Attribute ID column"
+	lineageTag: f641766a-2d81-4211-823e-1cab2fbb6c44
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Transform File' =
+		let
+		    Source = (Parameter1 as binary) => let
+		    Source = Excel.Workbook(Parameter1, null, true),
+		    Export_Sheet = Source{[Item="Export",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Export_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Promoted Headers"
+		in
+		    Source
+	lineageTag: 497cdfca-b0ef-4d4f-8193-3c1d1a01106d
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression 'Circularity Source' =
+		let
+		    Source =  Table.SelectRows(SharePoint.Files("https://team.effem.com/sites/PetcareSustainability/", [ApiVersion = 15]), each Text.StartsWith([Name], "D4C PN") or Text.StartsWith([Name], "D4C RC")),
+		    #"Removed Other Columns" = Table.SelectColumns(Source,{"Content", "Name"}),
+		    #"Split Column by Delimiter" = Table.SplitColumn(#"Removed Other Columns", "Name", Splitter.SplitTextByDelimiter(" ", QuoteStyle.Csv), {"Name.1", "Division", "OE", "Remainder"}),
+		    #"Replace xlsx" = Table.ReplaceValue(#"Split Column by Delimiter",".xlsx","",Replacer.ReplaceText,{"OE", "Remainder"}),
+		    #"Merged OE" = Table.CombineColumns(#"Replace xlsx",{"OE", "Remainder"},Combiner.CombineTextByDelimiter(" ", QuoteStyle.None),"OE"),
+		    #"Invoke Helper" = Table.AddColumn(#"Merged OE", "Transform File", each #"Transform File"([Content])),
+		    #"Expanded Transform File" = Table.ExpandTableColumn(#"Invoke Helper", "Transform File", {"Year", "Period", "Circular", "Advocate", "Redesign", "Eliminate", "Total"}, {"Year", "Period", "Circular", "Advocate", "Redesign", "Eliminate", "Total"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Expanded Transform File",{{"Redesign", "Design"}}),
+		    #"Exclude header rows" = Table.SelectRows(#"Renamed Columns", each [Year] <> null and not(Text.Contains(Text.From([Year]), "Applied"))),
+		    #"Trimmed Text" = Table.TransformColumns(#"Exclude header rows",{{"OE", Text.Trim, type text}, {"Period", Text.Trim, type text}}),
+		    #"Change Year Type" = Table.TransformColumnTypes(#"Trimmed Text",{{"Year", Int64.Type}}),
+		    #"Add End of Quarter" = Table.AddColumn(#"Change Year Type", "End Of Quarter Date", each if [Period]="P01" or [Period]="P02" or [Period]="P03" then #date([Year], 3,31) else if [Period]="P04" or [Period]="P05" or [Period]="P06" then #date([Year], 6,30) else if  [Period]="P07" or [Period]="P08" or [Period]="P09" then #date([Year], 9,30) else  #date([Year], 12,31), type date),
+		    #"Select Columns" = Table.SelectColumns(#"Add End of Quarter",{"Circular", "Advocate", "Design", "Eliminate", "Division", "OE", "End Of Quarter Date", "Year"}),
+		    #"Group Periods into Quarters" = Table.Group(#"Select Columns", {"Division", "OE", "End Of Quarter Date", "Year"}, {{"Circular", each List.Sum([Circular]), type nullable number}, {"Advocate", each List.Sum([Advocate]), type nullable number}, {"Design", each List.Sum([Design]), type nullable number}, {"Eliminate", each List.Sum([Eliminate]), type number}}),
+		    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Group Periods into Quarters", {"Division", "OE", "End Of Quarter Date", "Year"}, "Attribute", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Columns",{{"Value", type number}}),
+		    #"Updated Division" = Table.ReplaceValue(#"Changed Type",each [Division],each if [Division]="RC" then "Royal Canin" else if [Division]="PN" then "Pet Nutrition" else [Division],Replacer.ReplaceText,{"Division"}),
+		    #"Merge for Attrib" = Table.NestedJoin(#"Updated Division", {"Attribute"}, #"Dim Attribute", {"Attribute"}, "Dim Attribute", JoinKind.LeftOuter),
+		    #"Add Attrib ID" = Table.ExpandTableColumn(#"Merge for Attrib", "Dim Attribute", {"Attribute ID"}, {"Attribute ID"}),
+		    #"Add Topic ID" = Table.AddColumn(#"Add Attrib ID", "Topic ID", each 2, Int64.Type),
+		    #"Merge for Division" = Table.NestedJoin(#"Add Topic ID", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Add Division ID" = Table.ExpandTableColumn(#"Merge for Division", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Keep Selected Columns" = Table.SelectColumns(#"Add Division ID",{"OE", "End Of Quarter Date", "Year", "Value", "Attribute ID",  "Topic ID", "Division ID"})
+		in
+		    #"Keep Selected Columns"
+	lineageTag: 169e5f49-5c91-48b9-86b9-9eaad2e9e8a9
+	queryGroup: Sources
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Circularity Actual Year Grouping' =
+		let
+		    Source = #"Circularity Source",
+		    #"Group for Year" = Table.Group(Source, {"Year", "OE", "Topic ID", "Attribute ID", "Division ID"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Filtered Rows" = Table.SelectRows(#"Group for Year", each ([Attribute ID] <> null)),
+		    #"Reordered Columns" = Table.ReorderColumns(#"Filtered Rows",{"Year", "OE", "Attribute ID","Topic ID", "Division ID", "Value"})
+		in
+		    #"Reordered Columns"
+	lineageTag: d2a911ea-6099-4278-962a-569bb3fc5bdc
+	queryGroup: 'Circularity Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Circularity Actuals' =
+		let
+		    Source = #"Circularity Source",
+		    #"Drop Value" = Table.SelectColumns(Source,{"Year", "OE", "End Of Quarter Date", "Attribute ID", "Topic ID", "Division ID"}),
+		    #"Update Year to be prior year" = Table.ReplaceValue(#"Drop Value",each [Year],each [Year]-1,Replacer.ReplaceValue,{"Year"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Update Year to be prior year",{{"Year", Int64.Type}}),
+		    #"Merge for Prior value" = Table.NestedJoin(#"Changed Type", {"Year", "OE", "Attribute ID", "Topic ID", "Division ID"}, #"Circularity Actual Year Grouping", {"Year", "OE", "Attribute ID", "Topic ID", "Division ID"}, "Circularity Actual Year Grouping", JoinKind.LeftOuter),
+		    #"Expanded Prior Value" = Table.ExpandTableColumn(#"Merge for Prior value", "Circularity Actual Year Grouping", {"Value"}, {"Value"}),
+		    #"Add Report Type ID" = Table.AddColumn(#"Expanded Prior Value", "Report Type ID", each 1),
+		    #"Add Attribute" = Table.AddColumn(#"Add Report Type ID", "Attribute", each "Actuals", type text),
+		    #"Exclude blank values" = Table.SelectRows(#"Add Attribute", each ([Value] <> null)),
+		     #"Add Timestamp" = Table.AddColumn(#"Exclude blank values", "Timestamp", each Text.Combine({Text.From(Date.Year([End Of Quarter Date])),"-Q" ,Text.From(Date.Month([End Of Quarter Date])/3)}), type text),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Add Timestamp",{{"Report Type ID", Int64.Type}})
+		in
+		     #"Changed Type1"
+	lineageTag: 1c4db344-23b8-4ab2-ae51-e5cc2b56d574
+	queryGroup: 'Circularity Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Circularity YTD' = ```
+		let
+		    Source = #"Circularity Source",
+		    #"Add Report Type ID" = Table.AddColumn(Source, "Report Type ID", each 10, Int64.Type),
+		    #"Renamed Columns" = Table.RenameColumns(#"Add Report Type ID",{{"Value", "Qtr Value"}}),
+		    SortedRows = Table.Sort(#"Renamed Columns", {{"OE", Order.Ascending},{"Division ID", Order.Ascending},{"Attribute ID", Order.Ascending},{"Year", Order.Ascending}, {"End Of Quarter Date", Order.Ascending}}),
+		    AddedIndex = Table.AddIndexColumn(SortedRows, "Index", 0, 1, Int64.Type),
+		    AddedRunningSum = Table.AddColumn(AddedIndex, "Value", each 
+		        let
+		            currentOE = _[OE],
+		            currentDivision = _[Division ID],
+		            currentAttribute = _[Attribute ID],
+		            currentYear = _[Year],
+		            currentIndex = _[Index],
+		            filteredRows = Table.SelectRows(AddedIndex, (r) => 
+		                r[OE] = currentOE and 
+		                r[Division ID] = currentDivision and 
+		                r[Attribute ID] = currentAttribute and 
+		                r[Year] = currentYear and 
+		                r[Index] <= currentIndex
+		            )
+		        in
+		            List.Sum(filteredRows[Qtr Value])
+		    , type number),
+		    RemovedIndex = Table.RemoveColumns(AddedRunningSum,{"Index"}),
+		    #"Removed Other Columns" = Table.SelectColumns(RemovedIndex,{"OE", "Year", "End Of Quarter Date", "Attribute ID", "Topic ID", "Division ID", "Report Type ID", "Value"}),
+		    #"Add Attribute" = Table.AddColumn(#"Removed Other Columns", "Attribute", each "YTD"),
+		  #"Add Timestamp" = Table.AddColumn(#"Add Attribute", "Timestamp", each Text.Combine({Text.From(Date.Year([End Of Quarter Date])),"-Q" ,Text.From(Date.Month([End Of Quarter Date])/3)}), type text),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Add Timestamp",{{"Attribute", type text}})
+		in
+		    #"Changed Type"
+		```
+	lineageTag: 977e6f48-c3f0-491e-9893-522faa3f8a73
+	queryGroup: 'Circularity Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Actuals Prev Year Data' =
+		let
+		    Source = #"CAP YTD Data",
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Input Quarter] = 4)),
+		    #"Grouped Rows" = Table.Group(#"Filtered Rows", {"Timestamp", "Input Year", "Input Quarter", "Division", "GHG Scope"}, {{"Actuals", each List.Sum([GHG YTD]), type nullable number}}),
+		    #"Filtered Rows1" = Table.SelectRows(#"Grouped Rows", each ([GHG Scope] <> 0))
+		in
+		    #"Filtered Rows1"
+	lineageTag: 8ea6734f-032a-4ead-a6dc-d9b797852e20
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Actuals Data' =
+		let
+		    Source = #"CAP YTD Data",
+		    #"Inserted Previous Year" = Table.AddColumn(Source, "Year", each [Input Year] - 1, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Inserted Previous Year", {"Division", "Unit / Region", "OE name", "Activity Name", "Start year", "End Year", "GHG Scope", "Year"}, #"Inserted Previous Year", {"Division", "Unit / Region", "OE name", "Activity Name", "Start year", "End Year", "GHG Scope", "Input Year"}, "Inserted Previous Year", JoinKind.LeftOuter),
+		    #"Expanded Inserted Previous Year" = Table.ExpandTableColumn(#"Merged Queries", "Inserted Previous Year", {"Input Quarter", "GHG YTD"}, {"Input Quarter.1", "GHG YTD.1"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Expanded Inserted Previous Year", each ([Input Quarter.1] = 4)),
+		    #"Renamed Columns" = Table.RenameColumns(#"Filtered Rows",{{"Input Quarter.1", "Previous Year Quarter"}, {"GHG YTD.1", "Previous Year GHG YTD"}})
+		in
+		    #"Renamed Columns"
+	lineageTag: 6346586a-f43c-4449-a07b-ab64811723fd
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Scopes - Actuals' = ```
+		let
+		    Source = #"CAP YTD Data",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Input Year", "Input Quarter", "Division", "OE name", "GHG Scope"}, {{"YTD", each List.Sum([GHG YTD]), type nullable number}}),
+		    #"Remove GHG 0 and null" = Table.SelectRows(#"Grouped Rows", each ([GHG Scope] <> null and [GHG Scope] <> 0)),
+		    #"Add Prev Year Column" = Table.AddColumn(#"Remove GHG 0 and null", "Year", each [Input Year] - 1, type number),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Add Prev Year Column",{{"Year", Int64.Type}}),
+		    #"Join to get prev year data" = Table.NestedJoin(#"Changed Type", {"Division", "GHG Scope", "Year"}, #"CAP Actuals Prev Year Data", {"Division", "GHG Scope", "Input Year"}, "CAP Actuals Prev Year Data (2)", JoinKind.LeftOuter),
+		    #"Expanded CAP Actuals Prev Year Data (2)" = Table.ExpandTableColumn(#"Join to get prev year data", "CAP Actuals Prev Year Data (2)", {"Actuals"}, {"Actuals"}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Expanded CAP Actuals Prev Year Data (2)", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Join to get Topic and KPIs" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Join to get Topic and KPIs", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "Actuals", type text),
+		    #"Added Standard Quarter column" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each null),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter column", "Timestamp", "Timestamp - Copy"),
+		    #"Renamed columns" = Table.RenameColumns(#"Add Timestamp - KPI Trends column",{{"Timestamp - Copy", "Timestamp - KPI Trends"}, {"Actuals", "Value"}, {"OE name", "OE"}}),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Renamed columns", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Add End of Quarter Date" = 
+		        Table.AddColumn(
+		            #"Get Report Type ID", 
+		            "End Of Quarter Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Add End of Quarter Date",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Data Type of Columns to Match with Fact Table",{"Division", "GHG Scope", "Input Year", "Input Quarter", "YTD"})
+		in
+		    #"Removed Columns"
+		```
+	lineageTag: 4012d1e1-ff20-4b5b-9dd3-5ed186b556d3
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG Activity Set Total - Actuals' =
+		let
+		    Source = #"GHG Activity Set Scopes - Actuals",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Year", "Topic ID", "Division ID", "OE", "Attribute", "Standard Quarter", "Timestamp - KPI Trends", "Report Type ID", "End Of Quarter Date"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Grouped Rows", "Attribute ID", each 28, Int64.Type)
+		in
+		    #"Create Attribute ID column"
+	lineageTag: a2a234a8-6d59-400d-ad49-7811e593dc73
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Investment and Replan - Scope Prev Year' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Pillar", "Type of activity", "Activity owner", "Existing in CAP", "Activity Status", "Level of Confidence", "GHG YTD", "AEP status", "Start year", "End Year"}),
+		    #"AllColumns" = Table.ColumnNames(#"Removed Columns"),
+		    #"ColumnsToRemove" = 
+		        List.Select(
+		            #"AllColumns", 
+		            each
+		                not Text.Contains(_, "discount", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Result" = Table.SelectColumns(#"Removed Columns", #"ColumnsToRemove"),
+		    #"RemainingColumns" = Table.ColumnNames(#"Result"),
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns", 
+		            each
+		                Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division", "OE name", "GHG Scope"},
+		    #"GroupedTable" = Table.Group(#"Result", #"ColumnsToGroup", #"Aggregations"),
+		    
+		    // Filter only columns that contain "COGS" to get each year once
+		    #"COGSColumns" = List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		    
+		    // Extract each year (assuming it's the only number in the name)
+		    #"Years" = List.Transform(
+		        List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		        each Text.Select(_, {"0".."9"})   // keeps only digits
+		    ),
+		
+		    // Add new columns for each year dynamically
+		    #"AddYearTotals" =
+		        List.Accumulate(
+		            #"Years",
+		            #"GroupedTable",
+		            (state, y) =>
+		                Table.AddColumn(
+		                    state,
+		                    y,
+		                    each List.Sum(
+		                        List.Transform(
+		                            List.Select(#"ColumnsToAggregate", (c) => Text.Contains(c, y)),
+		                            (col) => Record.Field(_, col)
+		                        )
+		                    ),
+		                    type number
+		                )
+		        ),
+		    #"AggregatedTableColumns" = Table.ColumnNames(#"AddYearTotals"),
+		    #"AggregatedColumnsToRemove" = 
+		        List.Select(
+		            #"AggregatedTableColumns", 
+		            each
+		                not Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"AggregatedTable" = Table.SelectColumns(#"AddYearTotals", #"AggregatedColumnsToRemove"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(#"AggregatedTable", #"Years", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"FilterByYear" = 
+		        Table.SelectRows(
+		            #"Changed Type", 
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year])
+		            each [Year] = [Input Year] + 1
+		        ),
+		    #"Filtered Rows" = Table.SelectRows(FilterByYear, each ([Input Quarter] = 3) and ([GHG Scope] <> null and [GHG Scope] <> 0) and ([Value] <> 0))
+		in
+		    #"Filtered Rows"
+		```
+	lineageTag: 87816511-470b-4958-8207-5d5962840447
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Data' =
+		let
+		    Source = Excel.Workbook(Web.Contents("https://team.effem.com/sites/PetcareSustainability/Shared%20Documents/Sustainability%20Scorecard%20Dashboard/CAP/Scorecard%20Export%201.xlsx"), null, true),
+		    //Source = Excel.Workbook(Web.Contents("https://team.effem.com/sites/SegmentFlywheel/Shared%20Documents/Sustainability%20Dashboard/Data/CAP%20Data/Scorecard%20Export%201.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Input Year", Int64.Type}, {"Input Quarter", Int64.Type}, {"Input Version", type text}, {"Auto-generated number", type text}, {"#", type text}, {"Subsegment", type text}, {"Unit / Region", type text}, {"OE name", type text}, {"Activity Name", type text}, {"Activity Description", type text}, {"Pillar", type text}, {"Type of activity", type text}, {"Activity owner", type text}, {"Start year", Int64.Type}, {"End Year", Int64.Type}, {"Existing in CAP", type text}, {"Activity Status", type text}, {"Level of Confidence", type text}, {"GHG YTD", type number}, {"GHG 2024 no growth & discounted (tCO2e)", type number}, {"GHG 2025 no growth & discounted (tCO2e)", type number}, {"GHG 2026 no growth & discounted (tCO2e)", type number}, {"GHG 2027 no growth & discounted (tCO2e)", type number}, {"GHG 2028 no growth & discounted (tCO2e)", type number}, {"GHG 2029 no growth & discounted (tCO2e)", type number}, {"GHG 2030 no growth & discounted (tCO2e)", type number}, {"COGS YTD", type number}, {"COGS 2024", type number}, {"COGS 2025", type number}, {"COGS 2026", type number}, {"COGS 2027", type number}, {"COGS 2028", type number}, {"COGS 2029", type number}, {"COGS 2030", type number}, {"SWB YTD", type number}, {"SWB 2024", Int64.Type}, {"SWB 2025", type number}, {"SWB 2026", Int64.Type}, {"SWB 2027", Int64.Type}, {"SWB 2028", Int64.Type}, {"SWB 2029", type number}, {"SWB 2030", type number}, {"EXPENSES YTD", Int64.Type}, {"EXPENSES 2024", type number}, {"EXPENSES 2025", type number}, {"EXPENSES 2026", type number}, {"EXPENSES 2027", type number}, {"EXPENSES 2028", type number}, {"EXPENSES 2029", type number}, {"EXPENSES 2030", type number}, {"CAPEX YTD", Int64.Type}, {"CAPEX 2024", Int64.Type}, {"CAPEX 2025", type number}, {"CAPEX 2026", type number}, {"CAPEX 2027", type number}, {"CAPEX 2028", type number}, {"CAPEX 2029", type number}, {"CAPEX 2030", type number}, {"discount1", type number}, {"discount2", type number}, {"discount3", type number}, {"GHG Scope", Int64.Type}, {"AEP status", type text}}),
+		    #"Filter unwanted data - business rules" = Table.SelectRows(#"Changed Type", each ([Existing in CAP] <> "Not CAP lever" and [Existing in CAP] <> "Standby" and [Existing in CAP] <> "standby") and ([Input Version] <> "Unconstrained") and ([Activity Status] <> "Cancelled" and [Activity Status] <> "Double count" and [Activity Status] <> "Outlier" and [Activity Status] <> "Suspended")),
+		    #"Replace Quarter 0's with 1's" = Table.ReplaceValue(#"Filter unwanted data - business rules",0,1,Replacer.ReplaceValue,{"Input Quarter"}),
+		    #"Align Division Names" = Table.AddColumn(#"Replace Quarter 0's with 1's", "Division", each if [Subsegment] = "PN" then "Pet Nutrition" else if [Subsegment] = "RC" then "Royal Canin" else [Subsegment], type text),
+		    #"Add Timestamp column" = Table.AddColumn(#"Align Division Names", "Timestamp", each Text.Combine({Text.From([Input Year], "en-GB"), "-Q", Text.From([Input Quarter], "en-GB")}), type text),
+		    #"Reordered Columns" = Table.ReorderColumns(#"Add Timestamp column",{"Timestamp", "Input Year", "Input Quarter", "Input Version", "Auto-generated number", "#", "Division", "Unit / Region", "OE name", "Activity Name", "Activity Description", "Pillar", "Type of activity", "Activity owner", "Start year", "End Year", "Existing in CAP", "Activity Status", "Level of Confidence", "GHG YTD", "GHG 2024 no growth & discounted (tCO2e)", "GHG 2025 no growth & discounted (tCO2e)", "GHG 2026 no growth & discounted (tCO2e)", "GHG 2027 no growth & discounted (tCO2e)", "GHG 2028 no growth & discounted (tCO2e)", "GHG 2029 no growth & discounted (tCO2e)", "GHG 2030 no growth & discounted (tCO2e)", "COGS YTD", "COGS 2024", "COGS 2025", "COGS 2026", "COGS 2027", "COGS 2028", "COGS 2029", "COGS 2030", "SWB YTD", "SWB 2024", "SWB 2025", "SWB 2026", "SWB 2027", "SWB 2028", "SWB 2029", "SWB 2030", "EXPENSES YTD", "EXPENSES 2024", "EXPENSES 2025", "EXPENSES 2026", "EXPENSES 2027", "EXPENSES 2028", "EXPENSES 2029", "EXPENSES 2030", "CAPEX YTD", "CAPEX 2024", "CAPEX 2025", "CAPEX 2026", "CAPEX 2027", "CAPEX 2028", "CAPEX 2029", "CAPEX 2030", "discount1", "discount2", "discount3", "GHG Scope", "AEP status"}),
+		    #"Removed Unwanted Columns" = Table.RemoveColumns(#"Reordered Columns",{"Subsegment"})
+		in
+		    #"Removed Unwanted Columns"
+	lineageTag: da3c4d21-1f5d-4f7c-8651-08e66a540033
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'GHG YEE % of Target' = ```
+		let
+		    Source = #"CAP YEE Data",
+		    // Get all Year columns to aggregate in group by
+		    #"RemainingColumns" = Table.ColumnNames(Source),
+		    Digits = {"0","1","2","3","4","5","6","7","8","9"},
+		    // select only those column names where a digit exists, then keep those columns
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns",
+		            // Text.PositionOfAny(c, Digits) returns the position of the first digit found (or -1 if none)
+		            (c) => Text.PositionOfAny(c, Digits) <> -1
+		        ),
+		        
+		    // #"ColumnsToGroup" = 
+		    //     List.Select(
+		    //         #"RemainingColumns",
+		    //         // Text.PositionOfAny(c, Digits) returns the position of the first digit found (or -1 if none)
+		    //         (c) => Text.PositionOfAny(c, Digits) = -1
+		    //     ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division", "OE name", "GHG Scope", "Max Quarter"},
+		    // Build aggregation operations dynamically
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            // (colName) => { 
+		            //     colName, 
+		            //     each List.Sum(List.RemoveNulls(List.Transform(_, (r) => Record.Field(r, colName)))), 
+		            //     type number 
+		            // }
+		            //(colName) => {colName, each List.Sum(_), type number}
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"GroupedTable" = Table.Group(Source, #"ColumnsToGroup", #"Aggregations"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(GroupedTable, #"ColumnsToAggregate", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"FilterByYear" = 
+		        Table.SelectRows(
+		            #"Changed Type", 
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year] and ([Max Quarter] < 4 or [Input Quarter] < 4))
+		            each [Year] >= [Input Year]
+		        ),
+		    #"Remove Rows where Scope is 0 or null" = Table.SelectRows(#"FilterByYear", each ([GHG Scope] <> null and [GHG Scope] <> 0)),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Remove Rows where Scope is 0 or null", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merged Queries", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "YEE", type text),
+		    // Look at quarters for current year
+		    #"Added Standard Quarter" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each if [Year] = [Input Year] then Text.Combine({"Q", Text.From([Input Quarter], "en-GB")}) else null, type text),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter", "Timestamp", "Timestamp - Copy"),
+		    #"Renamed columns" = Table.RenameColumns(#"Add Timestamp - KPI Trends column",{{"Timestamp - Copy", "Timestamp - KPI Trends"}, {"OE name", "OE"}}),
+		    #"Replaced Value" = Table.ReplaceValue(#"Renamed columns","YEE","YEE % of Target Delivered",Replacer.ReplaceText,{"Attribute"}),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Replaced Value", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Add End of Quarter Date" = 
+		        Table.AddColumn(
+		            #"Get Report Type ID", 
+		            "End Of Quarter Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Add End of Quarter Date",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Data Type of Columns to Match with Fact Table",{"Division", "GHG Scope", "Input Year", "Max Quarter", "Input Quarter"}),
+		    #"Replaced Value1" = Table.ReplaceValue(#"Removed Columns",each [Value], null, Replacer.ReplaceValue, {"Value"})
+		in
+		    #"Replaced Value1"
+		```
+	lineageTag: 13d6007c-bc53-4fbc-a602-7cce3f6b923e
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP YTD Projects GHG Scopes' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Unwanted Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Activity owner", "Existing in CAP", "Activity Status", "Level of Confidence", "GHG YTD", "GHG 2024 no growth & discounted (tCO2e)", "GHG 2025 no growth & discounted (tCO2e)", "GHG 2026 no growth & discounted (tCO2e)", "GHG 2027 no growth & discounted (tCO2e)", "GHG 2028 no growth & discounted (tCO2e)", "GHG 2029 no growth & discounted (tCO2e)", "GHG 2030 no growth & discounted (tCO2e)", "COGS YTD", "COGS 2024", "COGS 2025", "COGS 2026", "COGS 2027", "COGS 2028", "COGS 2029", "COGS 2030", "SWB YTD", "SWB 2024", "SWB 2025", "SWB 2026", "SWB 2027", "SWB 2028", "SWB 2029", "SWB 2030", "EXPENSES YTD", "EXPENSES 2024", "EXPENSES 2025", "EXPENSES 2026", "EXPENSES 2027", "EXPENSES 2028", "EXPENSES 2029", "EXPENSES 2030", "CAPEX YTD", "CAPEX 2024", "CAPEX 2025", "CAPEX 2026", "CAPEX 2027", "CAPEX 2028", "CAPEX 2029", "CAPEX 2030", "discount1", "discount2", "discount3", "AEP status", "Unit / Region", "OE name", "Activity Name", "Pillar", "Type of activity"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Unwanted Columns", each [Input Year] <= [End Year] and [Input Year] >= [Start year] and [GHG Scope] <> 0),
+		    #"Duplicated Column" = Table.DuplicateColumn(#"Filtered Rows", "Division", "Division - Copy"),
+		    #"Reordered Columns" = Table.ReorderColumns(#"Duplicated Column",{"Timestamp", "Input Year", "Input Quarter", "Division", "#", "Division - Copy", "Start year", "End Year", "GHG Scope"}),
+		    //#"Merged Columns" = Table.CombineColumns(#"Reordered Columns",{"#", "Division - Copy", "Unit / Region", "OE name", "Activity Name", "Pillar", "Type of activity"},Combiner.CombineTextByDelimiter("-", QuoteStyle.None),"Project Id"),
+		    #"Merged Columns" = Table.CombineColumns(#"Reordered Columns",{"#", "Division - Copy"},Combiner.CombineTextByDelimiter("-", QuoteStyle.None),"Project Id"),
+		    #"Grouped Rows" = Table.Group(#"Merged Columns", {"Timestamp", "Input Year", "Input Quarter", "Division", "GHG Scope"}, {{"Value", each List.Count(List.Distinct([Project Id])), type nullable number}}),
+		    #"Add End of Quarter" = Table.AddColumn(
+		            #"Grouped Rows", 
+		            "End_Of_Quarter_Date", 
+		            each let
+		                parts = Text.Split([Timestamp], "-Q"),
+		                year = Number.FromText(parts{0}),
+		                quarter = Number.FromText(parts{1}),
+		                lastMonth = quarter * 3,
+		                lastDay = Date.EndOfMonth(#date(year, lastMonth, 1))
+		            in
+		                lastDay
+		        ),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Add End of Quarter",{{"End_Of_Quarter_Date", type date}}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Input Year", "Year"}, {"Input Quarter", "Quarter"}}),
+		    //TODO: If adding OE to the report visuals and filters, add OEhere as well
+		    // Sort by Date to ensure correct cumulative order
+		    #"SortedRows" = Table.Sort(#"Renamed Columns", {{"Division", Order.Ascending}, {"End_Of_Quarter_Date", Order.Ascending}, {"GHG Scope", Order.Ascending}}),
+		
+		    // Group by Year to calculate YTD within each year
+		    #"GroupedByYear" = Table.Group(
+		        #"SortedRows",
+		        //TODO: Add OE
+		        {"Division", "Year", "GHG Scope"},
+		        {
+		            {"Data", (t) =>
+		                let
+		                    // Sort inside each year
+		                    // Sorted = Table.Sort(t, {{"End_Of_Quarter_Date", Order.Ascending}}),
+		                    // Add Index for cumulative sum
+		                    Indexed = Table.AddIndexColumn(t, "Index", 1, 1, Int64.Type),
+		                    // Add YTD column using List.Range cumulative sum
+		                    AddYTD = Table.AddColumn(
+		                        Indexed,
+		                        "YTD",
+		                        (row) => List.Sum(List.FirstN(Indexed[Value], row[Index]))
+		                    ),
+		                    // Remove helper column
+		                    RemovedIndex = Table.RemoveColumns(AddYTD, {"Index"})
+		                in
+		                    RemovedIndex
+		            , type table [Timestamp=text, Division=text, End_Of_Quarter_Date=date, Value=number, Year=number, Quarter=number, YTD=number]}
+		        }
+		    ),
+		
+		    // Expand back to flat table
+		    #"Expanded" = Table.ExpandTableColumn(#"GroupedByYear", "Data", {"Timestamp", "End_Of_Quarter_Date", "Value", "Quarter", "YTD"}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Expanded", "Attribute ID", each if [GHG Scope] = 1 then 22 else if [GHG Scope] = 2 then 24 else if [GHG Scope] = 3 then 26 else null, type number),
+		    #"Merged Queries" = Table.NestedJoin(#"Create Attribute ID column", {"Attribute ID"}, #"Topics and KPIs", {"KPI ID"}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merged Queries", "Topics and KPIs", {"Topic ID"}, {"Topic ID"}),
+		    #"Division ID - Match Division to Division Table" = Table.NestedJoin(#"Expanded Topics and KPIs", {"Division"}, #"Dim Division", {"Division"}, "Division.1", JoinKind.LeftOuter),
+		    #"Get Division ID" = Table.ExpandTableColumn(#"Division ID - Match Division to Division Table", "Division.1", {"Division ID"}, {"Division ID"}),
+		    #"Added Attribute column" = Table.AddColumn(#"Get Division ID", "Attribute", each "YTD Active Projects", type text),
+		    #"Added Standard Quarter column" = Table.AddColumn(#"Added Attribute column", "Standard Quarter", each null),
+		    #"Add Timestamp - KPI Trends column" = Table.DuplicateColumn(#"Added Standard Quarter column", "Timestamp", "Timestamp - Copy"),
+		    #"Report Type ID - Match Attribute with Fact Table" = Table.NestedJoin(#"Add Timestamp - KPI Trends column", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Get Report Type ID" = Table.ExpandTableColumn(#"Report Type ID - Match Attribute with Fact Table", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Get Report Type ID",{"Division", "GHG Scope", "Value", "Quarter"}),
+		    #"Renamed columns" = Table.RenameColumns(#"Removed Columns",{{"YTD", "Value"}, {"Timestamp - Copy", "Timestamp - KPI Trends"}, {"End_Of_Quarter_Date", "End Of Quarter Date"}}),
+		    #"Changed Data Type of Columns to Match with Fact Table" = Table.TransformColumnTypes(#"Renamed columns",{{"Standard Quarter", type text}, {"Attribute", type text}, {"Attribute ID", Int64.Type}, {"End Of Quarter Date", type date}})
+		in
+		    #"Changed Data Type of Columns to Match with Fact Table"
+		```
+	lineageTag: 1885760f-0e38-4907-a007-567636a95d2d
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP YTD Projects GHG Total' =
+		let
+		    Source = #"CAP YTD Projects GHG Scopes",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Year", "Topic ID", "Division ID", "OE", "Attribute", "Standard Quarter", "Timestamp - KPI Trends", "Report Type ID", "End Of Quarter Date"}, {{"Value", each List.Sum([Value]), type nullable number}}),
+		    #"Create Attribute ID column" = Table.AddColumn(#"Grouped Rows", "Attribute ID", each 28, Int64.Type)
+		in
+		    #"Create Attribute ID column"
+	lineageTag: 89b7afc0-7940-4089-ab0f-1be6e05a9b45
+	queryGroup: 'Climate Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Targets for Scorecard Page' =
+		let
+		    Source =  Excel.Workbook(Web.Contents("https://team.effem.com/sites/PetcareSustainability/Shared%20Documents/Sustainability%20Scorecard%20Dashboard/Targets/Sustainability%20Targets.xlsx"), null, true),
+		    #"Targets for Scorecard Page_Sheet" = Source{[Item="Targets for Scorecard Page",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Targets for Scorecard Page_Sheet", [PromoteAllScalars=true]),
+		    #"Removed Columns Not Needed" = Table.SelectColumns(#"Promoted Headers",{"Quarter", "Year", "Division ", "OE", "Topic", "Attribute", "Value"}),
+		    #"Set Quarter to 4" = Table.ReplaceValue(#"Removed Columns Not Needed",null,4,Replacer.ReplaceValue,{"Quarter"}),
+		    #"Renamed Attribute" = Table.RenameColumns(#"Set Quarter to 4",{{"Attribute", "Attributes"}}),
+		    #"Remove rows with null Year" = Table.SelectRows(#"Renamed Attribute", each ([Year] <> null)),
+		    #"Replaced Value NA with null" = Table.ReplaceValue(#"Remove rows with null Year","NA",null,Replacer.ReplaceValue,{"Value"}),
+		    ModifiedCopyForQ1 = Table.TransformColumns (
+		        #"Replaced Value NA with null",
+		        {{"Quarter", each 1, Int64.Type}}
+		    ),
+		    ModifiedCopyForQ2 = Table.TransformColumns (
+		        #"Replaced Value NA with null",
+		        {{"Quarter", each 2, Int64.Type}}
+		    ),
+		    ModifiedCopyForQ3 = Table.TransformColumns (
+		        #"Replaced Value NA with null",
+		        {{"Quarter", each 3, Int64.Type}}
+		    ),
+		    #"Append All Quarters" = Table.Combine({#"Replaced Value NA with null", ModifiedCopyForQ1, ModifiedCopyForQ2, ModifiedCopyForQ3}),
+		    #"Merge for Topic and Attribute IDs" = Table.NestedJoin(#"Append All Quarters", {"Attributes"}, #"Topics and KPIs", {"KPI Name "}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merge for Topic and Attribute IDs", "Topics and KPIs", {"KPI ID", "Topic ID"}, {"Attribute ID", "Topic ID"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Topics and KPIs",{{"Quarter", Int64.Type}, {"Year", Int64.Type}, {"Division ", type text}, {"OE", type text}, {"Topic", type text}, {"Attributes", type text}, {"Value", type number}, {"Attribute ID", Int64.Type}}),
+		    #"Merge for Division ID" = Table.NestedJoin(#"Changed Type", {"Division "}, #"Dim Division", {"Division"}, "Division", JoinKind.LeftOuter),
+		    #"Expanded Division" = Table.ExpandTableColumn(#"Merge for Division ID", "Division", {"Division ID"}, {"Division ID"}),
+		    #"Add End Of Quarter" = Table.AddColumn(#"Expanded Division", "End Of Quarter Date", each Date.EndOfMonth(#date([Year], [Quarter]*3,1)), type date),
+		    #"Add Timestamp" = Table.AddColumn(#"Add End Of Quarter", "Timestamp", each Text.Combine({Text.From(Date.Year([End Of Quarter Date])),"-Q" ,Text.From(Date.Month([End Of Quarter Date])/3)}), type text),
+		    #"Duplicated Column" = Table.DuplicateColumn(#"Add Timestamp", "Timestamp", "Timestamp - KPI Trends"),
+		    #"Add Attribute" = Table.AddColumn(#"Duplicated Column", "Attribute", each "Targets", type text),
+		    #"Merged Queries" = Table.NestedJoin(#"Add Attribute", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter),
+		    #"Expanded Report Type" = Table.ExpandTableColumn(#"Merged Queries", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    #"Keep selected Columns" = Table.SelectColumns(#"Expanded Report Type",{"Year", "OE", "Value", "Attribute ID", "Topic ID", "Division ID", "End Of Quarter Date", "Timestamp","Timestamp - KPI Trends", "Attribute", "Report Type ID"}),
+		    #"Added Standard Quarter column" = Table.AddColumn(#"Keep selected Columns", "Standard Quarter", each "Q" & Number.ToText(Date.QuarterOfYear([End Of Quarter Date])), type text)
+		in
+		    #"Added Standard Quarter column"
+	lineageTag: daf63694-db88-43b4-8e10-ef9bc5ab1df3
+	queryGroup: Sources
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Investment' =
+		let
+		    Source = #"CAP Projects Investment and Replan",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Value","Activity Status", "Activity owner","Unit / Region"}),
+		    #"Filtered Rows" = Table.SelectRows(#"Removed Columns", each ([Investment] <> null)),
+		    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows"),
+		    #"Create Attribute Column" = Table.AddColumn(#"Removed Duplicates", "Attribute", each "Investment", type text),
+		    #"Merged Queries - Get Recent Quarter" = Table.NestedJoin(#"Create Attribute Column", {"Year"}, MaxQuarterPerYear, {"Input Year"}, "MaxQuarterPerYear", JoinKind.LeftOuter),
+		    #"Expanded MaxQuarterPerYear" = Table.ExpandTableColumn(#"Merged Queries - Get Recent Quarter", "MaxQuarterPerYear", {"Max Quarter"}, {"Max Quarter"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Expanded MaxQuarterPerYear",{{"Max Quarter", "Quarter"}, {"#", "Project"}, {"Investment", "Value"}}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Quarter", Int64.Type}}),
+		    #"Added KPI ID" = Table.AddColumn(#"Changed Type1", "KPI ID", each 28, Int32.Type),
+		    #"Added Topic ID" = Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type),
+		    #"Get Top 10 Projects" = Table.NestedJoin(#"Added Topic ID", {"Division", "Project", "Year", "Input Quarter"}, #"CAP Projects GHG Actuals", {"Division", "Project", "Year", "Quarter"}, "CAP Projects GHG Actuals", JoinKind.Inner),
+		    #"Sorted Rows" = Table.Sort(#"Get Top 10 Projects",{{"Project", Order.Ascending}}),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Sorted Rows",{"CAP Projects GHG Actuals", "Timestamp", "Input Year", "Input Quarter"})
+		in
+		    #"Removed Columns1"
+	lineageTag: 970e7390-4204-4efc-b2cd-032023b361fb
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Actuals' =
+		let
+		    Source = #"CAP YTD Data",
+		    #"Remove projects not yet started" = Table.SelectRows(Source, each [Start year]<=[Input Year]),
+		    #"Group YTD Data Rows to get YTD" = Table.Group(#"Remove projects not yet started", {"Timestamp", "Input Year", "Input Quarter", "Division","OE name", "#", "Activity Name"}, {{"Value", each List.Sum([GHG YTD]), type nullable number}}),
+		    #"Get Data for Current Year" = Table.SelectRows(#"Group YTD Data Rows to get YTD", each [Input Year]=(List.Max(#"Group YTD Data Rows to get YTD"[Input Year], each _))),
+		    #"Create Attribute Column" = Table.AddColumn(#"Get Data for Current Year", "Attribute", each "Actual", type text),
+		    #"Merged Queries - Get Recent Quarter" = Table.NestedJoin(#"Create Attribute Column", {"Input Year"}, MaxQuarterPerYear, {"Input Year"}, "MaxQuarterPerYear", JoinKind.LeftOuter),
+		    #"Expanded MaxQuarterPerYear" = Table.ExpandTableColumn(#"Merged Queries - Get Recent Quarter", "MaxQuarterPerYear", {"Max Quarter"}, {"Max Quarter"}),
+		    #"Filter Quarter" = Table.SelectRows(#"Expanded MaxQuarterPerYear", each [Input Quarter]=[Max Quarter]),
+		    #"Removed Columns" = Table.RemoveColumns(#"Filter Quarter",{"Timestamp", "Input Quarter"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Max Quarter", "Quarter"}, {"#", "Project"}, {"Input Year", "Year"}}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Quarter", Int64.Type}}),
+		    #"Added KPI ID" = Table.AddColumn(#"Changed Type1", "KPI ID", each 28, Int32.Type),
+		    #"Added Topic ID" = Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type)
+		in
+		    #"Added Topic ID"
+	lineageTag: 8e9205ac-2e0a-4c88-ad47-859c86786877
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Planned' = ```
+		let
+		    Source = #"CAP YEE Data",
+		    // Get all Year columns to aggregate in group by
+		    #"RemainingColumns" = Table.ColumnNames(Source),
+		    Digits = {"0","1","2","3","4","5","6","7","8","9"},
+		    // select only those column names where a digit exists, then keep those columns
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns",
+		            // Text.PositionOfAny(c, Digits) returns the position of the first digit found (or -1 if none)
+		            (c) => Text.PositionOfAny(c, Digits) <> -1
+		        ),
+		        
+		    // #"ColumnsToGroup" = 
+		    //     List.Select(
+		    //         #"RemainingColumns",
+		    //         // Text.PositionOfAny(c, Digits) returns the position of the first digit found (or -1 if none)
+		    //         (c) => Text.PositionOfAny(c, Digits) = -1
+		    //     ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division","OE name", "#", "Activity Name"},
+		    // Build aggregation operations dynamically
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            // (colName) => { 
+		            //     colName, 
+		            //     each List.Sum(List.RemoveNulls(List.Transform(_, (r) => Record.Field(r, colName)))), 
+		            //     type number 
+		            // }
+		            //(colName) => {colName, each List.Sum(_), type number}
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"GroupedTable" = Table.Group(Source, #"ColumnsToGroup", #"Aggregations"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(GroupedTable, #"ColumnsToAggregate", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    #"Get Data for Last Year" = Table.SelectRows(#"Changed Type", each [Input Year]=(List.Max(#"Changed Type"[Input Year], each _)-1)),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"Get Data of Current Year from Last Year" = 
+		        Table.SelectRows(
+		            #"Get Data for Last Year", 
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year] and ([Max Quarter] < 4 or [Input Quarter] < 4))
+		            each [Year] = [Input Year] + 1
+		        ),
+		    #"Create Attribute Column" = Table.AddColumn(#"Get Data of Current Year from Last Year", "Attribute", each "Planned", type text),
+		    #"Filtered Rows" = Table.SelectRows(#"Create Attribute Column", each ([Input Quarter] = 3)),
+		    #"Merged Queries - Get Recent Quarter" = Table.NestedJoin(#"Filtered Rows", {"Year"}, MaxQuarterPerYear, {"Input Year"}, "MaxQuarterPerYear", JoinKind.LeftOuter),
+		    #"Expanded MaxQuarterPerYear" = Table.ExpandTableColumn(#"Merged Queries - Get Recent Quarter", "MaxQuarterPerYear", {"Max Quarter"}, {"Max Quarter"}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Expanded MaxQuarterPerYear",{"Timestamp", "Input Year", "Input Quarter"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Max Quarter", "Quarter"}, {"#", "Project"}}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Quarter", Int64.Type}}),
+		    #"Added KPI ID" = Table.AddColumn(#"Changed Type1", "KPI ID", each 28, Int32.Type),
+		    #"Added Topic ID" = Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type),
+		    #"Get Top 10 Projects" = Table.NestedJoin(#"Added Topic ID", {"Division", "Project", "Year"}, #"CAP Projects GHG Actuals", {"Division", "Project", "Year"}, "CAP Projects GHG Actuals", JoinKind.Inner),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Get Top 10 Projects",{"CAP Projects GHG Actuals"})
+		in
+		    #"Removed Columns1"
+		```
+	lineageTag: 98ac006b-5b91-42f8-af68-813dabddcf31
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Replan' =
+		let
+		    Source = #"CAP Projects Investment and Replan",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Investment", "Value","Activity Status", "Activity owner","Unit / Region"}),
+		    #"Insert Prev Year Column" = Table.AddColumn(#"Removed Columns", "Prev Year", each [Input Year] - 1, type number),
+		    #"Merged Queries1" = Table.NestedJoin(#"Insert Prev Year Column", {"Prev Year", "Year", "#", "Division", "Input Quarter"}, #"CAP Projects Investment and Replan - Prev Year", {"Input Year", "Year", "#", "Division", "Input Quarter"}, "CAP Projects Investment and Replan - Prev Year", JoinKind.LeftOuter),
+		    #"Expanded CAP Investment and Replan - Scope Prev Year" = Table.ExpandTableColumn(#"Merged Queries1", "CAP Projects Investment and Replan - Prev Year", {"Input Quarter", "Value"}, {"Input Quarter.1", "Value"}),
+		    #"Get Q3 from Last year" = Table.SelectRows(#"Expanded CAP Investment and Replan - Scope Prev Year", each ([Input Quarter.1] = 3)),
+		    #"Remove Null Values" = Table.SelectRows(#"Get Q3 from Last year", each ([Value] <> null)),
+		    #"Removed Duplicates" = Table.Distinct(#"Remove Null Values"),
+		    #"Create Attribute Column" = Table.AddColumn(#"Removed Duplicates", "Attribute", each "Replan", type text),
+		    #"Merged Queries - Get Recent Quarter" = Table.NestedJoin(#"Create Attribute Column", {"Year", "Input Quarter"}, MaxQuarterPerYear, {"Input Year", "Max Quarter"}, "MaxQuarterPerYear", JoinKind.LeftOuter),
+		    #"Expanded MaxQuarterPerYear" = Table.ExpandTableColumn(#"Merged Queries - Get Recent Quarter", "MaxQuarterPerYear", {"Max Quarter"}, {"Max Quarter"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Expanded MaxQuarterPerYear",{{"Max Quarter", "Quarter"}, {"#", "Project"}}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Quarter", Int64.Type}}),
+		    #"Added KPI ID" = Table.AddColumn(#"Changed Type1", "KPI ID", each 28, Int32.Type),
+		    #"Added Topic ID" = Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type),
+		    #"Get Top 10 Projects" = Table.NestedJoin(#"Added Topic ID", {"Division", "Project", "Year"}, #"CAP Projects GHG Actuals", {"Division", "Project", "Year"}, "CAP Projects GHG Actuals", JoinKind.Inner),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Get Top 10 Projects",{"CAP Projects GHG Actuals", "Timestamp", "Input Year", "Input Quarter", "Prev Year", "Input Quarter.1"})
+		in
+		    #"Removed Columns1"
+	lineageTag: ee21187a-aacb-44ab-8960-eb1244862816
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Project Actuals Prev Year Data' =
+		let
+		    Source = #"CAP YTD Data",
+		    #"Grouped Rows" = Table.Group(Source, {"Timestamp", "Input Year", "Input Quarter", "Division", "#"}, {{"Actuals", each List.Sum([GHG YTD]), type nullable number}}),
+		    #"Get Latest Year Data" = Table.SelectRows(#"Grouped Rows", each [Input Year]=(List.Max(#"Grouped Rows"[Input Year], each _)))
+		in
+		    #"Get Latest Year Data"
+	lineageTag: 3ea43616-5e3d-40d2-982f-12fe06c5c93c
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects Investment and Replan' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Pillar", "Type of activity", /*"Activity owner",*/ "Existing in CAP", /*"Activity Status",*/ "Level of Confidence", "GHG YTD", "AEP status", "Start year", "End Year"}),
+		    #"AllColumns" = Table.ColumnNames(#"Removed Columns"),
+		    #"ColumnsToRemove" = 
+		        List.Select(
+		            #"AllColumns", 
+		            each
+		                not Text.Contains(_, "discount", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Result" = Table.SelectColumns(#"Removed Columns", #"ColumnsToRemove"),
+		    #"RemainingColumns" = Table.ColumnNames(#"Result"),
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns", 
+		            each
+		                Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division","Unit / Region","OE name", "#", "Activity Name","Activity owner","Activity Status"},
+		    #"GroupedTable" = Table.Group(#"Result", #"ColumnsToGroup", #"Aggregations"),
+		    
+		    // Filter only columns that contain "COGS" to get each year once
+		    #"COGSColumns" = List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		    
+		    // Extract each year (assuming it's the only number in the name)
+		    #"Years" = List.Transform(
+		        List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		        each Text.Select(_, {"0".."9"})   // keeps only digits
+		    ),
+		
+		    // Add new columns for each year dynamically
+		    #"AddYearTotals" =
+		        List.Accumulate(
+		            #"Years",
+		            #"GroupedTable",
+		            (state, y) =>
+		                Table.AddColumn(
+		                    state,
+		                    y,
+		                    each List.Sum(
+		                        List.Transform(
+		                            List.Select(#"ColumnsToAggregate", (c) => Text.Contains(c, y)),
+		                            (col) => Record.Field(_, col)
+		                        )
+		                    ),
+		                    type number
+		                )
+		        ),
+		    #"AggregatedTableColumns" = Table.ColumnNames(#"AddYearTotals"),
+		    #"AggregatedColumnsToRemove" = 
+		        List.Select(
+		            #"AggregatedTableColumns", 
+		            each
+		                not Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"AggregatedTable" = Table.SelectColumns(#"AddYearTotals", #"AggregatedColumnsToRemove"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(#"AggregatedTable", #"Years", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"FilterByYear" = 
+		        Table.SelectRows(
+		            #"Changed Type", 
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year])
+		            each [Year] >= [Input Year]
+		        ),
+		    #"Added Custom" = Table.AddColumn(FilterByYear, "Investment", each if [Year] = [Input Year] then [Value] else null, type number)
+		in
+		    #"Added Custom"
+		```
+	lineageTag: e5a985c6-1ea7-4c16-8656-4b868f039bf0
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects Investment and Replan - Prev Year' = ```
+		let
+		    Source = #"CAP Data",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Input Version", "Auto-generated number", "Activity Description", "Pillar", "Type of activity", "Activity owner", "Existing in CAP", "Activity Status", "Level of Confidence", "GHG YTD", "AEP status", "Start year", "End Year"}),
+		    #"AllColumns" = Table.ColumnNames(#"Removed Columns"),
+		    #"ColumnsToRemove" = 
+		        List.Select(
+		            #"AllColumns", 
+		            each
+		                not Text.Contains(_, "discount", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Result" = Table.SelectColumns(#"Removed Columns", #"ColumnsToRemove"),
+		    #"RemainingColumns" = Table.ColumnNames(#"Result"),
+		    #"ColumnsToAggregate" = 
+		        List.Select(
+		            #"RemainingColumns", 
+		            each
+		                Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) or
+		                Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"Aggregations" = 
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            (col) => { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		    #"ColumnsToGroup" = {"Timestamp", "Input Year", "Input Quarter", "Division", "#"},
+		    #"GroupedTable" = Table.Group(#"Result", #"ColumnsToGroup", #"Aggregations"),
+		    
+		    // Filter only columns that contain "COGS" to get each year once
+		    #"COGSColumns" = List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		    
+		    // Extract each year (assuming it's the only number in the name)
+		    #"Years" = List.Transform(
+		        List.Select(#"ColumnsToAggregate", each Text.Contains(_, "COGS")),
+		        each Text.Select(_, {"0".."9"})   // keeps only digits
+		    ),
+		
+		    // Add new columns for each year dynamically
+		    #"AddYearTotals" =
+		        List.Accumulate(
+		            #"Years",
+		            #"GroupedTable",
+		            (state, y) =>
+		                Table.AddColumn(
+		                    state,
+		                    y,
+		                    each List.Sum(
+		                        List.Transform(
+		                            List.Select(#"ColumnsToAggregate", (c) => Text.Contains(c, y)),
+		                            (col) => Record.Field(_, col)
+		                        )
+		                    ),
+		                    type number
+		                )
+		        ),
+		    #"AggregatedTableColumns" = Table.ColumnNames(#"AddYearTotals"),
+		    #"AggregatedColumnsToRemove" = 
+		        List.Select(
+		            #"AggregatedTableColumns", 
+		            each
+		                not Text.Contains(_, "COGS", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "EXPENSES", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "CAPEX", Comparer.OrdinalIgnoreCase) and
+		                not Text.Contains(_, "SWB", Comparer.OrdinalIgnoreCase)
+		        ),
+		    #"AggregatedTable" = Table.SelectColumns(#"AddYearTotals", #"AggregatedColumnsToRemove"),
+		    #"Unpivoted Only Selected Columns" = Table.Unpivot(#"AggregatedTable", #"Years", "Year", "Value"),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Only Selected Columns",{{"Year", Int64.Type}}),
+		    // Only look at current and next year (to work with the Timestamp filter selection on the report)
+		    #"FilterByYear" = 
+		        Table.SelectRows(
+		            #"Changed Type", 
+		            //each [Year] = ([Input Year] + 1) or ([Year] = [Input Year])
+		            each [Year] = [Input Year] + 1
+		        )
+		in
+		    FilterByYear
+		```
+	lineageTag: 4397ae69-5c78-4365-8542-90c38e858517
+	queryGroup: 'Climate Queries\Projects View Queries'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'YEE% of Targets' =
+		let
+		    Source = #"Fact Table",
+		    #"Filtered Rows" = Table.SelectRows(Source, each [Attribute] = "YEE"),
+		    #"Merged Queries" = Table.NestedJoin(#"Filtered Rows", {"Timestamp", "Division ID", "Topic ID", "Attribute ID", "Year", "End Of Quarter Date", "Standard Quarter", "Timestamp - KPI Trends", "OE"}, #"Targets for YEE% to Targets", {"Timestamp", "Division ID", "Topic ID", "Attribute ID", "Year", "End Of Quarter Date", "Standard Quarter", "Timestamp - KPI Trends", "OE"}, "Targets for YEE% to Targets", JoinKind.Inner),
+		    #"Expanded Targets for YEE% to Targets" = Table.ExpandTableColumn(#"Merged Queries", "Targets for YEE% to Targets", {"Attribute", "Value"}, {"Targets for YEE% to Targets.Attribute", "Targets for YEE% to Targets.Value"}),
+		    #"Renamed Columns" = Table.RenameColumns(#"Expanded Targets for YEE% to Targets",{{"Value", "YEE"}, {"Targets for YEE% to Targets.Value", "Targets"}}),
+		    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Value", each Value.Divide([YEE], [Targets], 0), type number),
+		    #"Filtered Rows1" = Table.SelectRows(#"Added Custom", each ([Value] <> null)),
+		    #"Replaced Value" = Table.ReplaceValue(#"Filtered Rows1","YEE","YEE % of Target Delivered",Replacer.ReplaceText,{"Attribute"}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Replaced Value",{"YEE", "Report Type ID", "Targets for YEE% to Targets.Attribute", "Targets"}),
+		    #"Added Custom1" = Table.AddColumn(#"Removed Columns", "Report Type ID", each 8, Int64.Type)
+		in
+		    #"Added Custom1"
+	lineageTag: 73958e81-acf1-43e7-bde8-4c6c1f7dab09
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Targets for YEE% to Targets' =
+		let
+		    Source = #"Fact Table",
+		    #"Filtered Rows" = Table.SelectRows(Source, each ([Attribute] = "Targets"))
+		in
+		    #"Filtered Rows"
+	lineageTag: 40dc8938-21d2-4834-9c19-c01204464cb6
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Dim Region' =
+		let
+		    Source = #"Sustainability Scorecard data",
+		    #"Imported Excel Workbook" = Excel.Workbook(Source),
+		    Region_Sheet = #"Imported Excel Workbook"{[Item="Region",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Region_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Region ID", Int64.Type}, {"Region ", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: d9368cf1-518e-4cef-85e1-2f505840a0c3
+	queryGroup: 'Dimension Tables'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Dim OE' =
+		let
+		    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wcg1WUIrVAdKlRfkFqRC2Y3FmIoTll19UkqHgmJtalJmcCJHziwLTPo4hjr5KsbEA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [OE = _t]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"OE", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 3b7c506f-554c-4e8f-86e7-4b24526d356c
+	queryGroup: 'Dimension Tables'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'DirectQuery to AS - CAP refresh latest report' =
+		let
+		    Source = AnalysisServices.Database("powerbi://api.powerbi.com/v1.0/myorg/CAP%20refresh%20-%20Petcare", "CAP refresh latest report"),
+		    Cubes = Table.Combine(Source[Data]),
+		    Cube = Cubes{[Id="Model", Kind="Cube"]}[Data]
+		in
+		    Cube
+	lineageTag: 97950a57-a54d-405e-be95-d11db73cb98b
+
+	annotation PBI_IncludeFutureArtifacts = True
+
+expression 'CAP Projects GHG Actual History' =
+		let
+		    Source = #"CAP YTD Data",
+		
+		    #"Remove projects not yet started" =
+		        Table.SelectRows(Source, each [Start year] <= [Input Year]),
+		
+		    #"Group YTD Data Rows to get YTD" =
+		        Table.Group(
+		            #"Remove projects not yet started",
+		            {"Timestamp", "Input Year", "Input Quarter", "Division","Unit / Region", "OE name", "#", "Activity Name", "Activity owner", "Activity Status"},
+		            {{"Value", each List.Sum([GHG YTD]), type nullable number}}
+		        ),
+		
+		    #"Create Attribute Column" =
+		        Table.AddColumn(#"Group YTD Data Rows to get YTD", "Attribute", each "Actual", type text),
+		
+		    #"Rename Columns" =
+		        Table.RenameColumns(
+		            #"Create Attribute Column",
+		            {
+		                {"#", "Project"},
+		                {"Input Year", "Year"},
+		                {"Input Quarter", "Quarter"}
+		            }
+		        ),
+		
+		    #"Changed Type" =
+		        Table.TransformColumnTypes(#"Rename Columns",{{"Quarter", Int64.Type}}),
+		
+		    #"Added KPI ID" =
+		        Table.AddColumn(#"Changed Type", "KPI ID", each 28, Int32.Type),
+		
+		    #"Added Topic ID" =
+		        Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type)
+		in
+		    #"Added Topic ID"
+	lineageTag: b943df7b-78d8-48f4-b6e7-ef21a0efbaec
+	queryGroup: 'CAP Projects History'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Planned History' =
+		let
+		    Source = #"CAP YEE Data",
+		
+		    #"RemainingColumns" = Table.ColumnNames(Source),
+		    Digits = {"0".."9"},
+		
+		    #"ColumnsToAggregate" =
+		        List.Select(
+		            #"RemainingColumns",
+		            each Text.PositionOfAny(_, Digits) <> -1
+		        ),
+		
+		    #"ColumnsToGroup" =
+		        {
+		            "Timestamp", "Input Year", "Input Quarter",
+		            "Division", "Unit / Region", "OE name",
+		            "#", "Activity Name", "Activity owner", "Activity Status"
+		        },
+		
+		    #"Aggregations" =
+		        List.Transform(
+		            #"ColumnsToAggregate",
+		            (col) =>
+		                { col, each List.Sum(List.Transform(_, (r) => Record.Field(r, col))), type number }
+		        ),
+		
+		    #"GroupedTable" =
+		        Table.Group(Source, #"ColumnsToGroup", #"Aggregations"),
+		
+		    #"Unpivoted Years" =
+		        Table.Unpivot(#"GroupedTable", #"ColumnsToAggregate", "Year", "Value"),
+		
+		    #"Changed Type" =
+		        Table.TransformColumnTypes(#"Unpivoted Years",{{"Year", Int64.Type}}),
+		    #"Get the Last year data" = Table.SelectRows(#"Changed Type", each [Input Year]=(List.Max(#"Changed Type"[Input Year], each _)-1)),
+		
+		    // Forward-looking Planned logic
+		    #"Filter Next Year" =
+		        Table.SelectRows(#"Get the Last year data", each [Year] = [Input Year] + 1),
+		
+		    #"Create Attribute Column" =
+		        Table.AddColumn(#"Filter Next Year", "Attribute", each "Planned", type text),
+		
+		    #"Rename Columns" =
+		        Table.RenameColumns(
+		            #"Create Attribute Column",
+		            {
+		                {"#", "Project"},
+		                {"Input Quarter", "Quarter"}
+		            }
+		        ),
+		
+		    // Remove snapshot metadata
+		    #"Removed Columns" =
+		        Table.RemoveColumns(#"Rename Columns",{"Input Year"}),
+		
+		    #"Reordered Columns" =
+		        Table.ReorderColumns(
+		            #"Removed Columns",
+		            {
+		                "Timestamp", "Year", "Quarter",
+		                "Division", "OE name",
+		                "Project", "Activity Name",
+		                "Value", "Attribute"
+		            }
+		        ),
+		
+		    #"Changed Type1" =
+		        Table.TransformColumnTypes(#"Reordered Columns",{{"Quarter", Int64.Type}}),
+		
+		    #"Added KPI ID" =
+		        Table.AddColumn(#"Changed Type1", "KPI ID", each 28, Int32.Type),
+		
+		    #"Added Topic ID" =
+		        Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type)
+		in
+		    #"Added Topic ID"
+	lineageTag: 4eb303aa-788c-4a82-8107-006f379588d5
+	queryGroup: 'CAP Projects History'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Investment History' =
+		let
+		    Source = #"CAP Projects Investment and Replan",
+		
+		    #"Removed Columns" =
+		        Table.RemoveColumns(Source,{"Value"}),
+		
+		    #"Filtered Rows" =
+		        Table.SelectRows(#"Removed Columns", each [Investment] <> null),
+		
+		    #"Removed Duplicates" =
+		        Table.Distinct(#"Filtered Rows"),
+		
+		    #"Create Attribute Column" =
+		        Table.AddColumn(#"Removed Duplicates", "Attribute", each "Investment", type text),
+		
+		    #"Rename Columns" =
+		        Table.RenameColumns(
+		            #"Create Attribute Column",
+		            {
+		                {"#", "Project"},
+		                {"Investment", "Value"},
+		                {"Input Quarter", "Quarter"}
+		            }
+		        ),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Rename Columns",{"Input Year"}),
+		
+		    #"Changed Type" =
+		        Table.TransformColumnTypes(#"Removed Columns1",{{"Quarter", Int64.Type}}),
+		    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type",{"Timestamp", "Year", "Quarter", "Division", "Project", "Activity Name", "Value", "Attribute"}),
+		
+		    #"Added KPI ID" =
+		        Table.AddColumn(#"Reordered Columns", "KPI ID", each 28, Int32.Type),
+		
+		    #"Added Topic ID" =
+		        Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type)
+		in
+		    #"Added Topic ID"
+	lineageTag: 27b67da5-dd97-4110-94e5-d3734b161246
+	queryGroup: 'CAP Projects History'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'CAP Projects GHG Replan History' =
+		let
+		    // ===== Original Replan logic =====
+		    Source = #"CAP Projects Investment and Replan",
+		
+		    #"Removed Columns" =
+		        Table.RemoveColumns(Source, {"Investment", "Value"}),
+		
+		    #"Insert Prev Year Column" =
+		        Table.AddColumn(
+		            #"Removed Columns",
+		            "Prev Year",
+		            each [Input Year] - 1,
+		            Int64.Type
+		        ),
+		
+		    #"Merged Prev Year" =
+		        Table.NestedJoin(
+		            #"Insert Prev Year Column",
+		            {"Prev Year", "Year", "#", "Division", "Input Quarter"},
+		            #"CAP Projects Investment and Replan - Prev Year",
+		            {"Input Year", "Year", "#", "Division", "Input Quarter"},
+		            "PrevYearData",
+		            JoinKind.LeftOuter
+		        ),
+		
+		    #"Expanded Prev Year" =
+		        Table.ExpandTableColumn(
+		            #"Merged Prev Year",
+		            "PrevYearData",
+		            {"Value"},
+		            {"Value"}
+		        ),
+		
+		    // ✅ Keep only Q3 baseline rows
+		    #"Filter Q3 Baseline" =
+		        Table.SelectRows(
+		            #"Expanded Prev Year",
+		            each [Input Quarter] = 3 and [Value] <> null
+		        ),
+		
+		    #"Create Attribute Column" =
+		        Table.AddColumn(
+		            #"Filter Q3 Baseline",
+		            "Attribute",
+		            each "Replan",
+		            type text
+		        ),
+		
+		    #"Rename Columns" =
+		        Table.RenameColumns(
+		            #"Create Attribute Column",
+		            {
+		                {"#", "Project"},
+		                {"Input Quarter", "Baseline Quarter"}
+		            }
+		        ),
+		
+		    #"Removed Snapshot Columns" =
+		        Table.RemoveColumns(
+		            #"Rename Columns",
+		            {"Input Year", "Prev Year"}
+		        ),
+		
+		    // ===== Quarter Duplication Logic START =====
+		
+		    // ✅ Create a Quarter reference table (1–4)
+		    QuarterTable =
+		        #table(
+		            {"Quarter"},
+		            {
+		                {1},
+		                {2},
+		                {3},
+		                {4}
+		            }
+		        ),
+		
+		    // ✅ Cross join Replan rows with all quarters
+		    #"Expanded to All Quarters" =
+		        Table.ExpandTableColumn(
+		            Table.AddColumn(
+		                #"Removed Snapshot Columns",
+		                "All Quarters",
+		                each QuarterTable
+		            ),
+		            "All Quarters",
+		            {"Quarter"}
+		        ),
+		
+		    // ===== Quarter Duplication Logic END =====
+		
+		    #"Changed Type" =
+		        Table.TransformColumnTypes(
+		            #"Expanded to All Quarters",
+		            {
+		                {"Quarter", Int64.Type},
+		                {"Baseline Quarter", Int64.Type}
+		            }
+		        ),
+		
+		    #"Reordered Columns" =
+		        Table.ReorderColumns(
+		            #"Changed Type",
+		            {
+		                "Timestamp",
+		                "Year",
+		                "Quarter",
+		                "Division",
+		                "Project",
+		                "Activity Name",
+		                "Value",
+		                "Attribute",
+		                "Baseline Quarter"
+		            }
+		        ),
+		
+		    // ✅ Safety flag to indicate duplicated baseline
+		    #"Added Replan Baseline Flag" =
+		        Table.AddColumn(
+		            #"Reordered Columns",
+		            "Is Replan Baseline",
+		            each true,
+		            type logical
+		        ),
+		
+		    #"Added KPI ID" =
+		        Table.AddColumn(
+		            #"Added Replan Baseline Flag",
+		            "KPI ID",
+		            each 28,
+		            Int32.Type
+		        ),
+		
+		    #"Added Topic ID" =
+		        Table.AddColumn(
+		            #"Added KPI ID",
+		            "Topic ID",
+		            each 1,
+		            Int64.Type
+		        )
+		in
+		    #"Added Topic ID"
+		
+		// let
+		//     Source = #"CAP Projects Investment and Replan",
+		
+		//     #"Removed Columns" =
+		//         Table.RemoveColumns(Source,{"Investment", "Value"}),
+		
+		//     #"Insert Prev Year Column" =
+		//         Table.AddColumn(#"Removed Columns", "Prev Year", each [Input Year] - 1, type number),
+		
+		//     #"Merged Prev Year" =
+		//         Table.NestedJoin(
+		//             #"Insert Prev Year Column",
+		//             {"Prev Year", "Year", "#", "Division", "Input Quarter"},
+		//             #"CAP Projects Investment and Replan - Prev Year",
+		//             {"Input Year", "Year", "#", "Division", "Input Quarter"},
+		//             "PrevYearData",
+		//             JoinKind.LeftOuter
+		//         ),
+		
+		//     #"Expanded Prev Year" =
+		//         Table.ExpandTableColumn(#"Merged Prev Year", "PrevYearData", {"Value"}, {"Value"}),
+		
+		//     #"Filter Q3 Baseline" =
+		//         Table.SelectRows(#"Expanded Prev Year", each [Input Quarter] = 3 and [Value] <> null),
+		
+		//     #"Create Attribute Column" =
+		//         Table.AddColumn(#"Filter Q3 Baseline", "Attribute", each "Replan", type text),
+		
+		//     #"Rename Columns" =
+		//         Table.RenameColumns(
+		//             #"Create Attribute Column",
+		//             {
+		//                 {"#", "Project"},
+		//                 {"Input Quarter", "Quarter"}
+		//             }
+		//         ),
+		//     #"Removed Columns1" = Table.RemoveColumns(#"Rename Columns",{"Input Year", "Prev Year"}),
+		
+		//     #"Changed Type" =
+		//         Table.TransformColumnTypes(#"Removed Columns1",{{"Quarter", Int64.Type}}),
+		//     #"Reordered Columns" = Table.ReorderColumns(#"Changed Type",{"Timestamp", "Year", "Quarter", "Division", "Project", "Activity Name", "Value", "Attribute"}),
+		
+		//     #"Added KPI ID" =
+		//         Table.AddColumn(#"Reordered Columns", "KPI ID", each 28, Int32.Type),
+		
+		//     #"Added Topic ID" =
+		//         Table.AddColumn(#"Added KPI ID", "Topic ID", each 1, Int64.Type)
+		// in
+		//     #"Added Topic ID"
+	lineageTag: de749a27-c84e-4ad0-93aa-11b07810f077
+	queryGroup: 'CAP Projects History'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Sharepoint File Path' = "https://team.effem.com/sites/AnalyticsCommercialProducts/" meta [IsParameterQuery=true, List={"https://team.effem.com/sites/AnalyticsCommercialProducts/"}, DefaultValue="https://team.effem.com/sites/AnalyticsCommercialProducts/", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: dddab9ce-a300-4c13-af7a-cd2d9b7160b7
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression Folder_Path = "https://team.effem.com/sites/AnalyticsCommercialProducts/Shared Documents/0 New Demand - Prioritization/Projects' Briefs/Petcare Sustainability/Sustainability/Sustainability Scorecard Dashboard/Other/" meta [IsParameterQuery=true, List={"https://team.effem.com/sites/AnalyticsCommercialProducts/Shared Documents/0 New Demand - Prioritization/Projects' Briefs/Petcare Sustainability/Sustainability/Sustainability Scorecard Dashboard/Other/"}, DefaultValue="https://team.effem.com/sites/AnalyticsCommercialProducts/Shared Documents/0 New Demand - Prioritization/Projects' Briefs/Petcare Sustainability/Sustainability/Sustainability Scorecard Dashboard/Other/", Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 2a0e3ddc-e9d5-4fc2-84dc-f8ba1f05186c
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+
+expression 'RC KPI Values' = ```
+		let
+		    Source = SharePoint.Files(#"Sharepoint File Path", [ApiVersion = 15]),
+		    #"File_Name_Folder_Path" = Source{[Name="Digital Scorecard Data Fields.xlsx",#"Folder Path"=Folder_Path]}[Content],
+		    #"Imported Excel Workbook" = Excel.Workbook(#"File_Name_Folder_Path"),
+		    #"PN KPI Values_Sheet" = #"Imported Excel Workbook"{[Item="RC KPI Values",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"PN KPI Values_Sheet", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Category", type text}, {"KPIs", type text}, {"UOM", type text}, {"Target 2025", type any}, {"Target 2026", Int64.Type}, {"Target 2027", type text}, {"Target 2028", type text}, {"Target 2029", type text}, {"Target 2030", type text}, {"Actual 2023", type text}, {"Actual 2024", type text}, {"Actual 2025", type text}, {"YEE 2023 Q1", type text}, {"YEE 2023 Q2", type text}, {"YEE 2023 Q3", type number}, {"YEE 2023 Q4", type number}, {"YEE 2024 Q1", type text}, {"YEE 2024 Q2", type number}, {"YEE 2024 Q3", type any}, {"YEE 2024 Q4", type text}, {"YEE 2025 Q1", type text}, {"YEE 2025 Q2", type text}, {"YEE 2025 Q3", type text}, {"YEE 2025 Q4", type text}, {"Replan $ 2023", type text}, {"Replan $ 2024", type text}, {"Replan $ 2025", type text}, {"Investment YTD 2023 Q3", type number}, {"Investment YTD 2023 Q4", type number}, {"Investment YTD 2024 Q1", type text}, {"Investment YTD 2024 Q2", type number}, {"Investment YTD 2024 Q3", type text}, {"Investment YTD 2024 Q4", type text}, {"Investment YTD 2025 Q1", type text}, {"Investment YTD 2025 Q2", type text}, {"Investment YTD 2025 Q3", type text}, {"Investment YTD 2025 Q4", type text}, {"Investment YEE 2023 Q1", type text}, {"Investment YEE 2023 Q2", type text}, {"Investment YEE 2023 Q3", type text}, {"Investment YEE 2023 Q4", type text}, {"Investment YEE 2024 Q1", type text}, {"Investment YEE 2024 Q2", type text}, {"Investment YEE 2024 Q3", type text}, {"Investment YEE 2024 Q4", type text}, {"Investment YEE 2025 Q1", type text}, {"Investment YEE 2025 Q2", type text}, {"Investment YEE 2025 Q3", type text}, {"Investment YEE 2025 Q4", type text}, {"planned # of activities 2023", type text}, {"planned # of activities 2024", type text}, {"planned # of activities 2025", type text}}),
+		    //Rename the columns
+		    Renamed = Table.RenameColumns(#"Changed Type", {{"KPIs","Attributes"},{"Category","Topic"}}, MissingField.Ignore),
+		
+		    // This creates a list of all columns and tells Power Query to replace errors in all of them with null
+		    
+		    ReplaceErrors = Table.ReplaceErrorValues(Renamed, List.Transform(Table.ColumnNames(Renamed), each {_, null})),
+		
+		    // This replaces nulls with 0, BUT only in the columns that are likely to be values.
+		    // Replace {"Target 2025", "Target 2026", ...} with your specific value column names 
+		    // Or, use Table.ColumnNames if you want to apply it to EVERYTHING (be careful with text columns!)
+		    // FillNulls = Table.ReplaceValue(ReplaceErrors, null, 0, Replacer.ReplaceValue, 
+		    // List.Difference(Table.ColumnNames(ReplaceErrors), {"Topic", "Attributes", "UOM"})
+		    // ),
+		    
+		    //find groups of columns by prefix (using OrdinalIgnoreCase to be safe)
+		
+		    AllCols = Table.ColumnNames(ReplaceErrors),
+		    TargetCols = List.Select(AllCols, each Text.StartsWith(_, "Target", Comparer.OrdinalIgnoreCase)),
+		    ActualCols = List.Select(AllCols, each Text.StartsWith(_, "Actual", Comparer.OrdinalIgnoreCase)),
+		    YEECols = List.Select(AllCols, each Text.StartsWith(_, "YEE", Comparer.OrdinalIgnoreCase)),
+		    ReplanCols = List.Select(AllCols, each Text.StartsWith(_, "Replan", Comparer.OrdinalIgnoreCase)),
+		    InvestYTDCols = List.Select(AllCols, each Text.StartsWith(_, "Investment YTD", Comparer.OrdinalIgnoreCase)),
+		    InvestYEECols = List.Select(AllCols, each Text.StartsWith(_, "Investment YEE", Comparer.OrdinalIgnoreCase)),
+		    PlannedCols = List.Select(AllCols, each Text.StartsWith(_, "planned", Comparer.OrdinalIgnoreCase)),
+		
+		    //helper to unpivot a category and tag it
+		
+		    UnpivotCategory = (tbl as table, cols as list, tag as text) =>
+		    if List.Count(cols)=0 then #table({}, {}) else
+		    let u = Table.Unpivot(tbl, cols, "Period", "Value") in Table.AddColumn(u, "Attribute", each tag),
+		
+		    //unpivot each logical block
+		    U_Target = UnpivotCategory(ReplaceErrors, TargetCols, "Target"),
+		    U_Actual = UnpivotCategory(ReplaceErrors, ActualCols, "Actual"),
+		    U_YEE = UnpivotCategory(ReplaceErrors, YEECols, "YEE"),
+		    U_Replan = UnpivotCategory(ReplaceErrors, ReplanCols, "Replan"),
+		    U_InvYTD = UnpivotCategory(ReplaceErrors, InvestYTDCols, "Investment YTD"),
+		    U_InvYEE = UnpivotCategory(ReplaceErrors, InvestYEECols, "Investment YEE"),
+		    U_Planned = UnpivotCategory(ReplaceErrors, PlannedCols, "Planned Activities"),
+		
+		    //combine all unpivoted sets
+		    ToCombine = List.Select({U_Target,U_Actual,U_YEE,U_Replan,U_InvYTD,U_InvYEE,U_Planned}, each _ <> null and Table.RowCount(_) > 0),
+		    Combined = if List.Count(ToCombine)=0 then #table({}, {}) else Table.Combine(ToCombine),
+		
+		    //Get the list of column names
+		    AllColumnNames = Table.ColumnNames(Combined),
+		    
+		    //Select the names to keep
+		    ColumnsToKeep = List.Select(AllColumnNames, each 
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Actual", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Replan", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Planned", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YEE", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		    ),
+		
+		    //Apply the selection
+		
+		    FilteredTable = Table.SelectColumns(Combined, ColumnsToKeep),
+		
+		    //extract Year and Quarter from the column name in Period
+		
+		    AddYear = Table.AddColumn(FilteredTable, "Year", each 
+		        let
+		            // 1. Find the index (position) of the first number in the string
+		            FirstDigitPos = Text.PositionOfAny([Period], {"0".."9"}),
+		            // 2. Extract 4 characters starting from that position
+		            YearText = if FirstDigitPos >= 0 then Text.Middle([Period], FirstDigitPos, 4) else null
+		        in
+		            try Number.FromText(YearText) otherwise null, 
+		        Int64.Type
+		    ),
+		    AddQuarter = Table.AddColumn(AddYear, "Quarter", each 
+		    if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		    else if [Attribute] = "Replan" then "Q3"
+		    else if [Attribute] = "Planned Activities" then "Q4"
+		    else if Text.Contains([Period],"Q1") then "Q1" 
+		    else if Text.Contains([Period],"Q2") then "Q2" 
+		    else if Text.Contains([Period],"Q3") then "Q3" 
+		    else if Text.Contains([Period],"Q4") then "Q4" 
+		    else null
+		),
+		
+		    //build End Of Quarter Date
+		    QuarterMonth = Table.AddColumn(AddQuarter, "QuarterEndMonth", each if [Quarter]="Q1" then 3 else if [Quarter]="Q2" then 6 else if [Quarter]="Q3" then 9 else if [Quarter]="Q4" then 12 else 12, Int64.Type),
+		    EndOfQuarter = Table.AddColumn(QuarterMonth, "End Of Quarter Date",
+		    each if [Year] <> null then Date.From(#date([Year], [QuarterEndMonth], if [QuarterEndMonth] = 3 then 31 else if [QuarterEndMonth] = 6 then 30 else if [QuarterEndMonth] = 9 then 30 else 31)) else null, type date),
+		    AddTimestamp = Table.AddColumn(EndOfQuarter, "Timestamp", each if [Quarter] <> null then Text.From([Year]) & "-Q" & Text.Middle([Quarter],1,1) else if [Year] <> null then Text.From([Year]) else null, type text),
+		    AddTimestampKPI = Table.AddColumn(AddTimestamp, "Timestamp - KPI Trends", each if [Timestamp] <> null then [Timestamp] else null, type text),
+		
+		    //standardize Attribute name
+		    NormAttribute = Table.TransformColumns(AddTimestampKPI, {{"Attribute", each Text.Trim(Text.From(_)), type text}}),
+		
+		    //Change Value types and final column mapping
+		    ChangedTypes = Table.TransformColumnTypes(NormAttribute, {{"Value", type number}, {"Year", Int64.Type}}, "en-US"),
+		    #"Added Division Name" = Table.AddColumn(ChangedTypes, "Division", each "Royal Canin"),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Added Division Name",{{"Division", type text}}),
+		    #"Merged Dim Division" = Table.NestedJoin(#"Changed Type2", {"Division"}, #"Dim Division", {"Division"}, "Dim Division", JoinKind.LeftOuter),
+		    #"Expanded Dim Division" = Table.ExpandTableColumn(#"Merged Dim Division", "Dim Division", {"Division ID"}, {"Division ID"}),
+		    #"Add Join Key" = Table.AddColumn(#"Expanded Dim Division", "JoinKey", each Text.Proper(Text.Trim([Attributes])), type text),    
+		    // Safety check for final column selection
+		    AvailableCols = Table.ColumnNames(#"Add Join Key"),
+		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute","JoinKey"},
+		    IntersectCols = List.Intersect({AvailableCols, RequiredCols}),
+		    Final = Table.SelectColumns(#"Add Join Key", IntersectCols)
+		in
+		    Final
+		```
+	lineageTag: 9c1b1fe8-6d20-4bcc-9126-a3b5c7f38938
+	queryGroup: 'New KPI''s'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Petcare KPI Values' = ```
+		let
+		    Source = SharePoint.Files(#"Sharepoint File Path", [ApiVersion = 15]),
+		    #"File_Name_Folder_Path" = Source{[Name="Digital Scorecard Data Fields.xlsx",#"Folder Path"=Folder_Path]}[Content],
+		    #"Imported Excel Workbook" = Excel.Workbook(#"File_Name_Folder_Path"),
+		    #"Petcare KPI Values_Sheet" = #"Imported Excel Workbook"{[Item="Petcare KPI Values",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Petcare KPI Values_Sheet", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Category", type text}, {"KPIs", type text}, {"UOM", type text}, {"Target 2025", type any}, {"Target 2026", Int64.Type}, {"Target 2027", type any}, {"Target 2028", type any}, {"Target 2029", type any}, {"Target 2030", type text}, {"Actual 2023", type number}, {"Actual 2024", type any}, {"Actual 2025", type any}, {"YEE 2023 Q1", type any}, {"YEE 2023 Q2", Int64.Type}, {"YEE 2023 Q3", type number}, {"YEE 2023 Q4", type number}, {"YEE 2024 Q1", type any}, {"YEE 2024 Q2", type any}, {"YEE 2024 Q3", type any}, {"YEE 2024 Q4", type any}, {"YEE 2025 Q1", type any}, {"YEE 2025 Q2", type any}, {"YEE 2025 Q3", type any}, {"YEE 2025 Q4", type any}, {"Replan $ 2023", type any}, {"Replan $ 2024", type number}, {"Replan $ 2025", type number}, {"Investment YTD 2023 Q3", type number}, {"Investment YTD 2023 Q4", Int64.Type}, {"Investment YTD 2024 Q1", type any}, {"Investment YTD 2024 Q2", type number}, {"Investment YTD 2024 Q3", type number}, {"Investment YTD 2024 Q4", type number}, {"Investment YTD 2025 Q1", Int64.Type}, {"Investment YTD 2025 Q2", type number}, {"Investment YTD 2025 Q3", type number}, {"Investment YTD 2025 Q4", type number}, {"Investment YEE 2023 Q1", type any}, {"Investment YEE 2023 Q2", type any}, {"Investment YEE 2023 Q3", type number}, {"Investment YEE 2023 Q4", type number}, {"Investment YEE 2024 Q1", type any}, {"Investment YEE 2024 Q2", type any}, {"Investment YEE 2024 Q3", type number}, {"Investment YEE 2024 Q4", type number}, {"Investment YEE 2025 Q1", type number}, {"Investment YEE 2025 Q2", type number}, {"Investment YEE 2025 Q3", type number}, {"Investment YEE 2025 Q4", type number}, {"planned # of activities 2023", type any}, {"planned # of activities 2024", type any}, {"planned # of activities 2025", type any}}),
+		
+		    //Rename the columns
+		    Renamed = Table.RenameColumns(#"Changed Type", {{"KPIs","Attributes"},{"Category","Topic"}}, MissingField.Ignore),
+		
+		    // This creates a list of all columns and tells Power Query to replace errors in all of them with null
+		    ReplaceErrors = Table.ReplaceErrorValues(Renamed, List.Transform(Table.ColumnNames(Renamed), each {_, null})),
+		
+		    //find groups of columns by prefix (using OrdinalIgnoreCase to be safe)
+		    AllCols = Table.ColumnNames(ReplaceErrors),
+		    TargetCols = List.Select(AllCols, each Text.StartsWith(_, "Target", Comparer.OrdinalIgnoreCase)),
+		    ActualCols = List.Select(AllCols, each Text.StartsWith(_, "Actual", Comparer.OrdinalIgnoreCase)),
+		    YEECols = List.Select(AllCols, each Text.StartsWith(_, "YEE", Comparer.OrdinalIgnoreCase)),
+		    ReplanCols = List.Select(AllCols, each Text.StartsWith(_, "Replan", Comparer.OrdinalIgnoreCase)),
+		    InvestYTDCols = List.Select(AllCols, each Text.StartsWith(_, "Investment YTD", Comparer.OrdinalIgnoreCase)),
+		    InvestYEECols = List.Select(AllCols, each Text.StartsWith(_, "Investment YEE", Comparer.OrdinalIgnoreCase)),
+		    PlannedCols = List.Select(AllCols, each Text.StartsWith(_, "planned", Comparer.OrdinalIgnoreCase)),
+		
+		    //helper to unpivot a category and tag it
+		
+		    UnpivotCategory = (tbl as table, cols as list, tag as text) =>
+		    if List.Count(cols)=0 then #table({}, {}) else
+		    let u = Table.Unpivot(tbl, cols, "Period", "Value") in Table.AddColumn(u, "Attribute", each tag),
+		
+		    //unpivot each logical block
+		    U_Target = UnpivotCategory(ReplaceErrors, TargetCols, "Target"),
+		    U_Actual = UnpivotCategory(ReplaceErrors, ActualCols, "Actual"),
+		    U_YEE = UnpivotCategory(ReplaceErrors, YEECols, "YEE"),
+		    U_Replan = UnpivotCategory(ReplaceErrors, ReplanCols, "Replan"),
+		    U_InvYTD = UnpivotCategory(ReplaceErrors, InvestYTDCols, "Investment YTD"),
+		    U_InvYEE = UnpivotCategory(ReplaceErrors, InvestYEECols, "Investment YEE"),
+		    U_Planned = UnpivotCategory(ReplaceErrors, PlannedCols, "Planned Activities"),
+		
+		    //combine all unpivoted sets
+		    ToCombine = List.Select({U_Target,U_Actual,U_YEE,U_Replan,U_InvYTD,U_InvYEE,U_Planned}, each _ <> null and Table.RowCount(_) > 0),
+		    Combined = if List.Count(ToCombine)=0 then #table({}, {}) else Table.Combine(ToCombine),
+		
+		    //Get the list of column names
+		    AllColumnNames = Table.ColumnNames(Combined),
+		    
+		    //Select the names to keep
+		    ColumnsToKeep = List.Select(AllColumnNames, each 
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Actual", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Replan", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Planned", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YEE", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		    ),
+		
+		    //Apply the selection
+		
+		    FilteredTable = Table.SelectColumns(Combined, ColumnsToKeep),
+		
+		    //extract Year and Quarter from the column name in Period
+		
+		    AddYear = Table.AddColumn(FilteredTable, "Year", each 
+		        let
+		            // 1. Find the index (position) of the first number in the string
+		            FirstDigitPos = Text.PositionOfAny([Period], {"0".."9"}),
+		            // 2. Extract 4 characters starting from that position
+		            YearText = if FirstDigitPos >= 0 then Text.Middle([Period], FirstDigitPos, 4) else null
+		        in
+		            try Number.FromText(YearText) otherwise null, 
+		        Int64.Type
+		    ),
+		    AddQuarter = Table.AddColumn(AddYear, "Quarter", each 
+		    if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		    else if [Attribute] = "Replan" then "Q3"
+		    else if [Attribute] = "Planned Activities" then "Q4"
+		    else if Text.Contains([Period],"Q1") then "Q1" 
+		    else if Text.Contains([Period],"Q2") then "Q2" 
+		    else if Text.Contains([Period],"Q3") then "Q3" 
+		    else if Text.Contains([Period],"Q4") then "Q4" 
+		    else null
+		),
+		
+		    //build End Of Quarter Date
+		    QuarterMonth = Table.AddColumn(AddQuarter, "QuarterEndMonth", each if [Quarter]="Q1" then 3 else if [Quarter]="Q2" then 6 else if [Quarter]="Q3" then 9 else if [Quarter]="Q4" then 12 else 12, Int64.Type),
+		    EndOfQuarter = Table.AddColumn(QuarterMonth, "End Of Quarter Date",
+		    each if [Year] <> null then Date.From(#date([Year], [QuarterEndMonth], if [QuarterEndMonth] = 3 then 31 else if [QuarterEndMonth] = 6 then 30 else if [QuarterEndMonth] = 9 then 30 else 31)) else null, type date),
+		    AddTimestamp = Table.AddColumn(EndOfQuarter, "Timestamp", each if [Quarter] <> null then Text.From([Year]) & "-Q" & Text.Middle([Quarter],1,1) else if [Year] <> null then Text.From([Year]) else null, type text),
+		    AddTimestampKPI = Table.AddColumn(AddTimestamp, "Timestamp - KPI Trends", each if [Timestamp] <> null then [Timestamp] else null, type text),
+		
+		    //standardize Attribute name
+		    NormAttribute = Table.TransformColumns(AddTimestampKPI, {{"Attribute", each Text.Trim(Text.From(_)), type text}}),
+		
+		    //Change Value types and final column mapping
+		    ChangedTypes = Table.TransformColumnTypes(NormAttribute, {{"Value", type number}, {"Year", Int64.Type}}, "en-US"),
+		    
+		    #"Merge for Topic and Attribute IDs" = Table.NestedJoin(ChangedTypes, {"Attributes"}, #"Topics and KPIs", {"KPI Name "}, "Topics and KPIs", JoinKind.LeftOuter),
+		    #"Expanded Topics and KPIs" = Table.ExpandTableColumn(#"Merge for Topic and Attribute IDs", "Topics and KPIs", {"KPI ID", "Topic ID"}, {"Attribute ID", "Topic ID"}),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded Topics and KPIs",{{"Attribute ID", Int64.Type}}),
+		    #"Merged Report Type" = Table.FuzzyNestedJoin(#"Changed Type1", {"Attribute"}, #"Dim Report Type", {"Report Type"}, "Report Type", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),
+		    #"Expand Report Type" = Table.ExpandTableColumn(#"Merged Report Type", "Report Type", {"Report Type ID"}, {"Report Type ID"}),
+		    // Safety check for final column selection
+		    AvailableCols = Table.ColumnNames(#"Expand Report Type"),
+		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute"},
+		    IntersectCols = List.Intersect({AvailableCols, RequiredCols}),
+		    Final = Table.SelectColumns(#"Expand Report Type", IntersectCols)
+		in
+		    Final
+		```
+	lineageTag: ea318774-9f21-4498-84fb-3142831fc478
+	queryGroup: 'New KPI''s'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'PN KPI Values' = ```
+		let
+		    Source = SharePoint.Files(#"Sharepoint File Path", [ApiVersion = 15]),
+		    #"File_Name_Folder_Path" = Source{[Name="Digital Scorecard Data Fields.xlsx",#"Folder Path"=Folder_Path]}[Content],
+		    #"Imported Excel Workbook" = Excel.Workbook(#"File_Name_Folder_Path"),
+		    #"PN KPI Values_Sheet" = #"Imported Excel Workbook"{[Item="PN KPI Values",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"PN KPI Values_Sheet", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Category", type text}, {"KPIs", type text}, {"UOM", type text}, {"Target 2025", type any}, {"Target 2026", Int64.Type}, {"Target 2027", type text}, {"Target 2028", type text}, {"Target 2029", type text}, {"Target 2030", type text}, {"Actual 2023", type text}, {"Actual 2024", type text}, {"Actual 2025", type text}, {"YEE 2023 Q1", type text}, {"YEE 2023 Q2", type text}, {"YEE 2023 Q3", type number}, {"YEE 2023 Q4", type number}, {"YEE 2024 Q1", type text}, {"YEE 2024 Q2", type number}, {"YEE 2024 Q3", type any}, {"YEE 2024 Q4", type text}, {"YEE 2025 Q1", type text}, {"YEE 2025 Q2", type text}, {"YEE 2025 Q3", type text}, {"YEE 2025 Q4", type text}, {"Replan $ 2023", type text}, {"Replan $ 2024", type text}, {"Replan $ 2025", type text}, {"Investment YTD 2023 Q3", type number}, {"Investment YTD 2023 Q4", type number}, {"Investment YTD 2024 Q1", type text}, {"Investment YTD 2024 Q2", type number}, {"Investment YTD 2024 Q3", type text}, {"Investment YTD 2024 Q4", type text}, {"Investment YTD 2025 Q1", type text}, {"Investment YTD 2025 Q2", type text}, {"Investment YTD 2025 Q3", type text}, {"Investment YTD 2025 Q4", type text}, {"Investment YEE 2023 Q1", type text}, {"Investment YEE 2023 Q2", type text}, {"Investment YEE 2023 Q3", type text}, {"Investment YEE 2023 Q4", type text}, {"Investment YEE 2024 Q1", type text}, {"Investment YEE 2024 Q2", type text}, {"Investment YEE 2024 Q3", type text}, {"Investment YEE 2024 Q4", type text}, {"Investment YEE 2025 Q1", type text}, {"Investment YEE 2025 Q2", type text}, {"Investment YEE 2025 Q3", type text}, {"Investment YEE 2025 Q4", type text}, {"planned # of activities 2023", type text}, {"planned # of activities 2024", type text}, {"planned # of activities 2025", type text}}),
+		    //Rename the columns
+		    Renamed = Table.RenameColumns(#"Changed Type", {{"KPIs","Attributes"},{"Category","Topic"}}, MissingField.Ignore),
+		
+		    // This creates a list of all columns and tells Power Query to replace errors in all of them with null
+		    ReplaceErrors = Table.ReplaceErrorValues(Renamed, List.Transform(Table.ColumnNames(Renamed), each {_, null})),
+		
+		    // This replaces nulls with 0, BUT only in the columns that are likely to be values.
+		    // Or, use Table.ColumnNames if you want to apply it to EVERYTHING (be careful with text columns!)
+		    // FillNulls = Table.ReplaceValue(ReplaceErrors, null, 0, Replacer.ReplaceValue, 
+		    // List.Difference(Table.ColumnNames(ReplaceErrors), {"Topic", "Attributes", "UOM"})
+		    // ),
+		
+		    //find groups of columns by prefix (using OrdinalIgnoreCase to be safe)
+		    
+		    AllCols = Table.ColumnNames(ReplaceErrors),
+		    TargetCols = List.Select(AllCols, each Text.StartsWith(_, "Target", Comparer.OrdinalIgnoreCase)),
+		    ActualCols = List.Select(AllCols, each Text.StartsWith(_, "Actual", Comparer.OrdinalIgnoreCase)),
+		    YEECols = List.Select(AllCols, each Text.StartsWith(_, "YEE", Comparer.OrdinalIgnoreCase)),
+		    ReplanCols = List.Select(AllCols, each Text.StartsWith(_, "Replan", Comparer.OrdinalIgnoreCase)),
+		    InvestYTDCols = List.Select(AllCols, each Text.StartsWith(_, "Investment YTD", Comparer.OrdinalIgnoreCase)),
+		    InvestYEECols = List.Select(AllCols, each Text.StartsWith(_, "Investment YEE", Comparer.OrdinalIgnoreCase)),
+		    PlannedCols = List.Select(AllCols, each Text.StartsWith(_, "planned", Comparer.OrdinalIgnoreCase)),
+		
+		    //helper to unpivot a category and tag it
+		
+		    UnpivotCategory = (tbl as table, cols as list, tag as text) =>
+		    if List.Count(cols)=0 then #table({}, {}) else
+		    let u = Table.Unpivot(tbl, cols, "Period", "Value") in Table.AddColumn(u, "Attribute", each tag),
+		
+		    //unpivot each logical block
+		    U_Target = UnpivotCategory(ReplaceErrors, TargetCols, "Target"),
+		    U_Actual = UnpivotCategory(ReplaceErrors, ActualCols, "Actual"),
+		    U_YEE = UnpivotCategory(ReplaceErrors, YEECols, "YEE"),
+		    U_Replan = UnpivotCategory(ReplaceErrors, ReplanCols, "Replan"),
+		    U_InvYTD = UnpivotCategory(ReplaceErrors, InvestYTDCols, "Investment YTD"),
+		    U_InvYEE = UnpivotCategory(ReplaceErrors, InvestYEECols, "Investment YEE"),
+		    U_Planned = UnpivotCategory(ReplaceErrors, PlannedCols, "Planned Activities"),
+		
+		    //combine all unpivoted sets
+		    ToCombine = List.Select({U_Target,U_Actual,U_YEE,U_Replan,U_InvYTD,U_InvYEE,U_Planned}, each _ <> null and Table.RowCount(_) > 0),
+		    Combined = if List.Count(ToCombine)=0 then #table({}, {}) else Table.Combine(ToCombine),
+		
+		    //Get the list of column names
+		    AllColumnNames = Table.ColumnNames(Combined),
+		    
+		    //Select the names to keep
+		    ColumnsToKeep = List.Select(AllColumnNames, each 
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Actual", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Replan", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Planned", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YEE", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		    ),
+		
+		    //Apply the selection
+		
+		    FilteredTable = Table.SelectColumns(Combined, ColumnsToKeep),
+		
+		    //extract Year and Quarter from the column name in Period
+		
+		    AddYear = Table.AddColumn(FilteredTable, "Year", each 
+		        let
+		            // 1. Find the index (position) of the first number in the string
+		            FirstDigitPos = Text.PositionOfAny([Period], {"0".."9"}),
+		            // 2. Extract 4 characters starting from that position
+		            YearText = if FirstDigitPos >= 0 then Text.Middle([Period], FirstDigitPos, 4) else null
+		        in
+		            try Number.FromText(YearText) otherwise null, 
+		        Int64.Type
+		    ),
+		    AddQuarter = Table.AddColumn(AddYear, "Quarter", each 
+		    if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		    else if [Attribute] = "Replan" then "Q3"
+		    else if [Attribute] = "Planned Activities" then "Q4"
+		    else if Text.Contains([Period],"Q1") then "Q1" 
+		    else if Text.Contains([Period],"Q2") then "Q2" 
+		    else if Text.Contains([Period],"Q3") then "Q3" 
+		    else if Text.Contains([Period],"Q4") then "Q4" 
+		    else null
+		),
+		
+		    //build End Of Quarter Date
+		    QuarterMonth = Table.AddColumn(AddQuarter, "QuarterEndMonth", each if [Quarter]="Q1" then 3 else if [Quarter]="Q2" then 6 else if [Quarter]="Q3" then 9 else if [Quarter]="Q4" then 12 else 12, Int64.Type),
+		    EndOfQuarter = Table.AddColumn(QuarterMonth, "End Of Quarter Date",
+		    each if [Year] <> null then Date.From(#date([Year], [QuarterEndMonth], if [QuarterEndMonth] = 3 then 31 else if [QuarterEndMonth] = 6 then 30 else if [QuarterEndMonth] = 9 then 30 else 31)) else null, type date),
+		    AddTimestamp = Table.AddColumn(EndOfQuarter, "Timestamp", each if [Quarter] <> null then Text.From([Year]) & "-Q" & Text.Middle([Quarter],1,1) else if [Year] <> null then Text.From([Year]) else null, type text),
+		    AddTimestampKPI = Table.AddColumn(AddTimestamp, "Timestamp - KPI Trends", each if [Timestamp] <> null then [Timestamp] else null, type text),
+		
+		    //standardize Attribute name
+		    NormAttribute = Table.TransformColumns(AddTimestampKPI, {{"Attribute", each Text.Trim(Text.From(_)), type text}}),
+		
+		    //Change Value types and final column mapping
+		    ChangedTypes = Table.TransformColumnTypes(NormAttribute, {{"Value", type number}, {"Year", Int64.Type}}, "en-US"),
+		    #"Added Division Name" = Table.AddColumn(ChangedTypes, "Division", each "Pet Nutrition"),
+		    #"Changed Type2" = Table.TransformColumnTypes(#"Added Division Name",{{"Division", type text}}),
+		    #"Merged Dim Division" = Table.NestedJoin(#"Changed Type2", {"Division"}, #"Dim Division", {"Division"}, "Dim Division", JoinKind.LeftOuter),
+		    #"Expanded Dim Division" = Table.ExpandTableColumn(#"Merged Dim Division", "Dim Division", {"Division ID"}, {"Division ID"}),
+		    // Instead of Text.Lower, use Text.Proper
+		    AddJoinKey = Table.AddColumn(#"Expanded Dim Division", "JoinKey", each Text.Proper(Text.Trim([Attributes])), type text),
+		    // Safety check for final column selection
+		    AvailableCols = Table.ColumnNames(AddJoinKey),
+		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute","JoinKey"},
+		    IntersectCols = List.Intersect({AvailableCols, RequiredCols}),
+		    Final = Table.SelectColumns(AddJoinKey, IntersectCols)
+		in
+		    Final
+		```
+	lineageTag: ff886290-40ab-4cfd-9820-6bfb5d3c92b6
+	queryGroup: 'New KPI''s'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'Topics and KPI''s All' =
+		let
+		    Source = #"Sustainability KPI Table",
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Data Format", "Business Definition", "Higher is Better", "Unit of Measurement", "Calculation Methodology", "Source Database (IT Dependency)", "Relationships", "Constraints", "Assumptions", "Division in Scope: RC", "Division in Scope: PN", "Division in Scope: MVH", "Division Boundaries: RC", "Division Boundaries: PN", "Division Boundaries: MVH", "Frequency", "Division Data Owner: RC", "Division Data Owner: PN", "Division Data Owner: MVH", "Supporting Documents", "Used in PBI Calculations"}),
+		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns"),
+		    AddJoinKey = Table.AddColumn(#"Removed Duplicates", "JoinKey", each Text.Proper(Text.Trim([#"KPI Name "]))),
+		    #"Merged Queries" = Table.NestedJoin(AddJoinKey, {"Topic"}, #"Dim Topic", {"Topic"}, "Topic.1", JoinKind.LeftOuter),
+		    #"Expanded Topic.1" = Table.ExpandTableColumn(#"Merged Queries", "Topic.1", {"Topic ID"}, {"Topic ID"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Topic.1",{{"KPI ID", type number}, {"JoinKey", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 06fc9b61-83d6-4c79-86a4-1274185a93ce
+	queryGroup: 'New KPI''s'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression TransformKpiData = ```
+		(SourceTable as table, DivisionName as text) =>
+		let
+		    // 1. Rename columns safely (Using Table.ColumnNames to check existence)
+		    ColNames = Table.ColumnNames(SourceTable),
+		    RenameList = {{"KPIs", "Attributes"}, {"Category", "Topic"}},
+		    Renamed = Table.RenameColumns(SourceTable, List.Select(RenameList, each List.Contains(ColNames, _{0})), MissingField.Ignore),
+		    
+		    // 2. Replace Errors globally before unpivoting
+		    ReplaceErrors = Table.ReplaceErrorValues(Renamed, List.Transform(Table.ColumnNames(Renamed), each {_, null})),
+		    
+		    // 3. Transformation logic
+		    AllCols = Table.ColumnNames(ReplaceErrors),
+		    GetCols = (prefix) => List.Select(AllCols, each Text.StartsWith(_, prefix, Comparer.OrdinalIgnoreCase)),
+		    
+		    // Updated Unpivot: Force the 'Value' column to be a number IMMEDIATELY
+		    UnpivotCategory = (tbl, cols, tag) => 
+		        let 
+		            u = Table.Unpivot(tbl, cols, "Period", "Value"),
+		            Typed = Table.TransformColumnTypes(u, {{"Value", type number}}) 
+		        in Table.AddColumn(Typed, "Attribute", each tag),
+		    
+		    Combined = Table.Combine({
+		        UnpivotCategory(ReplaceErrors, GetCols("Target"), "Target"),
+		        UnpivotCategory(ReplaceErrors, GetCols("Actual"), "Actual"),
+		        UnpivotCategory(ReplaceErrors, GetCols("YEE"), "YEE"),
+		        UnpivotCategory(ReplaceErrors, GetCols("Replan"), "Replan"),
+		        UnpivotCategory(ReplaceErrors, GetCols("Investment YTD"), "Investment YTD"),
+		        UnpivotCategory(ReplaceErrors, GetCols("Investment YEE"), "Investment YEE"),
+		        UnpivotCategory(ReplaceErrors, GetCols("planned"), "Planned Activities")
+		    }),
+		    
+		    //Get the list of column names
+		    AllColumnNames = Table.ColumnNames(Combined),
+		    
+		    //Select the names to keep
+		    ColumnsToKeep = List.Select(AllColumnNames, each 
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Target", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Actual", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Replan", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "Planned", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YEE", Comparer.OrdinalIgnoreCase) and
+		        not Text.Contains(_, "YTD", Comparer.OrdinalIgnoreCase)
+		    ),
+		
+		    //Apply the selection
+		
+		    FilteredTable = Table.SelectColumns(Combined, ColumnsToKeep),
+		
+		
+		    // 4. Add Year and Quarter
+		    AddYear = Table.AddColumn(FilteredTable, "Year", each 
+		        let d = Text.PositionOfAny([Period], {"0".."9"}) 
+		        in if d >= 0 then Number.FromText(Text.Middle([Period], d, 4)) else null, Int64.Type),
+		    
+		    AddQuarter = Table.AddColumn(AddYear, "Quarter", each 
+		        if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		        else if [Attribute] = "Replan" then "Q3"
+		        else if [Attribute] = "Planned Activities" then "Q4"
+		        else if Text.Contains([Period],"Q1") then "Q1" else if Text.Contains([Period],"Q2") then "Q2" 
+		        else if Text.Contains([Period],"Q3") then "Q3" else if Text.Contains([Period],"Q4") then "Q4" else null),
+		
+		    AddDiv = Table.AddColumn(AddQuarter, "Division", each DivisionName)
+		in
+		    AddDiv
+		```
+	lineageTag: b5278949-2809-4b8b-9191-5c9b758cb6d4
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+
+/// Staging query of PN & RC Appended Data to create the dynamic KPI list in order to avoid the circular dependency
+expression 'Staging Query' =
+		let
+		    Source = Table.Combine({#"PN KPI Values", #"RC KPI Values"})
+		in
+		    Source
+	lineageTag: 1d1eab65-c0b8-49d0-84c3-9fd41224226a
+	queryGroup: 'New KPI''s'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

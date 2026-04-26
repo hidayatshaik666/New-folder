@@ -1,0 +1,80 @@
+table 'Fact Baseline'
+	lineageTag: 1ff2c798-45f7-4904-91bd-a541d4aff3e1
+
+	column 'Metric ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e62a66d-5f5e-4a7d-b5ef-a7831efd4e83
+		summarizeBy: count
+		sourceColumn: Metric ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Metric
+		dataType: string
+		lineageTag: 05296b08-443c-48e4-b412-e03d5689e068
+		summarizeBy: none
+		sourceColumn: Metric
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Division ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: fa19071c-10c9-4c66-a43b-e95066d6ed84
+		summarizeBy: none
+		sourceColumn: Division ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Division
+		dataType: string
+		lineageTag: 3c53bf43-d6e8-4ed3-b149-27e11a732e32
+		summarizeBy: none
+		sourceColumn: Division
+
+		annotation SummarizationSetBy = Automatic
+
+	column Topic
+		dataType: string
+		lineageTag: 32613b8e-60a9-4f52-b3c4-d66fce4ce6ec
+		summarizeBy: none
+		sourceColumn: Topic
+
+		annotation SummarizationSetBy = Automatic
+
+	column Source
+		dataType: string
+		lineageTag: 4055ebbd-5d9f-4f0d-a344-ff24d4ea98c1
+		summarizeBy: none
+		sourceColumn: Source
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: d9f09e63-da8b-4028-b488-6479b8f75816
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Fact Baseline' = m
+		mode: import
+		queryGroup: 'Fact Tables'
+		source =
+				let
+				    Source = #"Sustainability Scorecard data",
+				    #"Imported Excel Workbook" = Excel.Workbook(Source),
+				    #"Fact Baseline_Sheet" = #"Imported Excel Workbook"{[Item="Fact Baseline",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Fact Baseline_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Metric ID", Int64.Type}, {"Metric", type text}, {"Division ID", Int64.Type}, {"Division", type text}, {"Topic", type text}, {"Source", type text}, {"Value", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
