@@ -183,7 +183,8 @@ table 'PN & RC KPI Values'
 				            #"GHG Activity Set Scopes - Replan",
 				            #"GHG Activity Set Total - Replan",
 				            #"Circularity Actuals",
-				            #"Circularity YTD"
+				            #"Circularity YTD",
+				            #"GHG YEE % of Target"
 				        })
 				in
 				    #"Append All Calculated KPIs"
