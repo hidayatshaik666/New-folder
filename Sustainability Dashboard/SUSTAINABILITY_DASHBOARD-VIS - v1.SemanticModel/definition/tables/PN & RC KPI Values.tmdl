@@ -123,6 +123,14 @@ table 'PN & RC KPI Values'
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Data From'
+		dataType: string
+		lineageTag: eac44ecc-40fb-4c35-9295-dad067891b1d
+		summarizeBy: none
+		sourceColumn: Data From
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'PN & RC KPI Values' = m
 		mode: import
 		queryGroup: 'New KPI''s'
@@ -156,15 +164,24 @@ table 'PN & RC KPI Values'
 				    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded Dim Report Type",{{"Report Type ID", Int64.Type}}),
 				    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed Type1",{"Topic", "Attributes", "Division", "JoinKey"}),
 				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Dimension Columns",{"Timestamp", "Year", "Quarter", "Attribute",  "End Of Quarter Date", "Timestamp - KPI Trends", "Division ID", "Attribute ID", "Topic ID", "Report Type ID","UOM", "Value"}),
+				    // After all the tables are appended, we can use this column as a flag to determine the source of the data flow.
+				    #"Added ""Data From"" Custom Column" = Table.AddColumn(#"Reordered Columns", "Data From", each "Digital Data"),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added ""Data From"" Custom Column",{{"Data From", type text}}),
 				    // Removed Scope 1, 2, 3 GHG annual and Cummulative KPI's Data
-				    #"Removed GHG Scopes Data" = Table.SelectRows(#"Reordered Columns", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28)),
+				    #"Removed GHG Scopes Data" = Table.SelectRows(#"Changed Type2", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28)),
 				    // Appended other calculated KPI's, which are coming from CAP Data, like Actuals and Data from Circularity files
 				    #"Append All Calculated KPIs" = Table.Combine({
 				            #"Removed GHG Scopes Data", 
 				            #"GHG Activity Set Scopes - YTD",
 				            #"GHG Activity Set Total - YTD",
 				            #"GHG Activity Set Scopes - Actuals", 
-				            #"GHG Activity Set Total - Actuals"
+				            #"GHG Activity Set Total - Actuals",
+				            #"GHG Activity Set Scopes - YEE",
+				            #"GHG Activity Set Total - YEE",
+				            #"GHG Activity Set Scopes - Investment",
+				            #"GHG Activity Set Total - Investment",
+				            #"GHG Activity Set Scopes - Replan",
+				            #"GHG Activity Set Total - Replan"
 				        })
 				in
 				    #"Append All Calculated KPIs"
