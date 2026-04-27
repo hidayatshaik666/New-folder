@@ -107,6 +107,22 @@ table 'PN & RC KPI Values'
 
 		annotation SummarizationSetBy = Automatic
 
+	column OE
+		dataType: string
+		lineageTag: dd064cd6-27ef-43b9-9c12-743e825dbee0
+		summarizeBy: none
+		sourceColumn: OE
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Standard Quarter'
+		dataType: string
+		lineageTag: 867e5723-02f7-4dc3-b093-582a8e4ffc2c
+		summarizeBy: none
+		sourceColumn: Standard Quarter
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'PN & RC KPI Values' = m
 		mode: import
 		queryGroup: 'New KPI''s'
@@ -141,9 +157,15 @@ table 'PN & RC KPI Values'
 				    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed Type1",{"Topic", "Attributes", "Division", "JoinKey"}),
 				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Dimension Columns",{"Timestamp", "Year", "Quarter", "Attribute",  "End Of Quarter Date", "Timestamp - KPI Trends", "Division ID", "Attribute ID", "Topic ID", "Report Type ID","UOM", "Value"}),
 				    // Removed Scope 1, 2, 3 GHG annual and Cummulative KPI's Data
-				    #"Removed GHG Scopes Data" = Table.SelectRows(#"Reordered Columns", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28))
+				    #"Removed GHG Scopes Data" = Table.SelectRows(#"Reordered Columns", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28)),
+				    // Appended other calculated KPI's, which are coming from CAP Data, like Actuals and Data from Circularity files
+				    #"Append All Calculated KPIs" = Table.Combine({
+				            #"Removed GHG Scopes Data", 
+				            #"GHG Activity Set Scopes - YTD",
+				            #"GHG Activity Set Total - YTD"
+				        })
 				in
-				    #"Removed GHG Scopes Data"
+				    #"Append All Calculated KPIs"
 				```
 
 	annotation PBI_NavigationStepName = Navigation
