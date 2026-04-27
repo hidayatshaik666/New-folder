@@ -162,7 +162,9 @@ table 'PN & RC KPI Values'
 				    #"Append All Calculated KPIs" = Table.Combine({
 				            #"Removed GHG Scopes Data", 
 				            #"GHG Activity Set Scopes - YTD",
-				            #"GHG Activity Set Total - YTD"
+				            #"GHG Activity Set Total - YTD",
+				            #"GHG Activity Set Scopes - Actuals", 
+				            #"GHG Activity Set Total - Actuals"
 				        })
 				in
 				    #"Append All Calculated KPIs"
