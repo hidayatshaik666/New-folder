@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "0a38aba9a7c78946faf4",
+  "name": "2b3da6cb7e6740eade4d",
   "position": {
     "x": 1060.0477326968974,
     "y": 1,
@@ -20,13 +20,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fact Table"
+                      "Entity": "PN & RC KPI Values"
                     }
                   },
                   "Property": "Segment"
                 }
               },
-              "queryRef": "Fact Table.Segment",
+              "queryRef": "PN & RC KPI Values.Segment",
               "nativeQueryRef": "Segment",
               "active": true
             },
@@ -50,13 +50,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fact Table"
+                      "Entity": "PN & RC KPI Values"
                     }
                   },
                   "Property": "OE"
                 }
               },
-              "queryRef": "Fact Table.OE",
+              "queryRef": "PN & RC KPI Values.OE",
               "nativeQueryRef": "OE",
               "active": false
             }
@@ -72,9 +72,21 @@
         "levels": [
           {
             "queryRefs": [
-              "Fact Table.Segment"
+              "PN & RC KPI Values.Segment"
             ],
             "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PN & RC KPI Values"
+                    }
+                  },
+                  "Property": "Segment"
+                }
+              }
+            ],
             "isPinned": true
           },
           {
@@ -98,7 +110,7 @@
           },
           {
             "queryRefs": [
-              "Fact Table.OE"
+              "PN & RC KPI Values.OE"
             ],
             "isCollapsed": true
           }
@@ -181,11 +193,6 @@
         }
       ]
     },
-    "syncGroup": {
-      "groupName": "Division",
-      "fieldChanges": true,
-      "filterChanges": true
-    },
     "drillFilterOtherVisuals": true
   },
   "filterConfig": {
@@ -203,52 +210,6 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "d",
-              "Entity": "Dim Division",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "d"
-                          }
-                        },
-                        "Property": "Division"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Pet Nutrition'"
-                        }
-                      }
-                    ],
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Royal Canin'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
         "objects": {
           "general": [
             {
@@ -256,6 +217,34 @@
             }
           ]
         }
+      },
+      {
+        "name": "8698bbce33609588b670",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PN & RC KPI Values"
+              }
+            },
+            "Property": "Segment"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "64c14a66a1a7b4da5751",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PN & RC KPI Values"
+              }
+            },
+            "Property": "OE"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

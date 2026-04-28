@@ -123,6 +123,29 @@ table 'PN & RC KPI Values'
 
 		annotation SummarizationSetBy = Automatic
 
+	column Segment = "Petcare"
+		lineageTag: 126682af-5b66-42f1-a65f-01c3b69652be
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Reporting Year' =
+			
+			VAR InputYear =
+			    VALUE ( LEFT ( 'PN & RC KPI Values'[Timestamp], 4 ) )
+			RETURN
+			IF (
+			    'PN & RC KPI Values'[Attribute] = "Actuals" || 'PN & RC KPI Values'[Attribute] = "Actual",
+			    'PN & RC KPI Values'[Year],
+			    IF ( InputYear = 'PN & RC KPI Values'[Year], InputYear )
+			)
+		lineageTag: e9989edb-2a48-443e-8adb-8155f12b4891
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition 'PN & RC KPI Values' = m
 		mode: import
 		queryGroup: 'New KPI''s'
@@ -158,7 +181,13 @@ table 'PN & RC KPI Values'
 				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Dimension Columns",{"Timestamp", "Year", "Quarter", "Attribute", "End Of Quarter Date", "Timestamp - KPI Trends", "Division ID", "Attribute ID", "Topic ID", "Report Type ID", "Value"}),
 				    // After all the tables are appended, we can use this column as a flag to determine the source of the data flow.
 				    #"Added ""Data From"" Custom Column" = Table.AddColumn(#"Reordered Columns", "Data From", each "Digital Data"),
-				    #"Changed Type2" = Table.TransformColumnTypes(#"Added ""Data From"" Custom Column",{{"Data From", type text}}),
+				    #"Added OE Column" = Table.AddColumn(#"Added ""Data From"" Custom Column", "OE", each if [Data From] = "Digital Data" and [Division ID] = 1 then "PN-Manual File"
+				else if  [Data From] = "Digital Data" and [Division ID] = 2 then "RC-Manual File"
+				else null),
+				    #"Added Custom" = Table.AddColumn(#"Added OE Column", "Standard Quarter", each if List.Contains({"actual", "target", "replan", "planned activities"}, Text.Lower(Text.Trim([Attribute]))) 
+				then null 
+				else [Quarter]),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom",{{"Data From", type text},{"OE", type text}}),
 				    // Removed Scope 1, 2, 3 GHG annual and Cummulative KPI's Data
 				    #"Removed GHG Scopes Data" = Table.SelectRows(#"Changed Type2", each ([Attribute ID] <> null and [Attribute ID] <> 22 and [Attribute ID] <> 23 and [Attribute ID] <> 24 and [Attribute ID] <> 25 and [Attribute ID] <> 26 and [Attribute ID] <> 27 and [Attribute ID] <> 28)),
 				    // Appended other calculated KPI's, which are coming from CAP Data, like Actuals and Data from Circularity files

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "56f721c388be70ba15e1",
+  "name": "e7d638f02b329664b39c",
   "position": {
-    "x": 156,
-    "y": 206,
-    "z": 14000,
-    "height": 831,
-    "width": 1674,
-    "tabOrder": 13000
+    "x": 154,
+    "y": 205,
+    "z": 17000,
+    "height": 832,
+    "width": 1681,
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "pivotTable",
@@ -27,7 +27,7 @@
                 }
               },
               "queryRef": "Dynamic Report Type.Report Type",
-              "nativeQueryRef": " ",
+              "nativeQueryRef": " 1",
               "active": true,
               "displayName": " "
             },
@@ -54,11 +54,11 @@
                       "Entity": "PN & RC KPI Values"
                     }
                   },
-                  "Property": "Standard Quarter"
+                  "Property": "Quarter"
                 }
               },
-              "queryRef": "PN & RC KPI Values.Standard Quarter",
-              "nativeQueryRef": "Standard Quarter",
+              "queryRef": "PN & RC KPI Values.Quarter",
+              "nativeQueryRef": "Quarter",
               "active": true
             }
           ]
@@ -77,7 +77,7 @@
                 }
               },
               "queryRef": "Dynamic Dim Topic.Topic",
-              "nativeQueryRef": " 2",
+              "nativeQueryRef": " ",
               "active": true,
               "displayName": " "
             },
@@ -96,8 +96,7 @@
               "nativeQueryRef": "KPI Name ",
               "active": true
             }
-          ],
-          "showAll": true
+          ]
         },
         "Values": {
           "projections": [
@@ -5713,20 +5712,6 @@
               }
             ]
           }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "98.07999804129477D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Dynamic Dim Topic.Topic"
-          }
         }
       ],
       "blankRows": [
@@ -5767,142 +5752,6 @@
             }
           }
         }
-      ],
-      "values": [
-        {
-          "properties": {
-            "backColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Conditional": {
-                      "Cases": [
-                        {
-                          "Condition": {
-                            "Comparison": {
-                              "ComparisonKind": 0,
-                              "Left": {
-                                "Measure": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Measures_table"
-                                    }
-                                  },
-                                  "Property": "RAG Color – Current Quarter New"
-                                }
-                              },
-                              "Right": {
-                                "Literal": {
-                                  "Value": "4D"
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#FFFFFF'"
-                            }
-                          }
-                        },
-                        {
-                          "Condition": {
-                            "Comparison": {
-                              "ComparisonKind": 0,
-                              "Left": {
-                                "Measure": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Measures_table"
-                                    }
-                                  },
-                                  "Property": "RAG Color – Current Quarter New"
-                                }
-                              },
-                              "Right": {
-                                "Literal": {
-                                  "Value": "3D"
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#FF1414'"
-                            }
-                          }
-                        },
-                        {
-                          "Condition": {
-                            "Comparison": {
-                              "ComparisonKind": 0,
-                              "Left": {
-                                "Measure": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Measures_table"
-                                    }
-                                  },
-                                  "Property": "RAG Color – Current Quarter New"
-                                }
-                              },
-                              "Right": {
-                                "Literal": {
-                                  "Value": "2D"
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#FFDC00'"
-                            }
-                          }
-                        },
-                        {
-                          "Condition": {
-                            "Comparison": {
-                              "ComparisonKind": 0,
-                              "Left": {
-                                "Measure": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Measures_table"
-                                    }
-                                  },
-                                  "Property": "RAG Color – Current Quarter New"
-                                }
-                              },
-                              "Right": {
-                                "Literal": {
-                                  "Value": "1D"
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#00AF66'"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 1
-                }
-              }
-            ],
-            "metadata": "Measures_table.Current Quarter New"
-          }
-        }
       ]
     },
     "visualContainerObjects": {
@@ -5926,7 +5775,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -6251,8 +6100,399 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "aadf3947441c3ce50ddc",
+        "name": "f97cf905451dbea8451c",
         "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim KPI"
+              }
+            },
+            "Property": "KPI Name"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "Dim KPI",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
+                          }
+                        },
+                        "Property": "KPI Name"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% Advocate'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% Circular'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% D4C'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% Eliminate'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% recycled content'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% virgin plastic change vs 2019'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Absolute GHG emissions (total actual GHG footprint)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Advocate'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Annual GHG reduction through carbon credits'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Circular'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Cumulative people reached with TP programs (since 2015)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Eliminate'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Extreme and High-Risk Own Operations Sites'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Extreme and High-Risk Own Operations Sites Actioned'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Extreme and High-Risk Tier 1 Supplier Sites'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Extreme and High-Risk Tier 1 Supplier Sites Actioned'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Finished goods tonnage'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'GHG change vs 2015'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'GHG intensity by ($M revenue)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'GHG intensity by (ton of purchased material)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'GHG intensity change vs 2015 (ton of purchased material)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Pet visits'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'RAcc Program'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Raw materials tonnage'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Recycled content volume'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Recycled plastic volume'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Revenue'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Scope 1 Annual GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Scope 1 cumulative GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Scope 2 Annual GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Scope 2 cumulative GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Scope 3 Annual GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Scope 3 cumulative GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'T1 suppliers with valid EcoVadis rating'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Tons of Specialty Recycling Diverted'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Tons of Waste Diverted through Prevention Programs'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Total Annual GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Total cumulative GHG reduction through activity set'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Total plastic volume (virgin + recycled)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Total targeted T1 suppliers'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Volume of packaging classified as D4C'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Volume of packaging classified as NOT D4C'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Waste intensity (kg per pet visit)'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'% Non-medical waste that is recycled or composted'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Non-medical waste that is recycled or composted'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Reduction in non-medical waste (vs. 2020 baseline)​'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Total non-medical waste'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'D4C score'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {}
+            }
+          ]
+        }
+      },
+      {
+        "name": "4aa34a9e0168144c1663",
+        "ordinal": 1,
         "field": {
           "Column": {
             "Expression": {
@@ -6266,8 +6506,8 @@
         "type": "Categorical"
       },
       {
-        "name": "42c7413dd54ab2c7b540",
-        "ordinal": 1,
+        "name": "586791bbdb3dd64797b8",
+        "ordinal": 2,
         "field": {
           "Column": {
             "Expression": {
@@ -6281,8 +6521,8 @@
         "type": "Categorical"
       },
       {
-        "name": "cb905a4991ac2230057b",
-        "ordinal": 2,
+        "name": "2cb5fcf8c299e5ca2e7b",
+        "ordinal": 3,
         "field": {
           "Column": {
             "Expression": {
@@ -6296,8 +6536,8 @@
         "type": "Categorical"
       },
       {
-        "name": "4840d8ad0e766a0de277",
-        "ordinal": 3,
+        "name": "a5cbaf77d53162e57ed1",
+        "ordinal": 4,
         "field": {
           "Column": {
             "Expression": {
@@ -6308,60 +6548,22 @@
             "Property": "Year"
           }
         },
-        "type": "Categorical"
+        "type": "Advanced"
       },
       {
-        "name": "1b41376b80c875b22bed",
-        "ordinal": 4,
+        "name": "2c7bca2836c38e0ba700",
+        "ordinal": 5,
         "field": {
-          "Measure": {
+          "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "Measures_table"
+                "Entity": "PN & RC KPI Values"
               }
             },
-            "Property": "Current Quarter New"
+            "Property": "Quarter"
           }
         },
-        "type": "Advanced",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "m",
-              "Entity": "Measures_table",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "Comparison": {
-                      "ComparisonKind": 0,
-                      "Left": {
-                        "Measure": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Source": "m"
-                            }
-                          },
-                          "Property": "Current Quarter New"
-                        }
-                      },
-                      "Right": {
-                        "Literal": {
-                          "Value": "null"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        }
+        "type": "Categorical"
       }
     ],
     "filterSortOrder": "Custom"

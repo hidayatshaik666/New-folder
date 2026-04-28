@@ -43,7 +43,7 @@
               },
               "queryRef": "Dim Division.Division",
               "nativeQueryRef": "Division",
-              "active": true
+              "active": false
             },
             {
               "field": {
@@ -75,18 +75,6 @@
               "Fact Table.Segment"
             ],
             "isCollapsed": true,
-            "identityKeys": [
-              {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fact Table"
-                    }
-                  },
-                  "Property": "Segment"
-                }
-              }
-            ],
             "isPinned": true
           },
           {
@@ -112,24 +100,10 @@
             "queryRefs": [
               "Fact Table.OE"
             ],
-            "isCollapsed": true,
-            "isPinned": true
+            "isCollapsed": true
           }
         ],
-        "root": {
-          "children": [
-            {
-              "identityValues": [
-                {
-                  "Literal": {
-                    "Value": "'Petcare'"
-                  }
-                }
-              ],
-              "isToggled": true
-            }
-          ]
-        }
+        "root": {}
       }
     ],
     "objects": {

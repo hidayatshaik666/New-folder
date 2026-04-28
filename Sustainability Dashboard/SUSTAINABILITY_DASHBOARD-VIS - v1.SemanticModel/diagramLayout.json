@@ -644,6 +644,19 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 290,
+            "y": 0
+          },
+          "nodeIndex": "Dim Division",
+          "nodeLineageTag": "750afa6a-20e1-4e5e-b716-10811de949e2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Fact Projects history",
@@ -750,7 +763,7 @@
       "ordinal": 4,
       "scrollPosition": {
         "x": 338.75,
-        "y": 149.31930067399128
+        "y": 148.75
       },
       "nodes": [
         {
@@ -853,6 +866,6 @@
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "PN & RC KPI",
+  "selectedDiagram": "Fact Projects history",
   "defaultDiagram": "All tables"
 }

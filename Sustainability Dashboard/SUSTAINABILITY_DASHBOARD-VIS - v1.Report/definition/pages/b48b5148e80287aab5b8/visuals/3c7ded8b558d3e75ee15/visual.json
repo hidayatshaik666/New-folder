@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "65765b5ee0897694d5a9",
+  "name": "3c7ded8b558d3e75ee15",
   "position": {
-    "x": 1620.9118541033431,
-    "y": 13.337872340425534,
-    "z": 13000,
-    "height": 81.702127659574472,
-    "width": 252.40121580547111,
-    "tabOrder": 12000
+    "x": 1092.96,
+    "y": 2.16,
+    "z": 15001,
+    "height": 79.92,
+    "width": 252.72,
+    "tabOrder": 13002
   },
   "visual": {
     "visualType": "slicer",
@@ -20,106 +20,20 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fact Projects Table History"
+                      "Entity": "PN & RC KPI Values"
                     }
                   },
-                  "Property": "Segment"
+                  "Property": "Data From"
                 }
               },
-              "queryRef": "Fact Projects Table History.Segment",
-              "nativeQueryRef": "Segment",
+              "queryRef": "PN & RC KPI Values.Data From",
+              "nativeQueryRef": "Data From",
               "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim Division"
-                    }
-                  },
-                  "Property": "Division"
-                }
-              },
-              "queryRef": "Dim Division.Division",
-              "nativeQueryRef": "Division",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fact Projects Table History"
-                    }
-                  },
-                  "Property": "OE name"
-                }
-              },
-              "queryRef": "Fact Projects Table History.OE name",
-              "nativeQueryRef": "OE name",
-              "active": false
             }
           ]
         }
       }
     },
-    "expansionStates": [
-      {
-        "roles": [
-          "Values"
-        ],
-        "levels": [
-          {
-            "queryRefs": [
-              "Fact Projects Table History.Segment"
-            ],
-            "isCollapsed": true,
-            "identityKeys": [
-              {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fact Projects Table History"
-                    }
-                  },
-                  "Property": "Segment"
-                }
-              }
-            ],
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "Dim Division.Division"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "Fact Projects Table History.OE name"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          }
-        ],
-        "root": {
-          "children": [
-            {
-              "identityValues": [
-                {
-                  "Literal": {
-                    "Value": "'Petcare'"
-                  }
-                }
-              ],
-              "isToggled": true
-            }
-          ]
-        }
-      }
-    ],
     "objects": {
       "data": [
         {
@@ -174,26 +88,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Year'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0.1
-                    }
-                  }
+                  "Value": "'Data From'"
                 }
               }
             },
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -203,44 +105,6 @@
       "general": [
         {
           "properties": {}
-        }
-      ],
-      "pendingChangesIcon": [
-        {
-          "properties": {
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "items": [
-        {
-          "properties": {
-            "padding": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "background": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": 0
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
       ]
     },
@@ -280,8 +144,8 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": -0.3
+                      "ColorId": 9,
+                      "Percent": 0
                     }
                   }
                 }
@@ -293,6 +157,13 @@
                   "Value": "10D"
                 }
               }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
             }
           }
         }
@@ -300,6 +171,20 @@
       "title": [
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'‎ ‎‏‏‎‎ ‎‏‏‎Reporting Period'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
             "titleWrap": {
               "expr": {
                 "Literal": {
@@ -312,8 +197,8 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": -0.6
+                      "ColorId": 8,
+                      "Percent": 0
                     }
                   }
                 }
@@ -329,7 +214,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'12'"
+                  "Value": "'14'"
                 }
               }
             },
@@ -337,27 +222,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Mars Centra'"
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Segment, Division, OE'"
-                }
-              }
-            },
-            "heading": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Normal'"
                 }
               }
             }
@@ -370,14 +234,33 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 8,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'12'"
+                  "Value": "'10'"
                 }
               }
             },
@@ -425,26 +308,6 @@
           }
         }
       ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "'12'"
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
       "visualHeader": [
         {
           "properties": {
@@ -452,33 +315,6 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "visualHeaderTooltip": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "'12'"
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
                 }
               }
             }
@@ -492,6 +328,33 @@
               "expr": {
                 "Literal": {
                   "Value": "0D"
+                }
+              }
+            },
+            "spaceBelowTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "spaceBelowSubTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "keepLayerOrder": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

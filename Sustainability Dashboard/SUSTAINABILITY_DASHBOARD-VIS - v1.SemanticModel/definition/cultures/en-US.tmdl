@@ -38275,6 +38275,934 @@ cultureInfo en-US
 			      ],
 			      "NameType": "Identifier"
 			    },
+			    "measures_table.RAG_color__current_quarter_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "RAG Color – Current Quarter New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "RAG color – current quarter new": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.NoCalcList_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "NoCalcList New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "NoCalcList new": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.debug_measure": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Debug Measure"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "debug measure": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "debug degree": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "debug quantity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "debug quota": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "debug extent": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "debug amount": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "debug portion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "debug ration": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "debug size": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.circularity_investment_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Circularity investment New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "circularity investment new": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "circularity asset new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "circularity speculation new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "circularity savings new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "circularity security new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "circularity venture new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "circularity outlay new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "circularity deal new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "circularity stock new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "circularity share new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "circularity investing new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.climate_investment_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Climate investment New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "climate investment new": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "climate asset new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "climate speculation new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "climate savings new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "climate security new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "climate venture new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "climate outlay new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "climate deal new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "climate stock new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "climate share new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "climate investing new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.TP_investment_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "TP investment New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "TP investment new": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "tp asset new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "tp speculation new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "tp savings new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "tp security new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.508
+			          }
+			        },
+			        {
+			          "tp venture new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "tp outlay new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "tp deal new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "tp stock new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "tp share new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        },
+			        {
+			          "tp investing new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.492
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.eliminate_unsustainable_water_use_vs_2015_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Eliminate unsustainable Water Use (Vs 2015) New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "eliminate unsustainable water use (vs 2015) new": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.suppliers_ecovadis_rated_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "% Suppliers Ecovadis Rated New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "% suppliers ecovadis rated new": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "percentage supplier ecovadis rated new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.624
+			          }
+			        },
+			        {
+			          "pct supplier ecovadis rated new": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.605
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.sustainable_fish_sourcing_alignement_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Sustainable Fish Sourcing alignement New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "sustainable fish sourcing alignement new": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.deforestation_and_conversion_free_sourcing_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Deforestation and Conversion Free Sourcing New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "deforestation and conversion free sourcing new": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "deforestation": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "deforestation conversion free sourcing new": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "conversion free sourcing new": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ]
+			    },
+			    "measures_table.hold_flat_total_land_area_new": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Measures_table",
+			          "ConceptualProperty": "Hold flat total land area New"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "hold flat total land area new": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "fact_projects_table_history.segment": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Fact Projects Table History",
+			          "ConceptualProperty": "Segment"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "segment": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "subdivision": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "section": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "sector": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "bit": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "fragment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "part": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "piece": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "portion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "slice": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value.segment": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "PN & RC KPI Values",
+			          "ConceptualProperty": "Segment"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "segment": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "subdivision": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "section": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "sector": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "bit": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "fragment": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "part": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "piece": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "portion": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        },
+			        {
+			          "slice": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ]
+			    },
+			    "dynamic_KPI_list.data_format": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Dynamic KPI List",
+			          "ConceptualProperty": "Data Format"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "data format": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "format": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "information format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        },
+			        {
+			          "fact format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        },
+			        {
+			          "info format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        },
+			        {
+			          "statistic format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.6
+			          }
+			        },
+			        {
+			          "document format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        },
+			        {
+			          "figure format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        },
+			        {
+			          "record format": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.582
+			          }
+			        },
+			        {
+			          "data arrangement": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "data setup": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "data presentation": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        }
+			      ]
+			    },
 			    "measures_table.businessdefinition": {
 			      "Definition": {
 			        "Binding": {
@@ -38298,6 +39226,52 @@ cultureInfo en-US
 			    }
 			  },
 			  "Relationships": {
+			    "FACT_table_2_has_dim_type_of_activity": {
+			      "Binding": {
+			        "ConceptualEntity": "FACT table 2"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "FACT_table_2": {
+			          "Target": {
+			            "Entity": "FACT_table_2"
+			          }
+			        },
+			        "dim_type_of_activity": {
+			          "Target": {
+			            "Entity": "dim_type_of_activity"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "FACT_table_2"
+			            },
+			            "Object": {
+			              "Role": "dim_type_of_activity"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "FACT_table_2_have_dim_type_of_activity"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_type_of_activity"
+			            },
+			            "Object": {
+			              "Role": "FACT_table_2"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_type_of_activity_have_FACT_table_2"
+			        }
+			      ]
+			    },
 			    "FACT_table_2_has_dim_pillar": {
 			      "Binding": {
 			        "ConceptualEntity": "FACT table 2"
@@ -38829,6 +39803,468 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "dim_topics_have_fact_baselines"
+			        }
+			      ]
+			    },
+			    "dynamic_KPI_list_has_data_format": {
+			      "Binding": {
+			        "ConceptualEntity": "Dynamic KPI List"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dynamic_KPI_list": {
+			          "Target": {
+			            "Entity": "dynamic_KPI_list"
+			          }
+			        },
+			        "dynamic_KPI_list.data_format": {
+			          "Target": {
+			            "Entity": "dynamic_KPI_list.data_format"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dynamic_KPI_list"
+			            },
+			            "Object": {
+			              "Role": "dynamic_KPI_list.data_format"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dynamic_KPI_lists_have_data_formats"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_segment": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "PN__RC_KPI_value.segment": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value.segment"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "PN__RC_KPI_value.segment"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_segments"
+			        }
+			      ]
+			    },
+			    "fact_projects_table_history_has_segment": {
+			      "Binding": {
+			        "ConceptualEntity": "Fact Projects Table History"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "fact_projects_table_history": {
+			          "Target": {
+			            "Entity": "fact_projects_table_history"
+			          }
+			        },
+			        "fact_projects_table_history.segment": {
+			          "Target": {
+			            "Entity": "fact_projects_table_history.segment"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "fact_projects_table_history"
+			            },
+			            "Object": {
+			              "Role": "fact_projects_table_history.segment"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fact_projects_table_histories_have_segments"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_hold_flat_total_land_area_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.hold_flat_total_land_area_new": {
+			          "Target": {
+			            "Entity": "measures_table.hold_flat_total_land_area_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.hold_flat_total_land_area_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_hold_flat_total_land_area_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_deforestation_and_conversion_free_sourcing_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.deforestation_and_conversion_free_sourcing_new": {
+			          "Target": {
+			            "Entity": "measures_table.deforestation_and_conversion_free_sourcing_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.deforestation_and_conversion_free_sourcing_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_deforestation_and_conversion_free_sourcing_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_sustainable_fish_sourcing_alignement_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.sustainable_fish_sourcing_alignement_new": {
+			          "Target": {
+			            "Entity": "measures_table.sustainable_fish_sourcing_alignement_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.sustainable_fish_sourcing_alignement_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_sustainable_fish_sourcing_alignement_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_suppliers_ecovadis_rated_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.suppliers_ecovadis_rated_new": {
+			          "Target": {
+			            "Entity": "measures_table.suppliers_ecovadis_rated_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.suppliers_ecovadis_rated_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have__suppliers_ecovadis_rated_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_eliminate_unsustainable_water_use_vs_2015_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.eliminate_unsustainable_water_use_vs_2015_new": {
+			          "Target": {
+			            "Entity": "measures_table.eliminate_unsustainable_water_use_vs_2015_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.eliminate_unsustainable_water_use_vs_2015_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_eliminate_unsustainable_water_use_vs_2015_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_TP_investment_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.TP_investment_new": {
+			          "Target": {
+			            "Entity": "measures_table.TP_investment_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.TP_investment_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_TP_investment_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_climate_investment_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.climate_investment_new": {
+			          "Target": {
+			            "Entity": "measures_table.climate_investment_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.climate_investment_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_climate_investment_new"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_measures_table_circularity_investment_new": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "measures_table.circularity_investment_new": {
+			          "Target": {
+			            "Entity": "measures_table.circularity_investment_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "measures_table.circularity_investment_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_circularity_investment_new"
+			        }
+			      ]
+			    },
+			    "dynamic_KPI_list_has_measures_table_debug_measure": {
+			      "Binding": {
+			        "ConceptualEntity": "Dynamic KPI List"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dynamic_KPI_list": {
+			          "Target": {
+			            "Entity": "dynamic_KPI_list"
+			          }
+			        },
+			        "measures_table.debug_measure": {
+			          "Target": {
+			            "Entity": "measures_table.debug_measure"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dynamic_KPI_list"
+			            },
+			            "Object": {
+			              "Role": "measures_table.debug_measure"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dynamic_KPI_lists_have_debug_measure"
+			        }
+			      ]
+			    },
+			    "measures_table_has_NoCalcList_new": {
+			      "Binding": {
+			        "ConceptualEntity": "Measures_table"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "measures_table": {
+			          "Target": {
+			            "Entity": "measures_table"
+			          }
+			        },
+			        "measures_table.NoCalcList_new": {
+			          "Target": {
+			            "Entity": "measures_table.NoCalcList_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "measures_table"
+			            },
+			            "Object": {
+			              "Role": "measures_table.NoCalcList_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "measures_tables_have_NoCalcList_new"
+			        }
+			      ]
+			    },
+			    "measures_table_has_RAG_color__current_quarter_new": {
+			      "Binding": {
+			        "ConceptualEntity": "Measures_table"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "measures_table": {
+			          "Target": {
+			            "Entity": "measures_table"
+			          }
+			        },
+			        "measures_table.RAG_color__current_quarter_new": {
+			          "Target": {
+			            "Entity": "measures_table.RAG_color__current_quarter_new"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "measures_table"
+			            },
+			            "Object": {
+			              "Role": "measures_table.RAG_color__current_quarter_new"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "measures_tables_have_RAG_color__current_quarter_new"
 			        }
 			      ]
 			    },
@@ -39469,39 +40905,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "PN__RC_KPI_values_have_values"
-			        }
-			      ]
-			    },
-			    "PN__RC_KPI_value_has_uom": {
-			      "Binding": {
-			        "ConceptualEntity": "PN & RC KPI Values"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "PN__RC_KPI_value": {
-			          "Target": {
-			            "Entity": "PN__RC_KPI_value"
-			          }
-			        },
-			        "PN__RC_KPI_value.uom": {
-			          "Target": {
-			            "Entity": "PN__RC_KPI_value.uom"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "PN__RC_KPI_value"
-			            },
-			            "Object": {
-			              "Role": "PN__RC_KPI_value.uom"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "PN__RC_KPI_values_have_uoms"
 			        }
 			      ]
 			    },
@@ -48143,15 +49546,15 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "fact_table_has_measures_table_KPI_dynamic_measure_new": {
+			    "measures_table_has_KPI_dynamic_measure_new": {
 			      "Binding": {
-			        "ConceptualEntity": "Fact Table"
+			        "ConceptualEntity": "Measures_table"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "fact_table": {
+			        "measures_table": {
 			          "Target": {
-			            "Entity": "fact_table"
+			            "Entity": "measures_table"
 			          }
 			        },
 			        "measures_table.KPI_dynamic_measure_new": {
@@ -48164,7 +49567,7 @@ cultureInfo en-US
 			        {
 			          "Attribute": {
 			            "Subject": {
-			              "Role": "fact_table"
+			              "Role": "measures_table"
 			            },
 			            "Object": {
 			              "Role": "measures_table.KPI_dynamic_measure_new"
@@ -48172,73 +49575,7 @@ cultureInfo en-US
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "fact_tables_have_KPI_dynamic_measure_new"
-			        }
-			      ]
-			    },
-			    "fact_baseline_has_measures_table_KPI_dynamic_measure_new": {
-			      "Binding": {
-			        "ConceptualEntity": "Fact Baseline"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "fact_baseline": {
-			          "Target": {
-			            "Entity": "fact_baseline"
-			          }
-			        },
-			        "measures_table.KPI_dynamic_measure_new": {
-			          "Target": {
-			            "Entity": "measures_table.KPI_dynamic_measure_new"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "fact_baseline"
-			            },
-			            "Object": {
-			              "Role": "measures_table.KPI_dynamic_measure_new"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "fact_baselines_have_KPI_dynamic_measure_new"
-			        }
-			      ]
-			    },
-			    "dynamic_KPI_list_has_measures_table_KPI_dynamic_measure_new": {
-			      "Binding": {
-			        "ConceptualEntity": "Dynamic KPI List"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "dynamic_KPI_list": {
-			          "Target": {
-			            "Entity": "dynamic_KPI_list"
-			          }
-			        },
-			        "measures_table.KPI_dynamic_measure_new": {
-			          "Target": {
-			            "Entity": "measures_table.KPI_dynamic_measure_new"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dynamic_KPI_list"
-			            },
-			            "Object": {
-			              "Role": "measures_table.KPI_dynamic_measure_new"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dynamic_KPI_lists_have_KPI_dynamic_measure_new"
+			          "ID": "measures_tables_have_KPI_dynamic_measure_new"
 			        }
 			      ]
 			    },
@@ -55272,49 +56609,58 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "FACT_table_2_has_dim_type_of_activity": {
+			    "measures_table_is_NoCalcList_new": {
 			      "Binding": {
-			        "ConceptualEntity": "FACT table 2"
+			        "ConceptualEntity": "Measures_table"
 			      },
 			      "State": "Generated",
 			      "Roles": {
-			        "FACT_table_2": {
+			        "measures_table": {
 			          "Target": {
-			            "Entity": "FACT_table_2"
+			            "Entity": "measures_table"
 			          }
 			        },
-			        "dim_type_of_activity": {
+			        "measures_table.NoCalcList_new": {
 			          "Target": {
-			            "Entity": "dim_type_of_activity"
+			            "Entity": "measures_table.NoCalcList_new"
 			          }
 			        }
 			      },
+			      "Conditions": [
+			        {
+			          "Target": {
+			            "Role": "measures_table.NoCalcList_new"
+			          },
+			          "Operator": "Equals",
+			          "Value": {
+			            "Boolean": [
+			              true
+			            ]
+			          }
+			        }
+			      ],
 			      "Phrasings": [
 			        {
-			          "Attribute": {
+			          "Adjective": {
 			            "Subject": {
-			              "Role": "FACT_table_2"
+			              "Role": "measures_table"
 			            },
-			            "Object": {
-			              "Role": "dim_type_of_activity"
-			            }
+			            "Adjectives": [
+			              {
+			                "NoCalcList new": {
+			                  "State": "Generated"
+			                }
+			              },
+			              {
+			                "NoCalcList-new": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ]
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "FACT_table_2_have_dim_type_of_activity"
-			        },
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "dim_type_of_activity"
-			            },
-			            "Object": {
-			              "Role": "FACT_table_2"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "dim_type_of_activity_have_FACT_table_2"
+			          "ID": "some_measures_tables_are_NoCalcList_new_measures_tables"
 			        }
 			      ]
 			    },
@@ -56203,6 +57549,52 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "dim_mars_date_tables_have_PN__RC_KPI_values"
+			        }
+			      ]
+			    },
+			    "PN__RC_KPI_value_has_dim_KPI": {
+			      "Binding": {
+			        "ConceptualEntity": "PN & RC KPI Values"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "PN__RC_KPI_value": {
+			          "Target": {
+			            "Entity": "PN__RC_KPI_value"
+			          }
+			        },
+			        "dim_KPI": {
+			          "Target": {
+			            "Entity": "dim_KPI"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "PN__RC_KPI_value"
+			            },
+			            "Object": {
+			              "Role": "dim_KPI"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "PN__RC_KPI_values_have_dim_KPIs"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_KPI"
+			            },
+			            "Object": {
+			              "Role": "PN__RC_KPI_value"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_KPIs_have_PN__RC_KPI_values"
 			        }
 			      ]
 			    },

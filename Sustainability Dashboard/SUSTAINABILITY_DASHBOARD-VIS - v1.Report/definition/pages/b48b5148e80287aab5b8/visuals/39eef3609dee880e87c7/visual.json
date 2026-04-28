@@ -20,6 +20,21 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
+                      "Entity": "PN & RC KPI Values"
+                    }
+                  },
+                  "Property": "Segment"
+                }
+              },
+              "queryRef": "PN & RC KPI Values.Segment",
+              "nativeQueryRef": "Segment",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
                       "Entity": "Dim Division"
                     }
                   },
@@ -29,11 +44,94 @@
               "queryRef": "Dim Division.Division",
               "nativeQueryRef": "Division",
               "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PN & RC KPI Values"
+                    }
+                  },
+                  "Property": "OE"
+                }
+              },
+              "queryRef": "PN & RC KPI Values.OE",
+              "nativeQueryRef": "OE",
+              "active": false
             }
           ]
         }
       }
     },
+    "expansionStates": [
+      {
+        "roles": [
+          "Values"
+        ],
+        "levels": [
+          {
+            "queryRefs": [
+              "PN & RC KPI Values.Segment"
+            ],
+            "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "PN & RC KPI Values"
+                    }
+                  },
+                  "Property": "Segment"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "Dim Division.Division"
+            ],
+            "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim Division"
+                    }
+                  },
+                  "Property": "Division"
+                }
+              }
+            ],
+            "isPinned": true
+          },
+          {
+            "queryRefs": [
+              "PN & RC KPI Values.OE"
+            ],
+            "isCollapsed": true,
+            "isPinned": true
+          }
+        ],
+        "root": {
+          "children": [
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "'Petcare'"
+                  }
+                }
+              ],
+              "isToggled": true
+            }
+          ]
+        }
+      }
+    ],
     "objects": {
       "data": [
         {
@@ -42,6 +140,13 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dropdown'"
+                }
+              }
+            },
+            "isInvertedSelectionMode": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -61,7 +166,7 @@
             "selectAllCheckboxEnabled": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -77,49 +182,7 @@
       ],
       "general": [
         {
-          "properties": {
-            "filter": {
-              "filter": {
-                "Version": 2,
-                "From": [
-                  {
-                    "Name": "d",
-                    "Entity": "Dim Division",
-                    "Type": 0
-                  }
-                ],
-                "Where": [
-                  {
-                    "Condition": {
-                      "In": {
-                        "Expressions": [
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Source": "d"
-                                }
-                              },
-                              "Property": "Division"
-                            }
-                          }
-                        ],
-                        "Values": [
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Pet Nutrition'"
-                              }
-                            }
-                          ]
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
+          "properties": {}
         }
       ]
     },
@@ -168,52 +231,6 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "d",
-              "Entity": "Dim Division",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "d"
-                          }
-                        },
-                        "Property": "Division"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Pet Nutrition'"
-                        }
-                      }
-                    ],
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Royal Canin'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
         "objects": {
           "general": [
             {
@@ -221,6 +238,34 @@
             }
           ]
         }
+      },
+      {
+        "name": "2b9388ee841d0d056118",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PN & RC KPI Values"
+              }
+            },
+            "Property": "Segment"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "5ddfc9b02b0dd6070dd9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "PN & RC KPI Values"
+              }
+            },
+            "Property": "OE"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "97c9cd34ce8cd2e40386",
+  "name": "8e02bd52528e8c0c91ce",
   "position": {
-    "x": 229.05775075987842,
-    "y": 0,
-    "z": 0,
-    "height": 29.179331306990882,
-    "width": 147.35562310030394,
-    "tabOrder": 1000
+    "x": 0.35141238002752573,
+    "y": 119.63525835866261,
+    "z": 2000,
+    "height": 61.276595744680847,
+    "width": 70.030395136778111,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "actionButton",
@@ -27,7 +27,7 @@
                 "name": {
                   "expr": {
                     "Literal": {
-                      "Value": "'icon_visswitch_tableheader_unselected.svg'"
+                      "Value": "'icon_nav_analysis_Unselected1.svg'"
                     }
                   }
                 },
@@ -36,7 +36,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_visswitch_tableheader_uns16315924434229423.svg"
+                      "ItemName": "icon_nav_analysis_Unselected18142961840709675.svg"
                     }
                   }
                 },
@@ -46,6 +46,48 @@
                       "Value": "'Normal'"
                     }
                   }
+                }
+              }
+            },
+            "verticalAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'middle'"
+                }
+              }
+            },
+            "horizontalAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
+            "leftMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            },
+            "rightMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            },
+            "topMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            },
+            "bottomMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
                 }
               }
             }
@@ -72,7 +114,7 @@
                 "name": {
                   "expr": {
                     "Literal": {
-                      "Value": "'icon_visswitch_tableheader_selected.svg'"
+                      "Value": "'icon_nav_analysis_selected.svg'"
                     }
                   }
                 },
@@ -81,7 +123,76 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_visswitch_tableheader_sel5676552108937976.svg"
+                      "ItemName": "icon_nav_analysis_selected6656365296498836.svg"
+                    }
+                  }
+                },
+                "scaling": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'Normal'"
+                    }
+                  }
+                }
+              }
+            },
+            "horizontalAlignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'center'"
+                }
+              }
+            },
+            "leftMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            },
+            "rightMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            },
+            "topMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            },
+            "bottomMargin": {
+              "expr": {
+                "Literal": {
+                  "Value": "12L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "hover"
+          }
+        },
+        {
+          "properties": {
+            "image": {
+              "image": {
+                "name": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'icon_nav_analysis_Unselected1.svg'"
+                    }
+                  }
+                },
+                "url": {
+                  "expr": {
+                    "ResourcePackageItem": {
+                      "PackageName": "RegisteredResources",
+                      "PackageType": 1,
+                      "ItemName": "icon_nav_analysis_Unselected1873572274628464.svg"
                     }
                   }
                 },
@@ -96,7 +207,7 @@
             }
           },
           "selector": {
-            "id": "hover"
+            "id": "selected"
           }
         }
       ],
@@ -119,7 +230,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }
@@ -130,14 +241,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Extended View'"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "'Home'"
                 }
               }
             },
@@ -145,8 +249,9 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Literal": {
-                      "Value": "'#B3B3B3'"
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.3
                     }
                   }
                 }
@@ -155,7 +260,7 @@
             "horizontalAlignment": {
               "expr": {
                 "Literal": {
-                  "Value": "'center'"
+                  "Value": "'right'"
                 }
               }
             },
@@ -180,13 +285,6 @@
         },
         {
           "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Extended View'"
-                }
-              }
-            },
             "bold": {
               "expr": {
                 "Literal": {
@@ -198,8 +296,9 @@
               "solid": {
                 "color": {
                   "expr": {
-                    "Literal": {
-                      "Value": "'#333333'"
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0.2
                     }
                   }
                 }
@@ -208,6 +307,78 @@
           },
           "selector": {
             "id": "hover"
+          }
+        }
+      ],
+      "fill": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "hover"
+          }
+        },
+        {
+          "properties": {
+            "fillColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "selected"
           }
         }
       ]
@@ -275,6 +446,13 @@
                   "Value": "0D"
                 }
               }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
             }
           }
         }
@@ -312,13 +490,47 @@
           }
         }
       ],
+      "visualLink": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'PageNavigation'"
+                }
+              }
+            },
+            "navigationSection": {
+              "expr": {
+                "Literal": {
+                  "Value": "'2aa923978c20e593d047'"
+                }
+              }
+            },
+            "tooltip": {
+              "expr": {
+                "Literal": {
+                  "Value": "'KPI Trends'"
+                }
+              }
+            }
+          }
+        }
+      ],
       "title": [
         {
           "properties": {
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Export Unselected'"
+                  "Value": "'Side Analytics'"
                 }
               }
             },
@@ -366,47 +578,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Mars Centra'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "visualLink": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'PageNavigation'"
-                }
-              }
-            },
-            "bookmark": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Bookmark28f15a70db259bb596d4'"
-                }
-              }
-            },
-            "tooltip": {
-              "expr": {
-                "Literal": {
-                  "Value": "'View Extended Summary Report'"
-                }
-              }
-            },
-            "navigationSection": {
-              "expr": {
-                "Literal": {
-                  "Value": "'85d2b810bc21d4d21ec6'"
                 }
               }
             }
@@ -475,6 +646,6 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "80de01b046edecbe0ab0",
+  "parentGroupName": "08a6ebc723c9e9b28789",
   "howCreated": "InsertVisualButton"
 }

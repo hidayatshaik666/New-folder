@@ -351,6 +351,12 @@ table 'Fact Projects Table History'
 
 		annotation SummarizationSetBy = Automatic
 
+	column Segment = "Petcare"
+		lineageTag: f2744f7a-863b-47ca-b275-79ed46ebd229
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Fact Projects Table History' = m
 		mode: import
 		queryGroup: 'CAP Projects History'

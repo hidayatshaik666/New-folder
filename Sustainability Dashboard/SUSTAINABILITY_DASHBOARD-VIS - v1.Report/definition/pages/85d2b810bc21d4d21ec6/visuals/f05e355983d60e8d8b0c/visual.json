@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "97c9cd34ce8cd2e40386",
+  "name": "f05e355983d60e8d8b0c",
   "position": {
-    "x": 229.05775075987842,
+    "x": 0,
     "y": 0,
-    "z": 0,
-    "height": 29.179331306990882,
-    "width": 147.35562310030394,
-    "tabOrder": 1000
+    "z": 1000,
+    "height": 30.757748145451238,
+    "width": 220,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "actionButton",
@@ -36,7 +36,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_visswitch_tableheader_uns16315924434229423.svg"
+                      "ItemName": "icon_visswitch_tableheader_uns6619790787046475.svg"
                     }
                   }
                 },
@@ -81,7 +81,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_visswitch_tableheader_sel5676552108937976.svg"
+                      "ItemName": "icon_visswitch_tableheader_sel8949543048028742.svg"
                     }
                   }
                 },
@@ -130,7 +130,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Extended View'"
+                  "Value": "'Sustainability Scorecard'"
                 }
               }
             },
@@ -180,13 +180,6 @@
         },
         {
           "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Extended View'"
-                }
-              }
-            },
             "bold": {
               "expr": {
                 "Literal": {
@@ -202,6 +195,13 @@
                       "Value": "'#333333'"
                     }
                   }
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Sustainability Scorecard'"
                 }
               }
             }
@@ -299,26 +299,13 @@
           }
         }
       ],
-      "visualHeader": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            }
-          }
-        }
-      ],
       "title": [
         {
           "properties": {
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Export Unselected'"
+                  "Value": "'Visual Unselected'"
                 }
               }
             },
@@ -372,41 +359,13 @@
           }
         }
       ],
-      "visualLink": [
+      "visualHeader": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "type": {
-              "expr": {
-                "Literal": {
-                  "Value": "'PageNavigation'"
-                }
-              }
-            },
-            "bookmark": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Bookmark28f15a70db259bb596d4'"
-                }
-              }
-            },
-            "tooltip": {
-              "expr": {
-                "Literal": {
-                  "Value": "'View Extended Summary Report'"
-                }
-              }
-            },
-            "navigationSection": {
-              "expr": {
-                "Literal": {
-                  "Value": "'85d2b810bc21d4d21ec6'"
+                  "Value": "false"
                 }
               }
             }
@@ -471,10 +430,44 @@
             }
           }
         }
+      ],
+      "visualLink": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "type": {
+              "expr": {
+                "Literal": {
+                  "Value": "'PageNavigation'"
+                }
+              }
+            },
+            "navigationSection": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ea970e71f8965c3454ea'"
+                }
+              }
+            },
+            "tooltip": {
+              "expr": {
+                "Literal": {
+                  "Value": "'View Summary Report'"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "80de01b046edecbe0ab0",
+  "parentGroupName": "37301d408c510c120b07",
   "howCreated": "InsertVisualButton"
 }

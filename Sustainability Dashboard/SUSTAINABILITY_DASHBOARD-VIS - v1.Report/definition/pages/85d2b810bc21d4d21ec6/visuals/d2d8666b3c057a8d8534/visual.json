@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "97c9cd34ce8cd2e40386",
+  "name": "d2d8666b3c057a8d8534",
   "position": {
-    "x": 229.05775075987842,
+    "x": 224.68085106382978,
     "y": 0,
     "z": 0,
     "height": 29.179331306990882,
-    "width": 147.35562310030394,
+    "width": 150.27355623100303,
     "tabOrder": 1000
   },
   "visual": {
@@ -27,7 +27,7 @@
                 "name": {
                   "expr": {
                     "Literal": {
-                      "Value": "'icon_visswitch_tableheader_unselected.svg'"
+                      "Value": "'icon_visswitch_tableheader_selected.svg'"
                     }
                   }
                 },
@@ -36,7 +36,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_visswitch_tableheader_uns16315924434229423.svg"
+                      "ItemName": "icon_visswitch_tableheader_sel36686189678142944.svg"
                     }
                   }
                 },
@@ -81,7 +81,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_visswitch_tableheader_sel5676552108937976.svg"
+                      "ItemName": "icon_visswitch_tableheader_sel8727621299982458.svg"
                     }
                   }
                 },
@@ -137,7 +137,7 @@
             "bold": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -146,7 +146,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#B3B3B3'"
+                      "Value": "'#333333'"
                     }
                   }
                 }
@@ -208,6 +208,20 @@
           },
           "selector": {
             "id": "hover"
+          }
+        },
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Extended View'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "selected"
           }
         }
       ]
@@ -318,7 +332,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Export Unselected'"
+                  "Value": "'Table Selected'"
                 }
               }
             },
@@ -378,7 +392,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -399,14 +413,14 @@
             "tooltip": {
               "expr": {
                 "Literal": {
-                  "Value": "'View Extended Summary Report'"
+                  "Value": "'Switch to Table Mode'"
                 }
               }
             },
             "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'85d2b810bc21d4d21ec6'"
+                  "Value": "''"
                 }
               }
             }
@@ -475,6 +489,6 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "80de01b046edecbe0ab0",
+  "parentGroupName": "37301d408c510c120b07",
   "howCreated": "InsertVisualButton"
 }

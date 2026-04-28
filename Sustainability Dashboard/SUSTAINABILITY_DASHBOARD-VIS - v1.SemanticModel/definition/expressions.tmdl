@@ -2008,7 +2008,29 @@ expression 'RC KPI Values' = ```
 		    else if Text.Contains([Period],"Q3") then "Q3" 
 		    else if Text.Contains([Period],"Q4") then "Q4" 
 		    else null
-		),
+		)
+		// = Table.AddColumn(AddYear, "Quarter", each 
+		//     if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		//     else if [Attribute] = "Replan" then "Q3"
+		//     else if [Attribute] = "Planned Activities" then "Q4"
+		//     else if Text.Contains([Period],"Q1") then "Q1" 
+		//     else if Text.Contains([Period],"Q2") then "Q2" 
+		//     else if Text.Contains([Period],"Q3") then "Q3" 
+		//     else if Text.Contains([Period],"Q4") then "Q4" 
+		//     else null
+		// )
+		
+		// = Table.AddColumn(AddYear, "Quarter", each 
+		//     if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		//     else if [Attribute] = "Replan" then "Q3"
+		//     else if [Attribute] = "Planned Activities" then "Q4"
+		//     else if Text.Contains([Period],"Q1") then "Q1" 
+		//     else if Text.Contains([Period],"Q2") then "Q2" 
+		//     else if Text.Contains([Period],"Q3") then "Q3" 
+		//     else if Text.Contains([Period],"Q4") then "Q4" 
+		//     else null
+		// )
+		,
 		
 		    //build End Of Quarter Date
 		    QuarterMonth = Table.AddColumn(AddQuarter, "QuarterEndMonth", each if [Quarter]="Q1" then 3 else if [Quarter]="Q2" then 6 else if [Quarter]="Q3" then 9 else if [Quarter]="Q4" then 12 else 12, Int64.Type),
@@ -2255,7 +2277,29 @@ expression 'PN KPI Values' = ```
 		    else if Text.Contains([Period],"Q3") then "Q3" 
 		    else if Text.Contains([Period],"Q4") then "Q4" 
 		    else null
-		),
+		)
+		// = Table.AddColumn(AddYear, "Quarter", each 
+		//     if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		//     else if [Attribute] = "Replan" then "Q3"
+		//     else if [Attribute] = "Planned Activities" then "Q4"
+		//     else if Text.Contains([Period],"Q1") then "Q1" 
+		//     else if Text.Contains([Period],"Q2") then "Q2" 
+		//     else if Text.Contains([Period],"Q3") then "Q3" 
+		//     else if Text.Contains([Period],"Q4") then "Q4" 
+		//     else null
+		// )
+		
+		// = Table.AddColumn(AddYear, "Quarter", each 
+		//     if [Attribute] = "Actual" or [Attribute] = "Target" then "Q4"
+		//     else if [Attribute] = "Replan" then "Q3"
+		//     else if [Attribute] = "Planned Activities" then "Q4"
+		//     else if Text.Contains([Period],"Q1") then "Q1" 
+		//     else if Text.Contains([Period],"Q2") then "Q2" 
+		//     else if Text.Contains([Period],"Q3") then "Q3" 
+		//     else if Text.Contains([Period],"Q4") then "Q4" 
+		//     else null
+		// )
+		,
 		
 		    //build End Of Quarter Date
 		    QuarterMonth = Table.AddColumn(AddQuarter, "QuarterEndMonth", each if [Quarter]="Q1" then 3 else if [Quarter]="Q2" then 6 else if [Quarter]="Q3" then 9 else if [Quarter]="Q4" then 12 else 12, Int64.Type),

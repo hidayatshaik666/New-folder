@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "YEE Per Division for Reporting Period: ",
+                    "value": "Actuals Per Division for Reporting Period: ",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontSize": "16pt",

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.7.0/schema.json",
-  "name": "65765b5ee0897694d5a9",
+  "name": "d5a50b60321b95e19aa5",
   "position": {
-    "x": 1620.9118541033431,
-    "y": 13.337872340425534,
+    "x": 825.77507598784189,
+    "y": 1,
     "z": 13000,
-    "height": 81.702127659574472,
-    "width": 252.40121580547111,
-    "tabOrder": 12000
+    "height": 78.784194528875375,
+    "width": 253.86018237082067,
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "slicer",
@@ -20,106 +20,37 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fact Projects Table History"
+                      "Entity": "Fact Table"
                     }
                   },
-                  "Property": "Segment"
+                  "Property": "Timestamp"
                 }
               },
-              "queryRef": "Fact Projects Table History.Segment",
-              "nativeQueryRef": "Segment",
+              "queryRef": "Fact Table.Timestamp",
+              "nativeQueryRef": "Timestamp",
               "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Dim Division"
-                    }
-                  },
-                  "Property": "Division"
-                }
-              },
-              "queryRef": "Dim Division.Division",
-              "nativeQueryRef": "Division",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fact Projects Table History"
-                    }
-                  },
-                  "Property": "OE name"
-                }
-              },
-              "queryRef": "Fact Projects Table History.OE name",
-              "nativeQueryRef": "OE name",
-              "active": false
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Fact Table"
+                  }
+                },
+                "Property": "Timestamp"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
-    "expansionStates": [
-      {
-        "roles": [
-          "Values"
-        ],
-        "levels": [
-          {
-            "queryRefs": [
-              "Fact Projects Table History.Segment"
-            ],
-            "isCollapsed": true,
-            "identityKeys": [
-              {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Fact Projects Table History"
-                    }
-                  },
-                  "Property": "Segment"
-                }
-              }
-            ],
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "Dim Division.Division"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          },
-          {
-            "queryRefs": [
-              "Fact Projects Table History.OE name"
-            ],
-            "isCollapsed": true,
-            "isPinned": true
-          }
-        ],
-        "root": {
-          "children": [
-            {
-              "identityValues": [
-                {
-                  "Literal": {
-                    "Value": "'Petcare'"
-                  }
-                }
-              ],
-              "isToggled": true
-            }
-          ]
-        }
-      }
-    ],
     "objects": {
       "data": [
         {
@@ -128,13 +59,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dropdown'"
-                }
-              }
-            },
-            "isInvertedSelectionMode": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
                 }
               }
             }
@@ -161,7 +85,7 @@
             "strictSingleSelect": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -174,26 +98,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Year'"
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 1,
-                      "Percent": 0.1
-                    }
-                  }
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "'Reporting Period'"
                 }
               }
             }
@@ -202,42 +107,46 @@
       ],
       "general": [
         {
-          "properties": {}
-        }
-      ],
-      "pendingChangesIcon": [
-        {
           "properties": {
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "items": [
-        {
-          "properties": {
-            "padding": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "background": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": 0
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "f",
+                    "Entity": "Fact Table",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "f"
+                                }
+                              },
+                              "Property": "Timestamp"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'2025-Q3'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
                     }
                   }
-                }
+                ]
               }
             }
           }
@@ -280,8 +189,8 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": -0.3
+                      "ColorId": 9,
+                      "Percent": 0
                     }
                   }
                 }
@@ -293,6 +202,13 @@
                   "Value": "10D"
                 }
               }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
             }
           }
         }
@@ -300,6 +216,20 @@
       "title": [
         {
           "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'‎ ‎‏‏‎‎ ‎‏‏‎Reporting Period'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
             "titleWrap": {
               "expr": {
                 "Literal": {
@@ -312,8 +242,8 @@
                 "color": {
                   "expr": {
                     "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": -0.6
+                      "ColorId": 8,
+                      "Percent": 0
                     }
                   }
                 }
@@ -329,7 +259,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'12'"
+                  "Value": "'14'"
                 }
               }
             },
@@ -337,27 +267,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Mars Centra'"
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Segment, Division, OE'"
-                }
-              }
-            },
-            "heading": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Normal'"
                 }
               }
             }
@@ -370,14 +279,33 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 8,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'left'"
                 }
               }
             },
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "'12'"
+                  "Value": "'10'"
                 }
               }
             },
@@ -425,26 +353,6 @@
           }
         }
       ],
-      "visualTooltip": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "'12'"
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
       "visualHeader": [
         {
           "properties": {
@@ -452,33 +360,6 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "visualHeaderTooltip": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "'12'"
-                }
-              }
-            },
-            "transparency": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
                 }
               }
             }
@@ -494,11 +375,56 @@
                   "Value": "0D"
                 }
               }
+            },
+            "spaceBelowTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "spaceBelowSubTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "keepLayerOrder": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
             }
           }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ffa74f744760e4185b0a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact Table"
+              }
+            },
+            "Property": "Timestamp"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }
