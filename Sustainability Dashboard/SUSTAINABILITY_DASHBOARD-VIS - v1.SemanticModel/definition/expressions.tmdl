@@ -2026,12 +2026,18 @@ expression 'RC KPI Values' = ```
 		    #"Changed Type2" = Table.TransformColumnTypes(#"Added Division Name",{{"Division", type text}}),
 		    #"Merged Dim Division" = Table.NestedJoin(#"Changed Type2", {"Division"}, #"Dim Division", {"Division"}, "Dim Division", JoinKind.LeftOuter),
 		    #"Expanded Dim Division" = Table.ExpandTableColumn(#"Merged Dim Division", "Dim Division", {"Division ID"}, {"Division ID"}),
-		    #"Add Join Key" = Table.AddColumn(#"Expanded Dim Division", "JoinKey", each Text.Proper(Text.Trim([Attributes])), type text),    
+		    #"Add Join Key" = Table.AddColumn(#"Expanded Dim Division", "JoinKey", each Text.Proper(Text.Trim([Attributes])), type text),
+		    #"Added Data Format" = Table.AddColumn(#"Add Join Key", "Data Format", each 
+		        if Text.Contains([UOM], "%") then "#,0.0%" 
+		        else if Text.Contains([UOM], "Million") then "$#,0"
+		        else if [UOM] = "t" then "#,0" 
+		        else "#,0"
+		    ),    
 		    // Safety check for final column selection
-		    AvailableCols = Table.ColumnNames(#"Add Join Key"),
-		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute","JoinKey"},
+		    AvailableCols = Table.ColumnNames(#"Added Data Format"),
+		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute","JoinKey","Data Format"},
 		    IntersectCols = List.Intersect({AvailableCols, RequiredCols}),
-		    Final = Table.SelectColumns(#"Add Join Key", IntersectCols)
+		    Final = Table.SelectColumns(#"Added Data Format", IntersectCols)
 		in
 		    Final
 		```
@@ -2269,11 +2275,17 @@ expression 'PN KPI Values' = ```
 		    #"Expanded Dim Division" = Table.ExpandTableColumn(#"Merged Dim Division", "Dim Division", {"Division ID"}, {"Division ID"}),
 		    // Instead of Text.Lower, use Text.Proper
 		    AddJoinKey = Table.AddColumn(#"Expanded Dim Division", "JoinKey", each Text.Proper(Text.Trim([Attributes])), type text),
+		    #"Added Data Format" = Table.AddColumn(#"AddJoinKey", "Data Format", each 
+		        if Text.Contains([UOM], "%") then "#,0.0%" 
+		        else if Text.Contains([UOM], "Million") then "$#,0"
+		        else if [UOM] = "t" then "#,0" 
+		        else "#,0"
+		    ),
 		    // Safety check for final column selection
-		    AvailableCols = Table.ColumnNames(AddJoinKey),
-		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute","JoinKey"},
+		    AvailableCols = Table.ColumnNames(#"Added Data Format"),
+		    RequiredCols = {"Timestamp","Division ID","Topic ID","UOM","Topic","Attribute ID","Attributes","Year","End Of Quarter Date","Attribute","Value","Report Type ID","Quarter","Timestamp - KPI Trends","OE","Division","Attribute","JoinKey","Data Format"},
 		    IntersectCols = List.Intersect({AvailableCols, RequiredCols}),
-		    Final = Table.SelectColumns(AddJoinKey, IntersectCols)
+		    Final = Table.SelectColumns(#"Added Data Format", IntersectCols)
 		in
 		    Final
 		```
@@ -2287,7 +2299,7 @@ expression 'PN KPI Values' = ```
 expression 'Topics and KPI''s All' =
 		let
 		    Source = #"Sustainability KPI Table",
-		    #"Removed Columns" = Table.RemoveColumns(Source,{"Data Format", "Business Definition", "Higher is Better", "Unit of Measurement", "Calculation Methodology", "Source Database (IT Dependency)", "Relationships", "Constraints", "Assumptions", "Division in Scope: RC", "Division in Scope: PN", "Division in Scope: MVH", "Division Boundaries: RC", "Division Boundaries: PN", "Division Boundaries: MVH", "Frequency", "Division Data Owner: RC", "Division Data Owner: PN", "Division Data Owner: MVH", "Supporting Documents", "Used in PBI Calculations"}),
+		    #"Removed Columns" = Table.RemoveColumns(Source,{"Business Definition", "Higher is Better", "Unit of Measurement", "Calculation Methodology", "Source Database (IT Dependency)", "Relationships", "Constraints", "Assumptions", "Division in Scope: RC", "Division in Scope: PN", "Division in Scope: MVH", "Division Boundaries: RC", "Division Boundaries: PN", "Division Boundaries: MVH", "Frequency", "Division Data Owner: RC", "Division Data Owner: PN", "Division Data Owner: MVH", "Supporting Documents", "Used in PBI Calculations"}),
 		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns"),
 		    AddJoinKey = Table.AddColumn(#"Removed Duplicates", "JoinKey", each Text.Proper(Text.Trim([#"KPI Name "]))),
 		    #"Merged Queries" = Table.NestedJoin(AddJoinKey, {"Topic"}, #"Dim Topic", {"Topic"}, "Topic.1", JoinKind.LeftOuter),
@@ -2300,7 +2312,7 @@ expression 'Topics and KPI''s All' =
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Table
+	annotation PBI_ResultType = Exception
 
 expression TransformKpiData = ```
 		(SourceTable as table, DivisionName as text) =>

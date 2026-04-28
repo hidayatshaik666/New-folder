@@ -1,60 +1,699 @@
 createOrReplace
 
-	table 'Projects With Actuals'
-		lineageTag: b13190e2-21d9-4348-a2f3-bb684ee5870c
+    ref table Measures_table
 
-		column Division
-			lineageTag: 64952ab9-b5be-4fa5-89b2-9245eb2c1dc7
-			summarizeBy: none
-			isNameInferred
-			sourceColumn: Fact Projects Table History[Division]
-			columnOrigin: 'Fact Projects Table History'.Division
+        measure '% Advocate New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                 VAR _Advocate = [Advocate New]
+                 VAR _Volume_D4C = [Volume of packaging classified as D4C New]
+                 VAR _Volume_Not_D4C = [Volume of packaging classified as NOT D4C New]
+                
+                RETURN
+                IF(ISBLANK(_Advocate) || ISBLANK(_Volume_D4C) || ISBLANK(_Volume_Not_D4C), BLANK()
+                    , DIVIDE(_Advocate, (_Volume_D4C + _Volume_Not_D4C)))
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
 
-			annotation SummarizationSetBy = Automatic
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-		column Project
-			lineageTag: bba9f3d6-036a-4ed8-b02d-6c1ba4b99d45
-			summarizeBy: none
-			isNameInferred
-			sourceColumn: Fact Projects Table History[Project]
-			columnOrigin: 'Fact Projects Table History'.Project
+        measure '% Circular New' = ```
+                
+                  /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                  VAR _Circular = [Circular New]
+                  VAR Volume_D4C = [Volume of packaging classified as D4C New]
+                  VAR Volume_Not_D4C = [Volume of packaging classified as NOT D4C New]
+                
+                  RETURN
+                  IF(ISBLANK(_Circular) || ISBLANK(Volume_D4C) || ISBLANK(Volume_Not_D4C), BLANK()
+                    , DIVIDE(_Circular, (Volume_D4C + Volume_Not_D4C)) )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
 
-			annotation SummarizationSetBy = Automatic
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-		column Key = 'Projects With Actuals'[Division] & "-" & 'Projects With Actuals'[Project] & "-" & 'Projects With Actuals'[Activity Name]
-			lineageTag: 0a60f1d4-1ba7-4d6d-a84d-c9600c81fb4b
-			summarizeBy: none
+        measure '% D4C New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                VAR Volume_D4C = [Volume of packaging classified as D4C New]
+                VAR Volume_Not_D4C = [Volume of packaging classified as NOT D4C New]
+                
+                RETURN
+                IF(ISBLANK(Volume_D4C) || ISBLANK(Volume_Not_D4C), BLANK()
+                    , DIVIDE(Volume_D4C, (Volume_D4C + Volume_Not_D4C)))
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
 
-			annotation SummarizationSetBy = Automatic
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-		column 'Activity Name'
-			lineageTag: 75c9b5c5-996e-4542-8b91-7472f5309a6a
-			summarizeBy: none
-			isNameInferred
-			sourceColumn: Fact Projects Table History[Activity Name]
-			columnOrigin: 'Fact Projects Table History'.'Activity Name'
+        measure '% Eliminate New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                 VAR _Eliminate = [Eliminate New] 
+                 VAR _Volume_D4C = [Volume of packaging classified as D4C New]
+                 VAR _Volume_Not_D4C = [Volume of packaging classified as NOT D4C New]
+                
+                 RETURN
+                
+                 IF(ISBLANK(_Eliminate) ||ISBLANK(_Volume_D4C) || ISBLANK(_Volume_Not_D4C), BLANK()
+                
+                    , DIVIDE(_Eliminate, (_Volume_D4C + _Volume_Not_D4C)))
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
 
-			annotation SummarizationSetBy = Automatic
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-		column 'Project Name' = 'Projects With Actuals'[Project] & " " & 'Projects With Actuals'[Activity Name]
-			lineageTag: 8834251f-11da-4eb4-834d-2992bfd4f5b8
-			summarizeBy: none
+        measure '% recycled content New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                VAR _Recycled_Content_Volume = [Recycled content volume New]
+                VAR _Total_Plastic_Volume = [Total plastic volume (virgin + recycled) New]
+                
+                RETURN
+                
+                IF(ISBLANK(_Recycled_Content_Volume) || ISBLANK(_Total_Plastic_Volume), BLANK()
+                    , DIVIDE(_Recycled_Content_Volume, _Total_Plastic_Volume))
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
 
-			annotation SummarizationSetBy = Automatic
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-		partition 'Projects With Actuals' = calculated
-			mode: import
-			source =
-					
-					SUMMARIZE (
-					    FILTER (
-					        'Fact Projects Table History',
-					        'Fact Projects Table History'[Attribute] = "Actual"
-					    ),
-					    'Fact Projects Table History'[Division],
-					    'Fact Projects Table History'[Project],
-					    'Fact Projects Table History'[Activity Name]
-					)
+        measure '% virgin plastic change vs 2019 New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                 VAR _Total_Plastic_Volume = [Total plastic volume (virgin + recycled) New]
+                 VAR _Recycled_Content_Volume = [Recycled content volume New]
+                 VAR _2019_Baseline = [2019 Virgin Plastic baseline (Plastic Only tonnes) New]
+                 
+                 RETURN
+                 IF(ISBLANK(_Total_Plastic_Volume) || ISBLANK(_Recycled_Content_Volume) || ISBLANK(_2019_Baseline), BLANK()
+                 , (DIVIDE((_Total_Plastic_Volume - _Recycled_Content_Volume), _2019_Baseline) - 1))
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
 
-		annotation PBI_Id = 6bda8d01bb0d4c1c8c2440580eebabfd
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+        measure '2015 GHG Baseline (tonnes) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2015 GHG Baseline (tonnes)"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure '2015 Intensity on raw material tonnage New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2015 Intensity on raw material tonnage"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure '2015 MVH Revenue Baseline (TUSD) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2015 MVH Revenue Baseline (TUSD)"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure '2019 Virgin Plastic baseline (Plastic Only tonnes) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2019 Virgin Plastic baseline (Plastic Only tonnes)"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure '2020 Baseline Non-Medical Waste (tonnes) - Recycled or Compost New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2020 Baseline Non-Medical Waste (tonnes) - Recycled or Compost"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure '2020 Baseline Non-Medical Waste (tonnes) - Total New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2020 Baseline Non-Medical Waste (tonnes) - Total"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure '2020 MVH Vet Visit Baseline (#) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('Fact Baseline'[Value]),
+                        'Fact Baseline'[Metric] = "2020 MVH Vet Visit Baseline (#)"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Absolute GHG emmisions (total actual GHG footprint) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Absolute GHG emissions (total actual GHG footprint)"
+                    )
+                ```
+            formatString: 0
+            displayFolder: Scorecard Digital\Base Measure New
+
+        measure 'Advocate New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Advocate"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Annual GHG reduction through carbon credits New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Annual GHG reduction through carbon credits"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Circular New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Circular"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Cumulative people reached with TP programs (since 2015) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Cumulative people reached with TP programs (since 2015)"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'D4C Score New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "D4C Score"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Design New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Design"
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Eliminate New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Eliminate"
+                    )
+                    
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Extreme and High-Risk Own Operations Sites New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Extreme and High-Risk Own Operations Sites"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Extreme and High-Risk Own Operations Sites Actioned New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Extreme and High-Risk Own Operations Sites Actioned"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Extreme and High-Risk Tier 1 Supplier Sites New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Extreme and High-Risk Tier 1 Supplier Sites"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Extreme and High-Risk Tier 1 Supplier Sites Actioned New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Extreme and High-Risk Tier 1 Supplier Sites Actioned"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Finished goods tonnage New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Finished goods tonnage"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'GHG change vs 2015 New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                 VAR Absolute_GHG_Emmissions = [Absolute GHG emmisions (total actual GHG footprint) New]
+                 VAR GHG_Baseline_2015 = [2015 GHG Baseline (tonnes) New]
+                
+                RETURN
+                 IF(ISBLANK(Absolute_GHG_Emmissions) || ISBLANK(GHG_Baseline_2015), BLANK(), 
+                 
+                    DIVIDE(Absolute_GHG_Emmissions, GHG_Baseline_2015) - 1) 
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'GHG intensity by ($M revenue) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                 VAR Absolute_GHG_Emmissions = [Absolute GHG emmisions (total actual GHG footprint) New]
+                 VAR _Revenue = [Revenue New]
+                
+                RETURN
+                 IF(ISBLANK(Absolute_GHG_Emmissions) || ISBLANK(_Revenue), BLANK() 
+                 
+                    , DIVIDE(Absolute_GHG_Emmissions, _Revenue))
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'GHG intensity by (ton of purchased material) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                 VAR Absolute_GHG_Emmissions = [Absolute GHG emmisions (total actual GHG footprint) New]
+                 VAR Raw_Materials_Tonnage = [Raw materials tonnage New]
+                
+                RETURN
+                 IF(ISBLANK(Absolute_GHG_Emmissions) || ISBLANK(Raw_Materials_Tonnage), BLANK() 
+                 
+                    , DIVIDE(Absolute_GHG_Emmissions, Raw_Materials_Tonnage) - 1)
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'GHG Intensity Change vs 2015 (tone of purchased material) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                VAR _GHG_Intensity_Of_Purchased_Material = [GHG intensity by (ton of purchased material) New]
+                VAR _2025_Baseline = [2015 GHG Baseline (tonnes) New] 
+                
+                RETURN
+                IF(ISBLANK(_GHG_Intensity_Of_Purchased_Material) || ISBLANK(_GHG_Intensity_Of_Purchased_Material), BLANK()
+                    , DIVIDE(_GHG_Intensity_Of_Purchased_Material, _2025_Baseline) - 1)
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Pet Visits New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Pet Visits"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+
+        measure 'RAcc Program New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "RAcc Program"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Raw materials tonnage New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Raw materials tonnage"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Recycled content volume New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Recycled content volume"
+                    ) 
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Recycled plastic volume New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Recycled plastic volume"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+
+        measure 'Revenue New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Revenue"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Scope 1 Annual GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Scope 1 Annual GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Scope 1 cumulative GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Scope 1 cumulative GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Scope 2 Annual GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Scope 2 Annual GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Scope 2 cumulative GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Scope 2 cumulative GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Scope 3 Annual GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Scope 3 Annual GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Scope 3 cumulative GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Scope 3 cumulative GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'T1 suppliers with valid EcoVadis rating New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "T1 suppliers with valid EcoVadis rating"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Tons of Specialty Recycling Diverted New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Tons of Specialty Recycling Diverted"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Tons of Waste Diverted through Prevention Programs New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Tons of Waste Diverted through Prevention Programs"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Total Annual GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Total Annual GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Total cumulative GHG reduction through activity set New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Total cumulative GHG reduction through activity set"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Total non-medical waste New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Total non-medical waste"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Total plastic volume (virgin + recycled) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Total plastic volume (virgin + recycled)"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Total targeted T1 suppliers New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    CALCULATE(
+                        SUM('PN & RC KPI Values'[Value]),
+                        'Dynamic KPI List'[KPI Name ] = "Total targeted T1 suppliers"
+                    )
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Volume of packaging classified as D4C New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    [Circular New] + [Advocate New]
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Volume of packaging classified as NOT D4C New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                    [Design New] + [Eliminate New]
+                
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+        measure 'Waste intensity (kg per pet visit) New' = ```
+                
+                /* Calculation for the KPI/metric - All Base Measure New are calculations of that KPI/metric */ 
+                VAR _TotalNonMedicalWaste = [Total non-medical waste New]
+                VAR _PetVisits = [Pet Visits New]
+                
+                RETURN
+                    IF(
+                        ISBLANK(_TotalNonMedicalWaste) || ISBLANK(_PetVisits), 
+                        BLANK(), 
+                        DIVIDE([Total non-medical waste New], [Pet Visits New])
+                    )
+                ```
+            displayFolder: Scorecard Digital\Base Measure New
+
+            annotation PBI_FormatHint = {"isGeneralNumber":true}

@@ -143,3 +143,7 @@ relationship 972bc6ea-e7b7-4cef-85d4-8c88e1090e2c
 	fromColumn: 'PN & RC KPI Values'.'End Of Quarter Date'
 	toColumn: 'Dim Mars Date Table'.calendar_dt
 
+relationship 7ade614c-ef0c-1900-fb2f-b4e97982770b
+	fromColumn: 'PN & RC KPI Values'.'Attribute ID'
+	toColumn: 'Dim KPI'.'KPI ID'
+

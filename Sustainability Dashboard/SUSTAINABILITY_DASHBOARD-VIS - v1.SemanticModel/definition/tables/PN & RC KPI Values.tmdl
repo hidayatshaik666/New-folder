@@ -1,14 +1,6 @@
 table 'PN & RC KPI Values'
 	lineageTag: bdd2a287-7d5a-4cda-93cf-5a26f95bf8d0
 
-	column UOM
-		dataType: string
-		lineageTag: ce90efcb-c15b-4406-b39a-e4bdfe4e2417
-		summarizeBy: none
-		sourceColumn: UOM
-
-		annotation SummarizationSetBy = Automatic
-
 	column Value
 		dataType: double
 		lineageTag: cdf283fa-6d6e-46f1-b255-d5f1cac35727
@@ -46,7 +38,7 @@ table 'PN & RC KPI Values'
 
 	column 'End Of Quarter Date'
 		dataType: dateTime
-		formatString: Long Date
+		formatString: Short Date
 		lineageTag: 6518b229-1866-4704-b131-8c04e0edbf5d
 		summarizeBy: none
 		sourceColumn: End Of Quarter Date
@@ -162,8 +154,8 @@ table 'PN & RC KPI Values'
 				    #"Merged Queries1" = Table.FuzzyNestedJoin(#"Changed Type", {"Attribute"}, #"Dynamic Report Type", {"Report Type"}, "Dim Report Type", JoinKind.LeftOuter, [IgnoreCase=true, IgnoreSpace=true]),
 				    #"Expanded Dim Report Type" = Table.ExpandTableColumn(#"Merged Queries1", "Dim Report Type", {"Report Type ID"}, {"Report Type ID"}),
 				    #"Changed Type1" = Table.TransformColumnTypes(#"Expanded Dim Report Type",{{"Report Type ID", Int64.Type}}),
-				    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed Type1",{"Topic", "Attributes", "Division", "JoinKey"}),
-				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Dimension Columns",{"Timestamp", "Year", "Quarter", "Attribute",  "End Of Quarter Date", "Timestamp - KPI Trends", "Division ID", "Attribute ID", "Topic ID", "Report Type ID","UOM", "Value"}),
+				    #"Removed Dimension Columns" = Table.RemoveColumns(#"Changed Type1",{"Topic", "Attributes", "Division", "JoinKey","UOM","Data Format"}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Removed Dimension Columns",{"Timestamp", "Year", "Quarter", "Attribute", "End Of Quarter Date", "Timestamp - KPI Trends", "Division ID", "Attribute ID", "Topic ID", "Report Type ID", "Value"}),
 				    // After all the tables are appended, we can use this column as a flag to determine the source of the data flow.
 				    #"Added ""Data From"" Custom Column" = Table.AddColumn(#"Reordered Columns", "Data From", each "Digital Data"),
 				    #"Changed Type2" = Table.TransformColumnTypes(#"Added ""Data From"" Custom Column",{{"Data From", type text}}),

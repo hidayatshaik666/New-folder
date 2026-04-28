@@ -44,6 +44,14 @@ table 'Dynamic KPI List'
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Data Format'
+		dataType: string
+		lineageTag: ba45e8f3-7c32-49b5-9b6e-3ea5cd9816d5
+		summarizeBy: none
+		sourceColumn: Data Format
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'Dynamic KPI List' = m
 		mode: import
 		queryGroup: 'New KPI''s'
@@ -55,7 +63,7 @@ table 'Dynamic KPI List'
 				    // 2. Get the unique list of KPIs from your raw data (PN + RC combined)
 				    // Create a query that combines PN and RC first, then use it here
 				    AllData = #"Staging Query", 
-				    UniqueKPIs = Table.Distinct(Table.SelectColumns(AllData, {"Topic","Attributes","JoinKey"})),
+				    UniqueKPIs = Table.Distinct(Table.SelectColumns(AllData, {"Topic","Attributes","JoinKey","Data Format"})),
 				    
 				    // 3. Find only the KPIs that DO NOT exist in the MasterList
 				    // JoinKind.LeftAnti is the magic here: it keeps only rows from UniqueKPIs NOT found in MasterList
@@ -71,12 +79,17 @@ table 'Dynamic KPI List'
 				    RenameColumns = Table.RenameColumns(AddIDs, {{"NewID", "KPI ID"}, {"Attributes", "KPI Name "}}),
 				    #"Merge Dynamic Topic" = Table.NestedJoin(RenameColumns, {"Topic"}, #"Dynamic Dim Topic", {"Topic"}, "Topic.1", JoinKind.LeftOuter),
 				    #"Expanded Topic.1" = Table.ExpandTableColumn(#"Merge Dynamic Topic", "Topic.1", {"Topic ID"}, {"Topic ID"}),
-				    FinalNewKPIs = Table.SelectColumns(#"Expanded Topic.1", {"KPI ID", "Topic", "KPI Name ","JoinKey","Topic ID"}),
+				    FinalNewKPIs = Table.SelectColumns(#"Expanded Topic.1", {"KPI ID", "Topic", "KPI Name ","Data Format","JoinKey","Topic ID"}),
 				    
 				    // 6. Combine the MasterList with the new "discovered" KPIs
-				    FullList = Table.Combine({MasterList, FinalNewKPIs})
+				    FullList = Table.Combine({MasterList, FinalNewKPIs}),
+				    #"Added Custom" = Table.AddColumn(FullList, "Final Data Format", each if Text.Contains([#"KPI Name "], "%") then "#,0.0%"
+				else if [Data Format] = null or [Data Format] = "" then "#,0.0"
+				else [Data Format]),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Data Format"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Final Data Format", "Data Format"}})
 				in
-				    FullList
+				    #"Renamed Columns"
 				```
 
 	annotation PBI_NavigationStepName = Navigation

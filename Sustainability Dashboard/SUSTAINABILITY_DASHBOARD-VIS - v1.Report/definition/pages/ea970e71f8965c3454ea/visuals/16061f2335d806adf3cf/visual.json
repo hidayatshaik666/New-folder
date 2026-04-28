@@ -35,13 +35,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fact Table"
+                      "Entity": "Dim Division"
                     }
                   },
                   "Property": "Division"
                 }
               },
-              "queryRef": "Fact Table.Division",
+              "queryRef": "Dim Division.Division",
               "nativeQueryRef": "Division",
               "active": true
             },
@@ -58,7 +58,7 @@
               },
               "queryRef": "Fact Table.OE",
               "nativeQueryRef": "OE",
-              "active": true
+              "active": false
             }
           ]
         }
@@ -91,7 +91,7 @@
           },
           {
             "queryRefs": [
-              "Fact Table.Division"
+              "Dim Division.Division"
             ],
             "isCollapsed": true,
             "identityKeys": [
@@ -99,7 +99,7 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Fact Table"
+                      "Entity": "Dim Division"
                     }
                   },
                   "Property": "Division"
@@ -126,29 +126,7 @@
                   }
                 }
               ],
-              "isToggled": true,
-              "children": [
-                {
-                  "identityValues": [
-                    {
-                      "Literal": {
-                        "Value": "'Pet Nutrition'"
-                      }
-                    }
-                  ],
-                  "isToggled": true
-                },
-                {
-                  "identityValues": [
-                    {
-                      "Literal": {
-                        "Value": "'MVH'"
-                      }
-                    }
-                  ],
-                  "isToggled": true
-                }
-              ]
+              "isToggled": true
             }
           ]
         }
@@ -263,50 +241,44 @@
           "Where": [
             {
               "Condition": {
-                "Not": {
-                  "Expression": {
-                    "In": {
-                      "Expressions": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "d"
-                              }
-                            },
-                            "Property": "Division"
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "d"
                           }
-                        }
-                      ],
-                      "Values": [
-                        [
-                          {
-                            "Literal": {
-                              "Value": "null"
-                            }
-                          }
-                        ]
-                      ]
+                        },
+                        "Property": "Division"
+                      }
                     }
-                  }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Pet Nutrition'"
+                        }
+                      }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Royal Canin'"
+                        }
+                      }
+                    ]
+                  ]
                 }
               }
             }
           ]
         },
-        "howCreated": "User",
         "objects": {
           "general": [
             {
-              "properties": {
-                "isInvertedSelectionMode": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "true"
-                    }
-                  }
-                }
-              }
+              "properties": {}
             }
           ]
         }

@@ -749,7 +749,7 @@
     {
       "ordinal": 4,
       "scrollPosition": {
-        "x": 248.75,
+        "x": 338.75,
         "y": 149.31930067399128
       },
       "nodes": [
@@ -830,6 +830,19 @@
             "width": 234
           },
           "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 895.5,
+            "y": 153.75
+          },
+          "nodeIndex": "Dim KPI",
+          "nodeLineageTag": "0543c3db-4604-43dc-8498-edd8ed3e07c7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "PN & RC KPI",
